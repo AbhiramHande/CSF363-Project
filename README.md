@@ -7,9 +7,11 @@ This is a compiler built for a toy language as a part of the course CS F363 - Co
 5. Vikram Hariharan (2022A7PS0013P)
 
 ## Table of Contents
-- [File Structure](#file-structure)
-- [Installation](#installation)
-- [Usage](#usage)
+- [CSF363-Project](#csf363-project)
+  - [Table of Contents](#table-of-contents)
+  - [File structure:](#file-structure)
+  - [Installation:](#installation)
+  - [Usage:](#usage)
 
 ## File structure:
 The project directory structure is as follows:
@@ -18,12 +20,13 @@ CSF363-Project/
 ├── src/
 │   ├── main.c
 │   ├── lexer.c
-│   ├── lexer.h
 │   ├── parser.c
+│   └── tester.c
+├── include/
+│   ├── lexer.h
 │   ├── parser.h
 │   ├── debug.h
 │   ├── tester.h
-│   └── tester.c
 ├── obj/
 │   ├── main.o
 │   ├── lexer.o
@@ -47,7 +50,7 @@ CSF363-Project/
 ```
 
 ## Installation:
-1. Clone the repository: `git clone https://github.com/username/CSF363-Project.git`
+1. Clone the repository: `git clone https://github.com/AbhiramHande/CSF363-Project.git`
 2. Install necessary dependencies like GCC, make and Linux.
 3. Run `make` to build the project.
 4. Run `./build/exe` to execute the project.
