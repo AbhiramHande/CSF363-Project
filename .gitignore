@@ -1,0 +1,31 @@
+# Compiled object files & binaries
+/obj/
+/build/
+/bin/
+*.o
+*.a
+*.so
+*.exe
+
+# Debug files and core dumps
+*.out
+*.dSYM/
+core
+*.core
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# Dependency directories
+deps/
+
+# Local development/test environment files
+.env
+*.local
+
+# Temporary files
+*.tmp
+*.log
+*.swo
+*.swp
