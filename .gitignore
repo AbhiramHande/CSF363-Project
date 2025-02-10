@@ -1,11 +1,14 @@
-# Compiled object files & binaries
+# Compiled object files
 /obj/
 /build/
 /bin/
 *.o
 *.a
 *.so
+
+# Binary files
 *.exe
+*.out
 
 # Debug files and core dumps
 *.out

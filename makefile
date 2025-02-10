@@ -13,13 +13,13 @@ LTEST_FLAG = -DLTEST -DDEBUG
 HEADER_FILES := $(HEADER_DIR)/lexer.h $(HEADER_DIR)/parser.h
 SRC_FILES := lexer.c parser.c main.c
 OBJ_FILES := $(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
-TARGET = $(BUILD_DIR)/exe
+TARGET = $(BUILD_DIR)/prog.exe
 
 DEBUG_HEADER := $(HEADER_DIR)/debug.h
 TEST_HEADER := $(HEADER_DIR)/tester.h
 TEST_SRC := $(SRC_DIR)/tester.c
 TEST_OBJ := $(OBJ_DIR)/tester.o
-TEST_TARGET := $(BUILD_DIR)/test_exe
+TEST_TARGET := $(BUILD_DIR)/test.exe
 
 all: $(TARGET)
 
