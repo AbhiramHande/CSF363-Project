@@ -7,8 +7,8 @@ TEST_OUTP_DIR := ./tests/expected_output
 
 COMPILER = gcc
 CFLAGS = -c -I$(HEADER_DIR)
-DEBUG_FLAG = -DDEBUG
-LTEST_FLAG = -DLTEST -DDEBUG
+DEBUG_FLAG = -DDEBUG -DLTEST
+LTEST_FLAG = -c -D_XOPEN_SOURCE=600 -std=c99 -Wall -Wextra
 
 HEADER_FILES := $(HEADER_DIR)/lexer.h $(HEADER_DIR)/parser.h
 SRC_FILES := lexer.c parser.c main.c
@@ -29,14 +29,15 @@ $(TARGET): $(OBJ_FILES)
 
 $(TEST_TARGET): $(TEST_OBJ)
 	mkdir -p $(BUILD_DIR)
-	$(COMPILER) -o $@ $^
+	$(COMPILER) -o $@ $^ 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER_FILES)
 	mkdir -p $(OBJ_DIR)
 	$(COMPILER) $(CFLAGS) -o $@ $<
 
 $(TEST_OBJ): $(TEST_SRC) $(TEST_HEADER)
-	$(COMPILER) $(CFLAGS) -o $@ $<
+	mkdir -p $(OBJ_DIR)
+	$(COMPILER) $(LTEST_FLAG) -o $@ $<
 
 clean:
 	rm -f $(OBJ_FILES) $(TEST_OBJ)
@@ -49,6 +50,6 @@ test: $(TEST_TARGET) $(TARGET)
 debug: CFLAGS += $(DEBUG_FLAG)
 debug: $(TARGET)
 
-ltest: CFLAGS += $(LTEST_FLAG)
+ltest: LTEST_FLAG += $(DEBUG_FLAG)
 ltest: $(TEST_TARGET) $(TARGET)
 	$(TEST_TARGET) $(TARGET) $(TEST_CASE_DIR) $(TEST_OUTP_DIR)
