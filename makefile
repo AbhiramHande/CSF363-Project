@@ -6,9 +6,10 @@ TEST_CASE_DIR := ./tests/test_cases
 TEST_OUTP_DIR := ./tests/expected_output
 
 COMPILER = gcc
-CFLAGS = -c -I$(HEADER_DIR)
+DEBUG_COMPILER = gdb
+CFLAGS = -c -g -I$(HEADER_DIR)
 DEBUG_FLAG = -DDEBUG -DLTEST
-LTEST_FLAG = -c -D_XOPEN_SOURCE=600 -std=c99 -Wall -Wextra
+LTEST_FLAG = -c -D_XOPEN_SOURCE=600 -std=c99 -Wall -Wextra -I$(HEADER_DIR)
 
 HEADER_FILES := $(HEADER_DIR)/lexer.h $(HEADER_DIR)/parser.h
 SRC_FILES := lexer.c parser.c main.c
@@ -45,7 +46,7 @@ clean:
 	rm -rf $(OBJ_DIR) $(BUILD_DIR)
 
 test: $(TEST_TARGET) $(TARGET)
-	$(TEST_TARGET) $(TARGET) $(TEST_CASE_DIR) $(TEST_OUTP_DIR)
+	$(COMPILER) $(TEST_TARGET) $(TARGET) $(TEST_CASE_DIR) $(TEST_OUTP_DIR)
 
 debug: CFLAGS += $(DEBUG_FLAG)
 debug: $(TARGET)

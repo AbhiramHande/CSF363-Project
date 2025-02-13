@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <pty.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -6,30 +7,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 #include <termios.h> 
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <sys/ioctl.h>
 #include <sys/types.h>
 
 #include "../include/tester.h"
 #define BUFFER_SIZE 1024
 
 // Expected outputs (modify as needed)
-const char *expected_output[] = {
-    "Hello, World!",   // Line 1
-    "42",              // Line 2
-    NULL               // End of expectations
-};
+// const char *expected_output[] = {
+//     "Hello, World!",   // Line 1
+//     "42",              // Line 2
+//     NULL               // End of expectations
+// };
 
-int process_line(const char *line, int line_num) {
-    if (expected_output[line_num] == NULL) {
+int process_line(const char *line, const FILE* file_ptr) {
+    char* expected_output = NULL;
+    size_t buf_size = 0;
+    int chars_read = getline(&expected_output, &buf_size, file_ptr);
+    if (expected_output == NULL) {
         fprintf(stderr, "\033[31mError: Unexpected line:\033[0m \"%s\"\n", line);
         return -1;
     }
 
-    if (strcmp(line, expected_output[line_num])) {
-        fprintf(stderr, "\033[32mExpected:\033[0m \"%s\"\n", expected_output[line_num]);
+    if(expected_output[chars_read - 1] == '\n')
+        expected_output[chars_read - 1] = '\0';
+    if (strcmp(line, expected_output)) {
+        fprintf(stderr, "\033[32mExpected:\033[0m \"%s\"\n", expected_output);
         fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);        
         return -1;
     }
@@ -41,7 +47,7 @@ int process_line(const char *line, int line_num) {
 
 int main(int argc, char *argv[]) {
     if(argc != 4){
-        fprintf(stderr, "Error: Usage: test_exe <program> <test_case_dir> <expected_oputput_dir>.\n");
+        fprintf(stderr, "Error: Usage: test_exe <program> <test_case_dir> <expected_oputput_dir>. Recieved args: %d\n", argc);
         exit(EXIT_FAILURE);
     }
     else{
@@ -50,6 +56,21 @@ int main(int argc, char *argv[]) {
             fprintf(stdout, "Directory with testcases: %s\n", argv[2]);
             fprintf(stdout, "Directory with expected outputs: %s\n", argv[3]);
         #endif
+    }
+
+    char cwd[PATH_MAX];
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Current working directory: %s\n", cwd);
+    } else {
+        perror("getcwd() error");
+        return 1;
+    }
+
+    FILE* file_ptr = fopen("./tests/test.txt", "r");
+    if(file_ptr == NULL){
+        perror("Invalid file");
+        exit(EXIT_FAILURE);
     }
 
     int master_fd = posix_openpt(O_RDWR | O_NOCTTY);
@@ -116,7 +137,8 @@ int main(int argc, char *argv[]) {
         execvp(argv[1], &argv[1]);
         perror("execvp failed");
         exit(EXIT_FAILURE);
-    } else { // Parent process
+    } 
+    else { // Parent process
         char buffer[BUFFER_SIZE];
         char line_buffer[BUFFER_SIZE];
         size_t line_pos = 0;
@@ -135,7 +157,7 @@ int main(int argc, char *argv[]) {
             for (ssize_t i = 0; i < bytes_read; ++i) {
                 if (buffer[i] == '\n') {
                     line_buffer[line_pos] = '\0';
-                    if (process_line(line_buffer, line_number) != 0) {
+                    if (process_line(line_buffer, file_ptr) != 0) {
                         kill(child_pid, SIGKILL);
                         waitpid(child_pid, NULL, 0);
                         close(master_fd);
@@ -156,20 +178,20 @@ int main(int argc, char *argv[]) {
         }
 
         // Check if all expected lines were processed
-        if (expected_output[line_number] != NULL) {
-            fprintf(stderr, "Error: Missing expected output starting at line %d\n", line_number + 1);
-            kill(child_pid, SIGKILL);
-            waitpid(child_pid, NULL, 0);
-            close(master_fd);
-            exit(EXIT_FAILURE);
-        }
+        // if (getline() != NULL) {
+        //     fprintf(stderr, "Error: Missing expected output starting at line %d\n", line_number + 1);
+        //     kill(child_pid, SIGKILL);
+        //     waitpid(child_pid, NULL, 0);
+        //     close(master_fd);
+        //     exit(EXIT_FAILURE);
+        // }
 
         // Wait for child to exit normally
         int status;
         waitpid(child_pid, &status, 0);
         if (WIFEXITED(status)) {
             printf("\033[32mAll outputs matched.\033[0m\n");
-            printf("Program exited with status %d", WEXITSTATUS(status));
+            printf("Program exited with status %d\n", WEXITSTATUS(status));
         } 
         else 
             printf("\033[31mProgram terminated abnormally\033[0m\n");
