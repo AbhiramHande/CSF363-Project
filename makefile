@@ -1,3 +1,4 @@
+# List of directories 
 SRC_DIR := ./src
 OBJ_DIR := ./obj
 HEADER_DIR := ./include
@@ -5,19 +6,21 @@ BUILD_DIR := ./build
 TEST_CASE_DIR := ./tests/test_cases
 TEST_OUTP_DIR := ./tests/expected_output
 
+# Compilation and linking tools
 COMPILER = gcc
 DEBUG_COMPILER = gdb
 CFLAGS = -c -g -I$(HEADER_DIR)
 DEBUG_FLAG = -DDEBUG -DLTEST
 LTEST_FLAG = -c -D_XOPEN_SOURCE=600 -std=c99 -Wall -Wextra -I$(HEADER_DIR)
 
+# Program files
 HEADER_FILES := $(HEADER_DIR)/lexer.h $(HEADER_DIR)/parser.h
 SRC_FILES := lexer.c parser.c main.c
 OBJ_FILES := $(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
 TARGET = $(BUILD_DIR)/prog.exe
 
+# Debug and test files
 DEBUG_HEADER := $(HEADER_DIR)/debug.h
-TEST_HEADER := $(HEADER_DIR)/tester.h
 TEST_SRC := $(SRC_DIR)/tester.c
 TEST_OBJ := $(OBJ_DIR)/tester.o
 TEST_TARGET := $(BUILD_DIR)/test.exe
@@ -46,7 +49,7 @@ clean:
 	rm -rf $(OBJ_DIR) $(BUILD_DIR)
 
 test: $(TEST_TARGET) $(TARGET)
-	$(COMPILER) $(TEST_TARGET) $(TARGET) $(TEST_CASE_DIR) $(TEST_OUTP_DIR)
+	$(TEST_TARGET) $(TARGET) $(TEST_CASE_DIR) $(TEST_OUTP_DIR)
 
 debug: CFLAGS += $(DEBUG_FLAG)
 debug: $(TARGET)

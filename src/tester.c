@@ -1,29 +1,21 @@
 #define _POSIX_C_SOURCE 200809L
+#define BUFFER_SIZE 1024
+
 #include <pty.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <limits.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <limits.h>
 #include <termios.h> 
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 
-#include "../include/tester.h"
-#define BUFFER_SIZE 1024
-
-// Expected outputs (modify as needed)
-// const char *expected_output[] = {
-//     "Hello, World!",   // Line 1
-//     "42",              // Line 2
-//     NULL               // End of expectations
-// };
-
-int process_line(const char *line, const FILE* file_ptr) {
+int process_line(const char *line, FILE* file_ptr) {
     char* expected_output = NULL;
     size_t buf_size = 0;
     int chars_read = getline(&expected_output, &buf_size, file_ptr);
@@ -36,7 +28,8 @@ int process_line(const char *line, const FILE* file_ptr) {
         expected_output[chars_read - 1] = '\0';
     if (strcmp(line, expected_output)) {
         fprintf(stderr, "\033[32mExpected:\033[0m \"%s\"\n", expected_output);
-        fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);        
+        fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);     
+        fflush(stderr);   
         return -1;
     }
     #ifdef LTEST
@@ -44,6 +37,8 @@ int process_line(const char *line, const FILE* file_ptr) {
     #endif
     return 0;
 }
+
+
 
 int main(int argc, char *argv[]) {
     if(argc != 4){
@@ -56,15 +51,6 @@ int main(int argc, char *argv[]) {
             fprintf(stdout, "Directory with testcases: %s\n", argv[2]);
             fprintf(stdout, "Directory with expected outputs: %s\n", argv[3]);
         #endif
-    }
-
-    char cwd[PATH_MAX];
-
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Current working directory: %s\n", cwd);
-    } else {
-        perror("getcwd() error");
-        return 1;
     }
 
     FILE* file_ptr = fopen("./tests/test.txt", "r");
@@ -116,7 +102,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    if (child_pid == 0) { // Child process
+    if (child_pid == 0) {
         close(master_fd);
 
         if (setsid() == -1) {
@@ -138,7 +124,7 @@ int main(int argc, char *argv[]) {
         perror("execvp failed");
         exit(EXIT_FAILURE);
     } 
-    else { // Parent process
+    else {
         char buffer[BUFFER_SIZE];
         char line_buffer[BUFFER_SIZE];
         size_t line_pos = 0;
@@ -148,6 +134,20 @@ int main(int argc, char *argv[]) {
             ssize_t bytes_read = read(master_fd, buffer, sizeof(buffer));
             if (bytes_read == -1) {
                 if (errno == EINTR) continue;
+                if (errno == EIO){
+                    // Check if all expected lines were processed
+                    char* buf = NULL;
+                    size_t buf_size = 0;
+                    getline(&buf, &buf_size, file_ptr);
+                    if(buf != NULL && strlen(buf) != 0) {
+                        fprintf(stderr, "\033[31m\033[1mError:\033[0m Missing expected output starting at line %d.\n", line_number + 1);
+                        kill(child_pid, SIGKILL);
+                        waitpid(child_pid, NULL, 0);
+                        close(master_fd);
+                        exit(EXIT_FAILURE);
+                    }
+                    break;
+                }
                 perror("read failed");
                 break;
             } else if (bytes_read == 0) { // EOF
@@ -165,10 +165,11 @@ int main(int argc, char *argv[]) {
                     }
                     line_number++;
                     line_pos = 0;
-                } else {
-                    if (line_pos < sizeof(line_buffer) - 1) {
+                } 
+                else {
+                    if (line_pos < sizeof(line_buffer) - 1)
                         line_buffer[line_pos++] = buffer[i];
-                    } else {
+                    else {
                         line_buffer[line_pos] = '\0';
                         fprintf(stderr, "Line too long: \"%s\"\n", line_buffer);
                         line_pos = 0;
@@ -176,15 +177,6 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
-
-        // Check if all expected lines were processed
-        // if (getline() != NULL) {
-        //     fprintf(stderr, "Error: Missing expected output starting at line %d\n", line_number + 1);
-        //     kill(child_pid, SIGKILL);
-        //     waitpid(child_pid, NULL, 0);
-        //     close(master_fd);
-        //     exit(EXIT_FAILURE);
-        // }
 
         // Wait for child to exit normally
         int status;
