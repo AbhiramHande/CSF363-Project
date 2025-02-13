@@ -18,18 +18,17 @@ The project directory structure is as follows:
 ```
 CSF363-Project/
 ├── src/
-│   ├── main.c
 │   ├── lexer.c
+│   ├── main.c
 │   ├── parser.c
 │   └── tester.c
 ├── include/
+│   ├── debug.h
 │   ├── lexer.h
 │   ├── parser.h
-│   ├── debug.h
-│   ├── tester.h
 ├── obj/
-│   ├── main.o
 │   ├── lexer.o
+│   ├── main.o
 │   ├── parser.o
 │   ├── tester.o
 ├── tests/
@@ -42,9 +41,10 @@ CSF363-Project/
 │       ├── test2.txt
 │       └── ...
 ├── build/
-│   └── exe
-│   └── test
+│   └── prog.exe
+│   └── test.exe
 ├── .gitignore
+├── Language specifications.pdf
 ├── makefile
 └── README.md
 ```
