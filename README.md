@@ -78,6 +78,7 @@ ssh-keygen -t ed25519 -C "your_email@gmail.com"
 cat ~/.ssh/id_ed25519.pub
 ```
 Then, go to **GitHub** > **Settings** > **SSH and GPG keys** > **New SSH key** and paste the key in there.
+
 3. **Clone**: Once the SSH key is added to GitHub, you can clone the repository to your local machine
 ```bash
 git clone git@github.com:AbhiramHande/CSF363-Project.git

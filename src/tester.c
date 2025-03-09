@@ -42,7 +42,7 @@ int process_line(const char *line, FILE* file_ptr) {
 
 int main(int argc, char *argv[]) {
     if(argc != 4){
-        fprintf(stderr, "Error: Usage: test_exe <program> <test_case_dir> <expected_oputput_dir>. Recieved args: %d\n", argc);
+        fprintf(stderr, "Error: Usage: test_exe <program> <test_case_dir> <expected_oputput_dir>.\n");
         exit(EXIT_FAILURE);
     }
     else{

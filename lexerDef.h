@@ -9,6 +9,7 @@ typedef struct twinBuffer
     char *buffer2;
 
 } twinBuffer;
+
 typedef enum
 {
     TK_ASSIGNOP,
