@@ -5,7 +5,7 @@
 non_terminal** non_terminals = NULL;
 int non_terminal_count = 0;
 int terminal_count = 61;
-char* start_symbol = NULL;
+non_terminal* start_symbol = NULL;
 production** parse_table = NULL;
 
 TokenName stringToTokenName(const char* tokenStr) {
@@ -144,7 +144,7 @@ const char* tokenNameToString(TokenName token) {
 }
 
 int main(int argc, char *argv[]) {
-    atexit(first_and_follow_cleanup);
+    //atexit(first_and_follow_cleanup);
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <grammar_file>\n", argv[0]);
@@ -209,9 +209,9 @@ int main(int argc, char *argv[]) {
 
         // Add start symbol if there is none
         if (!start_symbol) {
-            start_symbol = strdup(nt->name);
-            nt->follow_set = (char**)malloc(sizeof(char*));
-            nt->follow_set[0] = strdup("$");
+            start_symbol = nt;
+            nt->follow_set = (TokenName*)malloc(sizeof(Token));
+            nt->follow_set[0] = DOLLAR;
             nt->follow_size = 1;
         }
 
@@ -230,15 +230,15 @@ int main(int argc, char *argv[]) {
                 symbol* sym = (symbol*)malloc(sizeof(symbol));
                 if (strcmp(token, "EPS") == 0) {
                     sym->type = SYM_EPSILON;
-                    sym->name = strdup("EPS");
+                    sym->value.name = strdup("EPS");
                 } 
                 else if (token[0] == '<' && token[strlen(token)-1] == '>') {
                     sym->type = SYM_NON_TERMINAL;
-                    sym->name = strndup(token + 1, strlen(token) - 2);
+                    sym->value.name = strndup(token + 1, strlen(token) - 2);
                 } 
                 else if (strncmp(token, "TK_", 3) == 0) {
                     sym->type = SYM_TERMINAL;
-                    sym->name = strdup(token);
+                    sym->value.token_value = stringToTokenName(token);
                 } 
                 else {
                     fprintf(stderr, "Invalid symbol: %s\n", token);
@@ -266,12 +266,11 @@ int main(int argc, char *argv[]) {
     //compute_first_sets();
     for(int i = 0; i < non_terminal_count; i++)
         compute_first_set(non_terminals[i]);
-    compute_follow_sets();
+    compute_follow_set(start_symbol, NULL, NULL, 0);
 
-    //print_first_sets();
-    //print_first_and_follow_sets();
-    generate_parse_table();
-    print_parse_tree();
+    print_first_and_follow_sets(true, false);
+    //generate_parse_table();
+    //print_parse_tree();
     return 0;
 }
 
@@ -284,26 +283,26 @@ non_terminal* find_non_terminal(const char* name) {
     return NULL;
 }
 
-void add_to_first_set(non_terminal* nt, const char* element) {
+void add_to_first_set(non_terminal* nt, const TokenName element) {
     for (int i = 0; i < nt->first_size; i++)
-        if (strcmp(nt->first_set[i], element) == 0)
+        if (nt->first_set[i] == element)
             return;
 
-    nt->first_set = (char **)realloc(nt->first_set, (nt->first_size + 1) * sizeof(char *));
-    nt->first_set[nt->first_size++] = strdup(element);
-    if (strcmp(element, "EPS") == 0)
+    nt->first_set = (TokenName*)realloc(nt->first_set, (nt->first_size + 1)*sizeof(TokenName));
+    nt->first_set[nt->first_size++] = element;
+    if (element == EPSILON)
         nt->has_epsilon_in_first = true;
 
     return;
 }
 
-void add_to_follow_set(non_terminal *nt, const char *element) {
+void add_to_follow_set(non_terminal *nt, const TokenName element) {
     for (int i = 0; i < nt->follow_size; i++)
-        if (strcmp(nt->follow_set[i], element) == 0)
+        if (nt->follow_set[i] == element)
             return;
 
-    nt->follow_set = (char **)realloc(nt->follow_set, (nt->follow_size + 1) * sizeof(char *));
-    nt->follow_set[nt->follow_size++] = strdup(element);
+    nt->follow_set = (TokenName*)realloc(nt->follow_set, (nt->follow_size + 1)*sizeof(TokenName));
+    nt->follow_set[nt->follow_size++] = element;
 }
 
 void compute_first_set(non_terminal* nt) {
@@ -315,28 +314,27 @@ void compute_first_set(non_terminal* nt) {
         for(int j = 0; j < prod->count; j++){
             symbol* sym = prod->symbols[j];
             if(sym->type == SYM_TERMINAL){
-                add_to_first_set(nt, sym->name);
+                add_to_first_set(nt, sym->value.token_value);
                 break;
             }
             else if(sym->type == SYM_EPSILON){
                 nt->has_epsilon_in_first = true;
-                add_to_first_set(nt, "EPS");
+                add_to_first_set(nt, EPSILON);
                 break;
             }
             else{
-                non_terminal* prod_nt = find_non_terminal(sym->name);
+                non_terminal* prod_nt = find_non_terminal(sym->value.name);
                 compute_first_set(prod_nt);
-                for(int k = 0; k < prod_nt->first_size; k++){
-                    if(strcmp(prod_nt->first_set[k], "EPS") != 0)
+                for(int k = 0; k < prod_nt->first_size; k++) {
+                    if(prod_nt->first_set[k] != EPSILON)
                         add_to_first_set(nt, prod_nt->first_set[k]);
                 }
 
                 if(!prod_nt->has_epsilon_in_first)
                     break;
-                else if(j == prod->count - 1){
-                    add_to_first_set(nt, "EPS");
-                    nt->has_epsilon_in_first = true;
-                }
+                else if(j == prod->count - 1)
+                    add_to_first_set(nt, EPSILON);
+
             }
 
         }
@@ -345,153 +343,171 @@ void compute_first_set(non_terminal* nt) {
     return;
 }
 
-void compute_follow_set(non_terminal* nt){
+void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha, int nt_pos){
+    int original_size = nt->follow_size;
 
-}
+    if(nt == start_symbol)
+        add_to_follow_set(nt, DOLLAR);
+    else{
+        symbol** syms = aToAlpha->symbols + nt_pos + 1; //Potential error: overflow and access invalid memory
+        int syms_size = aToAlpha->count - nt_pos;
+        int first_seq_size = 0;
+        TokenName* first_seq = compute_first_of_sequence(syms, syms_size, &first_seq_size);
 
-void compute_follow_sets() {
-    bool updated;
-    do {
-        updated = false;
-        for (int i = 0; i < non_terminal_count; i++) {
-            non_terminal* A = non_terminals[i];
-            for (int j = 0; j < A->prod_count; j++) {
-                production* prod = A->productions[j];
-                for (int k = 0; k < prod->count; k++) {
-                    symbol* Bk = prod->symbols[k];
-                    if (Bk->type == SYM_NON_TERMINAL) {
-                        non_terminal* B = find_non_terminal(Bk->name);
-                        if (!B) continue;
-
-                        symbol** beta = prod->symbols + k + 1;
-                        int beta_count = prod->count - k - 1;
-                        int beta_first_size;
-                        char** beta_first = compute_first_of_sequence(beta, beta_count, &beta_first_size);
-
-                        for (int l = 0; l < beta_first_size; l++) {
-                            if (strcmp(beta_first[l], "EPS") != 0) {
-                                int before = B->follow_size;
-                                add_to_follow_set(B, beta_first[l]);
-                                if (B->follow_size != before) 
-                                    updated = true;
-                            }
-                        }
-
-                        if (contains_EPS(beta_first, beta_first_size)) {
-                            for (int l = 0; l < A->follow_size; l++) {
-                                int before = B->follow_size;
-                                add_to_follow_set(B, A->follow_set[l]);
-                                if (B->follow_size != before) 
-                                    updated = true;
-                            }
-                        }
-
-                        free(beta_first);
-                        beta_first = NULL;
-                    }
-                }
-            }
+        bool add_follow_A = false;
+        for(int i = 0; i < first_seq_size; i++){
+            if(first_seq[i] != EPSILON)
+                add_to_follow_set(nt, first_seq[i]);
+            else
+                add_follow_A = true;
         }
-    } while (updated);
-}
 
-char** compute_first_of_sequence(symbol** beta, int beta_count, int* result_size) {
-    char** result = NULL;
-    int size = 0;
-    int can_derive_epsilon = 1;
+        if(add_follow_A)
+            for(int i = 0; i < A->follow_size; i++)
+                add_to_follow_set(nt, A->follow_set[i]);
+    }
 
-    for (int i = 0; i < beta_count; i++) {
-        symbol *sym = beta[i];
-        if (sym->type == SYM_TERMINAL) {
-            add_to_set(&result, &size, sym->name);
-            can_derive_epsilon = 0;
-            break;
-        } else if (sym->type == SYM_EPSILON) {
-            add_to_set(&result, &size, "EPS");
-            can_derive_epsilon = 1;
-            break;
-        } else {
-            non_terminal* sym_nt = find_non_terminal(sym->name);
-            if (!sym_nt) continue;
-            for (int j = 0; j < sym_nt->first_size; j++)
-                if (strcmp(sym_nt->first_set[j], "EPS") != 0)
-                    add_to_set(&result, &size, sym_nt->first_set[j]);
-
-            if (!sym_nt->has_epsilon_in_first) {
-                can_derive_epsilon = 0;
-                break;
+    if(nt->follow_size != original_size){
+        for(int i = 0; i < nt-> prod_count; i++){
+            production* prod = nt->productions[i];
+            for(int j = prod->count - 1; j >= 0; j--){
+                symbol* sym = prod->symbols[j];
+                if(sym->type == SYM_NON_TERMINAL)
+                    compute_follow_set(find_non_terminal(sym->value.name), nt, prod, j);
             }
         }
     }
-
-    if (can_derive_epsilon)
-        add_to_set(&result, &size, "EPS");
-
-    *result_size = size;
-    return result;
+    return;
 }
 
-int contains_EPS(char** set, int size) {
+// Needs to be updated and changed (smbol->name to symbol->val.name)
+// void compute_follow_sets() {
+//     bool updated;
+//     do {
+//         updated = false;
+//         for (int i = 0; i < non_terminal_count; i++) {
+//             non_terminal* A = non_terminals[i];
+//             for (int j = 0; j < A->prod_count; j++) {
+//                 production* prod = A->productions[j];
+//                 for (int k = 0; k < prod->count; k++) {
+//                     symbol* Bk = prod->symbols[k];
+//                     if (Bk->type == SYM_NON_TERMINAL) {
+//                         non_terminal* B = find_non_terminal(Bk->value.name);
+//                         if (!B) continue;
+
+//                         symbol** beta = prod->symbols + k + 1;
+//                         int beta_count = prod->count - k - 1;
+//                         int beta_first_size;
+//                         char** beta_first = compute_first_of_sequence(beta, beta_count, &beta_first_size);
+
+//                         for (int l = 0; l < beta_first_size; l++) {
+//                             if (strcmp(beta_first[l], "EPS") != 0) {
+//                                 int before = B->follow_size;
+//                                 add_to_follow_set(B, beta_first[l]);
+//                                 if (B->follow_size != before) 
+//                                     updated = true;
+//                             }
+//                         }
+
+//                         if (contains_EPS(beta_first, beta_first_size)) {
+//                             for (int l = 0; l < A->follow_size; l++) {
+//                                 int before = B->follow_size;
+//                                 add_to_follow_set(B, A->follow_set[l]);
+//                                 if (B->follow_size != before) 
+//                                     updated = true;
+//                             }
+//                         }
+
+//                         free(beta_first);
+//                         beta_first = NULL;
+//                     }
+//                 }
+//             }
+//         }
+//     } while (updated);
+// }
+
+// char** compute_first_of_sequence(symbol** beta, int beta_count, int* result_size) {
+//     char** result = NULL;
+//     int size = 0;
+//     int can_derive_epsilon = 1;
+
+//     for (int i = 0; i < beta_count; i++) {
+//         symbol *sym = beta[i];
+//         if (sym->type == SYM_TERMINAL) {
+//             add_to_set(&result, &size, sym->name);
+//             can_derive_epsilon = 0;
+//             break;
+//         } else if (sym->type == SYM_EPSILON) {
+//             add_to_set(&result, &size, "EPS");
+//             can_derive_epsilon = 1;
+//             break;
+//         } else {
+//             non_terminal* sym_nt = find_non_terminal(sym->name);
+//             if (!sym_nt) continue;
+//             for (int j = 0; j < sym_nt->first_size; j++)
+//                 if (strcmp(sym_nt->first_set[j], "EPS") != 0)
+//                     add_to_set(&result, &size, sym_nt->first_set[j]);
+
+//             if (!sym_nt->has_epsilon_in_first) {
+//                 can_derive_epsilon = 0;
+//                 break;
+//             }
+//         }
+//     }
+
+//     if (can_derive_epsilon)
+//         add_to_set(&result, &size, "EPS");
+
+//     *result_size = size;
+//     return result;
+// }
+
+bool contains_EPS(TokenName* set, int size) {
     for (int i = 0; i < size; i++)
-        if (strcmp(set[i], "EPS") == 0)
-            return 1;
+        if (set[i] == EPSILON)
+            return true;
 
-    return 0;
+    return false;
 }
 
-void add_to_set(char*** set, int* size, const char* element) {
-    for (int i = 0; i < *size; i++)
-        if (strcmp((*set)[i], element) == 0)
-            return;
+// void add_to_set(char*** set, int* size, const char* element) {
+//     for (int i = 0; i < *size; i++)
+//         if (strcmp((*set)[i], element) == 0)
+//             return;
 
-    *set = (char **)realloc(*set, (*size + 1) * sizeof(char *));
-    (*set)[(*size)++] = strdup(element);
-}
+//     *set = (char **)realloc(*set, (*size + 1) * sizeof(char *));
+//     (*set)[(*size)++] = strdup(element);
+// }
 
-void print_first_sets(){
+void print_first_and_follow_sets(bool print_first, bool print_follow){
+    if(!print_first && !print_follow)
+        return;
+
     for (int i = 0; i < non_terminal_count; i++) {
         non_terminal* nt = non_terminals[i];
-        printf("First(%s): {", nt->name);
-        for (int j = 0; j < nt->first_size; j++) {
-            printf(" %s", nt->first_set[j]);
-            if (j < nt->first_size - 1) printf(",");
+        if(print_first){
+            printf("First(%s): {", nt->name);
+            for (int j = 0; j < nt->first_size; j++) {
+                printf(" %s", tokenNameToString(nt->first_set[j]));
+                if (j < nt->first_size - 1) 
+                    printf(",");
+            }
+            printf(" }\n");
         }
-        printf(" }\n");
-    }
-}
-
-void print_follow_sets(){
-    for (int i = 0; i < non_terminal_count; i++) {
-        non_terminal* nt = non_terminals[i];
-        printf("Follow(%s): {", nt->name);
-        for (int j = 0; j < nt->follow_size; j++) {
-            printf(" %s", nt->follow_set[j]);
-            if (j < nt->follow_size - 1) 
-                printf(",");
+        
+        if(print_follow){
+            printf("Follow(%s): {", nt->name);
+            for (int j = 0; j < nt->follow_size; j++) {
+                printf(" %s", tokenNameToString(nt->follow_set[j]));
+                if (j < nt->follow_size - 1) 
+                    printf(",");
+            }
+            printf(" }\n");
         }
-        printf(" }\n");
-    }
-}
-
-void print_first_and_follow_sets(){
-    for (int i = 0; i < non_terminal_count; i++) {
-        non_terminal* nt = non_terminals[i];
-        printf("First(%s): {", nt->name);
-        for (int j = 0; j < nt->first_size; j++) {
-            printf(" %s", nt->first_set[j]);
-            if (j < nt->first_size - 1) 
-                printf(",");
-        }
-        printf(" }\n");
-
-        printf("Follow(%s): {", nt->name);
-        for (int j = 0; j < nt->follow_size; j++) {
-            printf(" %s", nt->follow_set[j]);
-            if (j < nt->follow_size - 1) 
-                printf(",");
-        }
-        printf(" }\n");
-        printf("\n");
+        
+        if(print_first && print_follow)
+            printf("\n");
     }
 }
 
@@ -501,8 +517,10 @@ void first_and_follow_cleanup(void){
         for (int j = 0; j < nt->prod_count; j++) {
             production* prod = nt->productions[j];
             for (int k = 0; k < prod->count; k++) {
-                free(prod->symbols[k]->name);
-                prod->symbols[k]->name = NULL;
+                if(prod->symbols[k]->type == SYM_NON_TERMINAL){
+                    free(prod->symbols[k]->value.name);
+                    prod->symbols[k]->value.name= NULL;
+                }
                 free(prod->symbols[k]);
                 prod->symbols[k] = NULL;
             }
@@ -513,47 +531,41 @@ void first_and_follow_cleanup(void){
         }
 
         free(nt->productions);
-        nt->productions = NULL;
-        for (int j = 0; j < nt->first_size; j++){
-            free(nt->first_set[j]);
-            nt->first_set[j] = NULL;
-        }
         free(nt->first_set);
-        nt->first_set = NULL;
-
-        for (int j = 0; j < nt->follow_size; j++){
-            free(nt->follow_set[j]);
-            nt->follow_set[j] = NULL;
-        }
         free(nt->follow_set);
-        nt->follow_set = NULL;
-
         free(nt->name);
+
+        nt->productions = NULL;
+        nt->first_set = NULL;        
+        nt->follow_set = NULL;
         nt->name = NULL;
+
         free(nt);
         nt = NULL;
     }
 
     free(non_terminals);
     free(start_symbol);
+
     non_terminals = NULL;
     start_symbol = NULL;
+
+    return;
 }
 
-void _add_to_set(TokenName** set, int* size, const char* element) {
-    TokenName tok = stringToTokenName(element);
-    if(tok == TK_ERROR)
+void add_to_set(TokenName** set, int* size, const TokenName element) {
+    if(element == TK_ERROR)
         return;
 
     for (int i = 0; i < *size; i++)
-        if ((*set)[i] == tok)
+        if ((*set)[i] == element)
             return;
 
     *set = (TokenName*)realloc(*set, (*size + 1) * sizeof(TokenName));
-    (*set)[(*size)++] = tok;
+    (*set)[(*size)++] = element;
 }
 
-TokenName* _compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* result_size) {
+TokenName* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* result_size) {
     TokenName* result = NULL;
     int size = *result_size = 0;
     bool can_derive_epsilon = true;
@@ -561,7 +573,7 @@ TokenName* _compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* 
     for (int i = 0; i < sym_seq_count; i++) {
         symbol* sym = sym_seq[i];
         if (sym->type == SYM_TERMINAL) {
-            _add_to_set(&result, &size, sym->name);
+            add_to_set(&result, &size, sym->value.token_value);
             can_derive_epsilon = false;
             break;
         } 
@@ -570,10 +582,10 @@ TokenName* _compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* 
             break;
         } 
         else {
-            non_terminal* sym_nt = find_non_terminal(sym->name);
+            non_terminal* sym_nt = find_non_terminal(sym->value.name);
             for (int j = 0; j < sym_nt->first_size; j++)
-                if (strcmp(sym_nt->first_set[j], "EPS") != 0)
-                    _add_to_set(&result, &size, sym_nt->first_set[j]);
+                if (sym_nt->first_set[j] != EPSILON)
+                    add_to_set(&result, &size, sym_nt->first_set[j]);
 
             if (!sym_nt->has_epsilon_in_first) {
                 can_derive_epsilon = false;
@@ -583,7 +595,7 @@ TokenName* _compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* 
     }
 
     if (can_derive_epsilon)
-        _add_to_set(&result, &size, "EPS");
+        add_to_set(&result, &size, EPSILON);
 
     *result_size = size;
     return result;
@@ -596,12 +608,12 @@ void generate_parse_table(){
         for(int j = 0; j < nt->prod_count; j++){
             production* prod = nt->productions[j];
             int first_seq_count = 0;
-            TokenName* tok_set = _compute_first_of_sequence(prod->symbols, prod->count, &first_seq_count);
+            TokenName* tok_set = compute_first_of_sequence(prod->symbols, prod->count, &first_seq_count);
             for(int k = 0; k < first_seq_count; k++){
                 TokenName tok = tok_set[k];
                 if(tok == EPSILON){
                     for(int l = 0; l < nt->follow_size; l++){
-                        TokenName follow_tok = stringToTokenName(nt->follow_set[l]);
+                        TokenName follow_tok = nt->follow_set[l];
                         parse_table[terminal_count * i + follow_tok] = prod;
                     }
 
@@ -626,8 +638,12 @@ void print_parse_tree(){
             printf("Stack symbol: %s, ", non_terminals[i]->name);
             printf("Next token: %s\n", tokenNameToString(j));
             printf("Production Rule: %s ===>", non_terminals[i]->name);
-            for(int k = 0; k < prod->count; k++)
-                printf(" %s", prod->symbols[k]->name);
+            for(int k = 0; k < prod->count; k++){
+                if(prod->symbols[k]->type == SYM_NON_TERMINAL)
+                    printf(" %s", prod->symbols[k]->value.name);
+                else
+                    printf(" %s", tokenNameToString(prod->symbols[k]->value.token_value));
+            }
             printf("\n");
             count++;
         }

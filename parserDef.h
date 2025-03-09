@@ -15,8 +15,7 @@ typedef enum {
 } symbol_type;
 
 typedef struct Symbol {
-    //symbol_value value;
-    char* name;
+    symbol_value value;
     symbol_type type;
 } symbol;
 
@@ -31,8 +30,8 @@ typedef struct NonTerminal {
     int first_size;
     int follow_size;
     production** productions;
-    char** first_set;
-    char** follow_set;
+    TokenName* first_set;
+    TokenName* follow_set;
     bool has_epsilon_in_first;
 } non_terminal;
 
