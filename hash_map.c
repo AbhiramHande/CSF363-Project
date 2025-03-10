@@ -4,7 +4,7 @@ int collision_count;
 
 static unsigned long hash_function(unsigned int key) {
     unsigned long hash;
-    for(hash = 5381; key; key >>= 2)
+    for(hash = 5381; key; key >>= 8)
         hash = ((hash << 5) + hash) ^ key;
     return hash;
 }
@@ -34,7 +34,7 @@ hash_map* map_create(int total_entries) {
     if (!map) 
         return NULL;
     
-    map->capacity = total_entries << 1;
+    map->capacity = next_prime(total_entries << 1);
     map->entries = calloc(map->capacity, sizeof(struct Entry));
     if (!map->entries) {
         free(map);

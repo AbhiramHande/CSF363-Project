@@ -30,3 +30,4 @@ deps/
 *.log
 *.swo
 *.swp
+*.sh
