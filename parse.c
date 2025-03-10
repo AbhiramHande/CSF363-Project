@@ -137,14 +137,14 @@ const char* tokenNameToString(TokenName token) {
         case TK_NE: return "TK_NE";
         case EPSILON: return "EPS";
         case TK_ERROR: return "TK_ERROR";
-        case DOLLAR: return "DOLLAR";
+        case DOLLAR: return "$";
         case SYN: return "SYN";
         default: return "UNKNOWN";
     }
 }
 
 int main(int argc, char *argv[]) {
-    //atexit(first_and_follow_cleanup);
+    atexit(first_and_follow_cleanup);
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <grammar_file>\n", argv[0]);
@@ -208,12 +208,8 @@ int main(int argc, char *argv[]) {
         nt_name = NULL;
 
         // Add start symbol if there is none
-        if (!start_symbol) {
+        if (!start_symbol)
             start_symbol = nt;
-            nt->follow_set = (TokenName*)malloc(sizeof(Token));
-            nt->follow_set[0] = DOLLAR;
-            nt->follow_size = 1;
-        }
 
         // Prase the RHS of the rule
         char* save_rule;
@@ -268,9 +264,9 @@ int main(int argc, char *argv[]) {
         compute_first_set(non_terminals[i]);
     compute_follow_set(start_symbol, NULL, NULL, 0);
 
-    print_first_and_follow_sets(true, false);
-    //generate_parse_table();
-    //print_parse_tree();
+    //print_first_and_follow_sets(true, true);
+    generate_parse_table();
+    print_parse_tree();
     return 0;
 }
 
@@ -349,17 +345,22 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
     if(nt == start_symbol)
         add_to_follow_set(nt, DOLLAR);
     else{
-        symbol** syms = aToAlpha->symbols + nt_pos + 1; //Potential error: overflow and access invalid memory
-        int syms_size = aToAlpha->count - nt_pos;
-        int first_seq_size = 0;
-        TokenName* first_seq = compute_first_of_sequence(syms, syms_size, &first_seq_size);
-
         bool add_follow_A = false;
-        for(int i = 0; i < first_seq_size; i++){
-            if(first_seq[i] != EPSILON)
-                add_to_follow_set(nt, first_seq[i]);
-            else
-                add_follow_A = true;
+        if(nt_pos + 1 == aToAlpha->count)
+            add_follow_A = true;
+        else{
+            symbol** syms = aToAlpha->symbols + nt_pos + 1; //Potential error: overflow and access invalid memory
+            int syms_size = aToAlpha->count - (nt_pos + 1);
+            int first_seq_size = 0;
+            TokenName* first_seq = compute_first_of_sequence(syms, syms_size, &first_seq_size);
+
+            
+            for(int i = 0; i < first_seq_size; i++){
+                if(first_seq[i] != EPSILON)
+                    add_to_follow_set(nt, first_seq[i]);
+                else
+                    add_follow_A = true;
+            }
         }
 
         if(add_follow_A)
@@ -380,89 +381,6 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
     return;
 }
 
-// Needs to be updated and changed (smbol->name to symbol->val.name)
-// void compute_follow_sets() {
-//     bool updated;
-//     do {
-//         updated = false;
-//         for (int i = 0; i < non_terminal_count; i++) {
-//             non_terminal* A = non_terminals[i];
-//             for (int j = 0; j < A->prod_count; j++) {
-//                 production* prod = A->productions[j];
-//                 for (int k = 0; k < prod->count; k++) {
-//                     symbol* Bk = prod->symbols[k];
-//                     if (Bk->type == SYM_NON_TERMINAL) {
-//                         non_terminal* B = find_non_terminal(Bk->value.name);
-//                         if (!B) continue;
-
-//                         symbol** beta = prod->symbols + k + 1;
-//                         int beta_count = prod->count - k - 1;
-//                         int beta_first_size;
-//                         char** beta_first = compute_first_of_sequence(beta, beta_count, &beta_first_size);
-
-//                         for (int l = 0; l < beta_first_size; l++) {
-//                             if (strcmp(beta_first[l], "EPS") != 0) {
-//                                 int before = B->follow_size;
-//                                 add_to_follow_set(B, beta_first[l]);
-//                                 if (B->follow_size != before) 
-//                                     updated = true;
-//                             }
-//                         }
-
-//                         if (contains_EPS(beta_first, beta_first_size)) {
-//                             for (int l = 0; l < A->follow_size; l++) {
-//                                 int before = B->follow_size;
-//                                 add_to_follow_set(B, A->follow_set[l]);
-//                                 if (B->follow_size != before) 
-//                                     updated = true;
-//                             }
-//                         }
-
-//                         free(beta_first);
-//                         beta_first = NULL;
-//                     }
-//                 }
-//             }
-//         }
-//     } while (updated);
-// }
-
-// char** compute_first_of_sequence(symbol** beta, int beta_count, int* result_size) {
-//     char** result = NULL;
-//     int size = 0;
-//     int can_derive_epsilon = 1;
-
-//     for (int i = 0; i < beta_count; i++) {
-//         symbol *sym = beta[i];
-//         if (sym->type == SYM_TERMINAL) {
-//             add_to_set(&result, &size, sym->name);
-//             can_derive_epsilon = 0;
-//             break;
-//         } else if (sym->type == SYM_EPSILON) {
-//             add_to_set(&result, &size, "EPS");
-//             can_derive_epsilon = 1;
-//             break;
-//         } else {
-//             non_terminal* sym_nt = find_non_terminal(sym->name);
-//             if (!sym_nt) continue;
-//             for (int j = 0; j < sym_nt->first_size; j++)
-//                 if (strcmp(sym_nt->first_set[j], "EPS") != 0)
-//                     add_to_set(&result, &size, sym_nt->first_set[j]);
-
-//             if (!sym_nt->has_epsilon_in_first) {
-//                 can_derive_epsilon = 0;
-//                 break;
-//             }
-//         }
-//     }
-
-//     if (can_derive_epsilon)
-//         add_to_set(&result, &size, "EPS");
-
-//     *result_size = size;
-//     return result;
-// }
-
 bool contains_EPS(TokenName* set, int size) {
     for (int i = 0; i < size; i++)
         if (set[i] == EPSILON)
@@ -470,15 +388,6 @@ bool contains_EPS(TokenName* set, int size) {
 
     return false;
 }
-
-// void add_to_set(char*** set, int* size, const char* element) {
-//     for (int i = 0; i < *size; i++)
-//         if (strcmp((*set)[i], element) == 0)
-//             return;
-
-//     *set = (char **)realloc(*set, (*size + 1) * sizeof(char *));
-//     (*set)[(*size)++] = strdup(element);
-// }
 
 void print_first_and_follow_sets(bool print_first, bool print_follow){
     if(!print_first && !print_follow)
@@ -545,7 +454,6 @@ void first_and_follow_cleanup(void){
     }
 
     free(non_terminals);
-    free(start_symbol);
 
     non_terminals = NULL;
     start_symbol = NULL;
