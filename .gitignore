@@ -1,7 +1,4 @@
 # Compiled object files
-/obj/
-/build/
-/bin/
 *.o
 *.a
 *.so
@@ -11,6 +8,7 @@
 *.out
 
 # Debug files and core dumps
+*.dump
 *.out
 *.dSYM/
 core

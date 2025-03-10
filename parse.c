@@ -8,6 +8,8 @@ int terminal_count = 61;
 non_terminal* start_symbol = NULL;
 production** parse_table = NULL;
 
+void first_and_follow_cleanup(void);
+
 TokenName stringToTokenName(const char* tokenStr) {
     // List of token names corresponding to the enum
     if (strcmp(tokenStr, "TK_ASSIGNOP") == 0) return TK_ASSIGNOP;
@@ -226,7 +228,7 @@ int main(int argc, char *argv[]) {
                 symbol* sym = (symbol*)malloc(sizeof(symbol));
                 if (strcmp(token, "EPS") == 0) {
                     sym->type = SYM_EPSILON;
-                    sym->value.name = strdup("EPS");
+                    sym->value.token_value = EPSILON;
                 } 
                 else if (token[0] == '<' && token[strlen(token)-1] == '>') {
                     sym->type = SYM_NON_TERMINAL;
@@ -361,6 +363,10 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
                 else
                     add_follow_A = true;
             }
+
+            free(first_seq);
+            first_seq = NULL;
+            first_seq_size = 0;
         }
 
         if(add_follow_A)
@@ -454,10 +460,12 @@ void first_and_follow_cleanup(void){
     }
 
     free(non_terminals);
+    free(parse_table);
 
     non_terminals = NULL;
     start_symbol = NULL;
-
+    parse_table = NULL;
+    
     return;
 }
 
@@ -469,7 +477,7 @@ void add_to_set(TokenName** set, int* size, const TokenName element) {
         if ((*set)[i] == element)
             return;
 
-    *set = (TokenName*)realloc(*set, (*size + 1) * sizeof(TokenName));
+    *set = (TokenName*)realloc(*set, (*size + 1)*sizeof(TokenName));
     (*set)[(*size)++] = element;
 }
 
@@ -530,6 +538,10 @@ void generate_parse_table(){
 
                 parse_table[terminal_count * i + tok] = prod;
             }
+
+            free(tok_set);
+            tok_set = NULL;
+            first_seq_count = 0;
         }
     }
 }
