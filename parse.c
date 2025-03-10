@@ -1,5 +1,7 @@
 #include "parse.h"
 
+#include <time.h>
+
 #define MAX_LINE_LENGTH 256
 
 non_terminal** non_terminals = NULL;
@@ -261,14 +263,21 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
 
-    //compute_first_sets();
-    for(int i = 0; i < non_terminal_count; i++)
-        compute_first_set(non_terminals[i]);
-    compute_follow_set(start_symbol, NULL, NULL, 0);
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
-    //print_first_and_follow_sets(true, true);
-    generate_parse_table();
+        for(int i = 0; i < non_terminal_count; i++)
+            compute_first_set(non_terminals[i]);
+        compute_follow_set(start_symbol, NULL, NULL, 0);
+
+        //print_first_and_follow_sets(true, true);
+        generate_parse_table();
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
     print_parse_tree();
+    long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
+    printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
     return 0;
 }
 
@@ -465,7 +474,7 @@ void first_and_follow_cleanup(void){
     non_terminals = NULL;
     start_symbol = NULL;
     parse_table = NULL;
-    
+
     return;
 }
 
