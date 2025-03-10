@@ -1,12 +1,16 @@
 #include "parse.h"
 
+#include <time.h>
+
 #define MAX_LINE_LENGTH 256
 
 non_terminal** non_terminals = NULL;
 int non_terminal_count = 0;
 int terminal_count = 61;
 non_terminal* start_symbol = NULL;
+hash_map* parse_map = NULL;
 production** parse_table = NULL;
+
 
 void first_and_follow_cleanup(void);
 
@@ -261,14 +265,23 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
 
-    //compute_first_sets();
-    for(int i = 0; i < non_terminal_count; i++)
-        compute_first_set(non_terminals[i]);
-    compute_follow_set(start_symbol, NULL, NULL, 0);
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
 
-    //print_first_and_follow_sets(true, true);
-    generate_parse_table();
-    print_parse_tree();
+        for(int i = 0; i < non_terminal_count; i++)
+            compute_first_set(non_terminals[i]);
+        compute_follow_set(start_symbol, NULL, NULL, 0);
+
+        //print_first_and_follow_sets(true, true);
+        //generate_parse_table();
+        generate_parse_map();
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    //print_parse_tree();
+    print_parse_map();
+    long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
+    printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
     return 0;
 }
 
@@ -461,11 +474,13 @@ void first_and_follow_cleanup(void){
 
     free(non_terminals);
     free(parse_table);
+    map_cleanup(parse_map);
 
     non_terminals = NULL;
     start_symbol = NULL;
     parse_table = NULL;
-    
+    parse_map = NULL;
+
     return;
 }
 
@@ -517,6 +532,7 @@ TokenName* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* r
     return result;
 }
 
+#ifdef NO_HASHMAP
 void generate_parse_table(){
     parse_table = calloc(non_terminal_count * terminal_count, sizeof(production*));
     for(int i = 0; i < non_terminal_count; i++){
@@ -572,4 +588,63 @@ void print_parse_tree(){
     }
 
     printf("Total number of entries: %d", count);
+}
+#endif
+
+void generate_parse_map(){
+    parse_map = map_create(200);
+    for(int i = 0; i < non_terminal_count; i++){
+        non_terminal* nt = non_terminals[i];
+        for(int j = 0; j < nt->prod_count; j++){
+            production* prod = nt->productions[j];
+            int first_seq_count = 0;
+            TokenName* tok_set = compute_first_of_sequence(prod->symbols, prod->count, &first_seq_count);
+            for(int k = 0; k < first_seq_count; k++){
+                TokenName tok = tok_set[k];
+                if(tok == EPSILON){
+                    for(int l = 0; l < nt->follow_size; l++){
+                        TokenName follow_tok = nt->follow_set[l];
+                        map_insert(parse_map, terminal_count * i + follow_tok, prod);
+                    }
+                    break;
+                }
+                
+                map_insert(parse_map, terminal_count * i + tok, prod);
+            }
+
+            free(tok_set);
+            tok_set = NULL;
+            first_seq_count = 0;
+        }
+    }
+}
+
+void print_parse_map(){
+    int count = 0;
+
+    for(int i = 0; i < non_terminal_count; i++) {
+        for(int j = 0; j < terminal_count; j++) {
+            if(map_fetch(parse_map, terminal_count * i + j) == NULL)
+                continue;
+            
+            production* prod = map_fetch(parse_map, terminal_count * i + j);
+            printf("Stack symbol: %s, ", non_terminals[i]->name);
+            printf("Next token: %s\n", tokenNameToString(j));
+            printf("Production Rule: %s ===>", non_terminals[i]->name);
+            for(int k = 0; k < prod->count; k++){
+                if(prod->symbols[k]->type == SYM_NON_TERMINAL)
+                    printf(" %s", prod->symbols[k]->value.name);
+                else
+                    printf(" %s", tokenNameToString(prod->symbols[k]->value.token_value));
+            }
+            printf("\n");
+            count++;
+        }
+
+        printf("\n");
+    }
+
+    printf("Total number of entries: %d\n", count);
+    printf("Total number of collisions: %d\n", get_collision_count());
+
 }

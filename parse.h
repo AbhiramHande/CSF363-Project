@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#include "hash_map.h"
 #include "parserDef.h"
 
 non_terminal* find_non_terminal(const char* name);
@@ -19,6 +20,8 @@ bool contains_EPS(TokenName* set, int size);
 void add_to_set(TokenName** set, int* size, const TokenName element);
 void print_first_and_follow_sets(bool print_first, bool print_follow);
 void print_parse_tree();
+void print_parse_map();
 void generate_parse_table();
+void generate_parse_map();
 
 #endif
