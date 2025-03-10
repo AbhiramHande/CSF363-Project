@@ -23,5 +23,6 @@ hash_map* map_create(int total_entries);
 void map_insert(hash_map* map, const unsigned int key, production* value);
 production* map_fetch(hash_map* map, const unsigned int key);
 void map_cleanup(hash_map* map);
+int get_collision_count();
 
 #endif

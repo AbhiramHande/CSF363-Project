@@ -1,5 +1,7 @@
 #include "hash_map.h"
 
+int collision_count;
+
 static unsigned long hash_function(unsigned int key) {
     unsigned long hash;
     for(hash = 5381; key; key >>= 2)
@@ -27,8 +29,6 @@ static int next_prime(int n) {
     return n;
 }
 
-// static void hm_resize(HashMap* hashmap, size_t new_capacity);
-
 hash_map* map_create(int total_entries) {
     hash_map* map = malloc(sizeof(struct HashMap));
     if (!map) 
@@ -42,7 +42,7 @@ hash_map* map_create(int total_entries) {
     }
 
     map->size = 0;
-
+    collision_count = 0;
     //atexit(map_cleanup);
     return map;
 }
@@ -70,6 +70,8 @@ void map_insert(hash_map* map, const unsigned int key, production* value) {
             _entry->value = value;
             return;
         }
+        else
+            collision_count++;
     }
 }
 
@@ -103,4 +105,8 @@ void map_cleanup(hash_map* map) {
 
     free(map);
     map = NULL;
+}
+
+int get_collision_count(){
+    return collision_count;
 }
