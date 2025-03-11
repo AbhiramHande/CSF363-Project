@@ -15,6 +15,7 @@ production** parse_table = NULL;
 void first_and_follow_cleanup(void);
 node* create_tree_node_nonterm(non_terminal* nt);
 node* create_tree_node_term(TokenName tok_name);
+void parse_tree_cleanup(node** root);
 
 TokenName stringToTokenName(const char* tokenStr) {
     // List of token names corresponding to the enum
@@ -318,6 +319,8 @@ int main(int argc, char *argv[]) {
     print_parse_tree(root);
     long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
     printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
+
+    parse_tree_cleanup(&root);
     return 0;
 }
 
@@ -807,6 +810,7 @@ node* generate_parse_tree(FILE* src_code){
         }
     }
 
+    stack_cleanup(&parser_stack);
     return start;
 }
 
@@ -832,5 +836,26 @@ void print_parse_tree(node* root){
                 print_parse_tree(root->children[i]);
     }
 
+    return;
+}
+
+void parse_tree_cleanup(node** root){
+    if(!root || !*root)
+        return;
+
+    for(int i = 0; i < (*root)->children_count; i++)
+        parse_tree_cleanup(&((*root)->children[i]));
+    
+    free((*root)->children);
+    free((*root)->stack_symbol);
+    free((*root)->token_value);
+
+    (*root)->children = NULL;
+    (*root)->stack_symbol = NULL;
+    (*root)->token_value = NULL;
+    (*root)->children_count = 0;
+
+    free(*root);
+    *root = NULL;
     return;
 }
