@@ -13,6 +13,9 @@ production** parse_table = NULL;
 
 
 void first_and_follow_cleanup(void);
+node* create_tree_node_nonterm(non_terminal* nt);
+node* create_tree_node_term(TokenName tok_name);
+void parse_tree_cleanup(node** root);
 
 TokenName stringToTokenName(const char* tokenStr) {
     // List of token names corresponding to the enum
@@ -150,10 +153,11 @@ const char* tokenNameToString(TokenName token) {
 }
 
 int main(int argc, char *argv[]) {
+    setbuf(stderr, NULL);
     atexit(first_and_follow_cleanup);
 
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <grammar_file>\n", argv[0]);
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <grammar_file> <test_file>\n", argv[0]);
         return 1;
     }
 
@@ -164,6 +168,51 @@ int main(int argc, char *argv[]) {
     }
 
     char line[MAX_LINE_LENGTH];
+    while (fgets(line, MAX_LINE_LENGTH, file)) {
+
+        // Parse the production rule to remove the arrow
+        char* arrow = strstr(line, "===>");
+        if (!arrow) continue;
+        *arrow = '\0';
+        char* lhs = line;
+
+        // Parse the rule to remove leading and trailing spaces
+        while (isspace(*lhs)) 
+            lhs++;
+        char* end = lhs + strlen(lhs) - 1;
+        while (end > lhs && isspace(*end)) 
+            end--;
+        *(end + 1) = '\0';
+
+        // Check the LHS for non-terminal
+        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
+            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
+            continue;
+        }
+
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
+        if (!nt) {
+            nt = (non_terminal*)malloc(sizeof(non_terminal));
+            nt->name = strndup(lhs + 1, str_len);
+            nt->prod_count = 0;
+            nt->first_size = 0;
+            nt->follow_size = 0;
+            nt->productions = NULL;
+            nt->first_set = NULL;
+            nt->follow_set = NULL;
+            nt->has_epsilon_in_first = false;
+            
+            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
+            non_terminals[non_terminal_count++] = nt;
+        }
+
+        // Add start symbol if there is none
+        if (!start_symbol)
+            start_symbol = nt;
+    }
+
+    rewind(file);
     while (fgets(line, MAX_LINE_LENGTH, file)) {
 
         // Parse the production rule to remove the arrow
@@ -193,29 +242,9 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
             continue;
         }
-        char* nt_name = strndup(lhs + 1, strlen(lhs) - 2);
 
-        non_terminal* nt = find_non_terminal(nt_name);
-        if (!nt) {
-            nt = (non_terminal*)malloc(sizeof(non_terminal));
-            nt->name = strdup(nt_name);
-            nt->prod_count = 0;
-            nt->first_size = 0;
-            nt->follow_size = 0;
-            nt->productions = NULL;
-            nt->first_set = NULL;
-            nt->follow_set = NULL;
-            nt->has_epsilon_in_first = false;
-            
-            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
-            non_terminals[non_terminal_count++] = nt;
-        }
-        free(nt_name);
-        nt_name = NULL;
-
-        // Add start symbol if there is none
-        if (!start_symbol)
-            start_symbol = nt;
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
 
         // Prase the RHS of the rule
         char* save_rule;
@@ -229,14 +258,15 @@ int main(int argc, char *argv[]) {
             char* save_token;
             char* token = strtok_r(alt, " \t", &save_token);
             while (token) {
+                int tok_str_len = strlen(token);
                 symbol* sym = (symbol*)malloc(sizeof(symbol));
                 if (strcmp(token, "EPS") == 0) {
                     sym->type = SYM_EPSILON;
                     sym->value.token_value = EPSILON;
                 } 
-                else if (token[0] == '<' && token[strlen(token)-1] == '>') {
+                else if (token[0] == '<' && token[tok_str_len -1] == '>') {
                     sym->type = SYM_NON_TERMINAL;
-                    sym->value.name = strndup(token + 1, strlen(token) - 2);
+                    sym->value.nt = find_non_terminal(token + 1, tok_str_len - 2);
                 } 
                 else if (strncmp(token, "TK_", 3) == 0) {
                     sym->type = SYM_TERMINAL;
@@ -264,6 +294,7 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(file);
+    file = NULL;
 
     struct timespec start, end;
     clock_gettime(CLOCK_MONOTONIC, &start);
@@ -274,21 +305,34 @@ int main(int argc, char *argv[]) {
 
         //print_first_and_follow_sets(true, true);
         //generate_parse_table();
+        initializations();
+
         generate_parse_map();
+
+        FILE* src_code = fopen(argv[2], "r");
+        node* root = generate_parse_tree(src_code);
 
     clock_gettime(CLOCK_MONOTONIC, &end);
 
-    //print_parse_tree();
-    print_parse_map();
+    //print_parse_table();
+    //print_parse_map();
+    print_parse_tree(root);
     long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
     printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
+
+    parse_tree_cleanup(&root);
     return 0;
 }
 
-non_terminal* find_non_terminal(const char* name) {
+non_terminal* find_non_terminal(const char* name, int end) {
     for (int i = 0; i < non_terminal_count; i++) {
-        if (strcmp(non_terminals[i]->name, name) == 0) {
-            return non_terminals[i];
+        if(end == 0){
+            if (strcmp(non_terminals[i]->name, name) == 0)
+                return non_terminals[i];
+        }
+        else{
+            if(strlen(non_terminals[i]->name) == end && strncmp(non_terminals[i]->name, name, end) == 0)
+                return non_terminals[i];
         }
     }
     return NULL;
@@ -334,7 +378,7 @@ void compute_first_set(non_terminal* nt) {
                 break;
             }
             else{
-                non_terminal* prod_nt = find_non_terminal(sym->value.name);
+                non_terminal* prod_nt = sym->value.nt;
                 compute_first_set(prod_nt);
                 for(int k = 0; k < prod_nt->first_size; k++) {
                     if(prod_nt->first_set[k] != EPSILON)
@@ -393,7 +437,7 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
             for(int j = prod->count - 1; j >= 0; j--){
                 symbol* sym = prod->symbols[j];
                 if(sym->type == SYM_NON_TERMINAL)
-                    compute_follow_set(find_non_terminal(sym->value.name), nt, prod, j);
+                    compute_follow_set(sym->value.nt, nt, prod, j);
             }
         }
     }
@@ -445,10 +489,6 @@ void first_and_follow_cleanup(void){
         for (int j = 0; j < nt->prod_count; j++) {
             production* prod = nt->productions[j];
             for (int k = 0; k < prod->count; k++) {
-                if(prod->symbols[k]->type == SYM_NON_TERMINAL){
-                    free(prod->symbols[k]->value.name);
-                    prod->symbols[k]->value.name= NULL;
-                }
                 free(prod->symbols[k]);
                 prod->symbols[k] = NULL;
             }
@@ -513,7 +553,7 @@ TokenName* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* r
             break;
         } 
         else {
-            non_terminal* sym_nt = find_non_terminal(sym->value.name);
+            non_terminal* sym_nt = sym->value.nt;
             for (int j = 0; j < sym_nt->first_size; j++)
                 if (sym_nt->first_set[j] != EPSILON)
                     add_to_set(&result, &size, sym_nt->first_set[j]);
@@ -562,7 +602,7 @@ void generate_parse_table(){
     }
 }
 
-void print_parse_tree(){
+void print_parse_table(){
     int count = 0;
 
     for(int i = 0; i < non_terminal_count; i++) {
@@ -633,7 +673,7 @@ void print_parse_map(){
             printf("Production Rule: %s ===>", non_terminals[i]->name);
             for(int k = 0; k < prod->count; k++){
                 if(prod->symbols[k]->type == SYM_NON_TERMINAL)
-                    printf(" %s", prod->symbols[k]->value.name);
+                    printf(" %s", prod->symbols[k]->value.nt->name);
                 else
                     printf(" %s", tokenNameToString(prod->symbols[k]->value.token_value));
             }
@@ -647,4 +687,175 @@ void print_parse_map(){
     printf("Total number of entries: %d\n", count);
     printf("Total number of collisions: %d\n", get_collision_count());
 
+}
+
+node* create_tree_node_nonterm(non_terminal* nt){
+    node* tree_node = calloc(1, sizeof(node));
+    if(!tree_node)
+        return NULL;
+
+    tree_node->token_value = NULL;
+    tree_node->children = NULL;
+    tree_node->children_count = 0;
+
+    symbol* sym = calloc(1, sizeof(symbol));
+    if(!sym)
+        return NULL;
+
+    sym->type = SYM_NON_TERMINAL;
+    sym->value.nt = nt;
+    tree_node->stack_symbol = sym;
+
+    return tree_node;
+}
+
+node* create_tree_node_term(TokenName tok_name){
+    node* tree_node = calloc(1, sizeof(node));
+    if(!tree_node)
+        return NULL;
+
+    tree_node->token_value = NULL;
+    tree_node->children = NULL;
+    tree_node->children_count = 0;
+
+    symbol* sym = calloc(1, sizeof(symbol));
+    if(!sym)
+        return NULL;
+
+    if(tok_name == EPSILON)
+        sym->type = SYM_EPSILON;
+    else
+        sym->type = SYM_TERMINAL;
+    sym->value.token_value = tok_name;
+    tree_node->stack_symbol = sym;
+
+    return tree_node;
+}
+
+node* generate_parse_tree(FILE* src_code){
+    int times = 0;
+    int terms_so_far = 0;
+    stack* parser_stack = stack_create();
+    node* start = create_tree_node_nonterm(start_symbol);
+    stack_push(parser_stack, start);
+
+    Token* token = getNextToken(src_code);
+    while(!stack_empty(parser_stack)){
+        times++;
+        if(token == NULL){
+            fprintf(stderr, "WTF?!\n");
+        }
+        while(token->name == TK_COMMENT) {
+            times++;
+            token = getNextToken(src_code);
+            if(token == NULL){
+                fprintf(stderr, "WTF?!\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+        node* parser_stack_top = stack_top(parser_stack);
+
+        if(parser_stack_top->stack_symbol->type == SYM_TERMINAL){
+            terms_so_far++;
+            if(parser_stack_top->stack_symbol->value.token_value == token->name){
+                node* term = stack_pop(parser_stack);
+                term->token_value = token;
+                token = getNextToken(src_code);
+            }
+            else{
+                fprintf(stderr, "Invalid: token-token.\n");
+                //TODO: Error
+            }
+        }
+        else{
+            //assert(parser_stack_top->stack_symbol->type == SYM_NON_TERMINAL);
+            int non_term_pos = -1;
+            for(int i = 0; i < non_terminal_count; i++){
+                if(parser_stack_top->stack_symbol->value.nt == non_terminals[i])
+                    non_term_pos = i;
+            }
+            if(non_term_pos == -1)
+                fprintf(stderr, "Nonterm not found");
+
+            int lookup_key = terminal_count * non_term_pos + token->name; 
+            production* rule = map_fetch(parse_map, lookup_key);
+            if(rule){
+                node* old_top = stack_pop(parser_stack);
+                old_top->children_count = rule->count;
+
+                if(old_top->children_count > 0)
+                    old_top->children = (node**)calloc(old_top->children_count, sizeof(node*));
+
+                for(int i = rule->count - 1; i >= 0; i--){
+                    node* new_node;
+
+                    if(rule->symbols[i]->type == SYM_NON_TERMINAL)
+                        new_node = create_tree_node_nonterm(rule->symbols[i]->value.nt);
+                    else if(rule->symbols[i]->type == SYM_TERMINAL)
+                        new_node = create_tree_node_term(rule->symbols[i]->value.token_value);
+                    else
+                        new_node = create_tree_node_term(EPSILON);
+                    
+                    old_top->children[i] = new_node;
+
+                    if(new_node->stack_symbol->type != SYM_EPSILON)
+                        if(!stack_push(parser_stack, new_node))
+                            fprintf(stderr, "Stack overflow");
+                }
+            }
+            else{
+                fprintf(stderr, "Invalid: non-termibal-token.\n");
+                //TODO: Error
+            }
+        }
+    }
+
+    stack_cleanup(&parser_stack);
+    return start;
+}
+
+void print_parse_tree(node* root){
+    if(root->stack_symbol->type == SYM_TERMINAL){
+        printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", tokenNameToString(root->token_value->name), root->token_value->lexeme);
+        return;
+    }
+    else if(root->stack_symbol->type == SYM_NON_TERMINAL){
+        printf("Parse Tree Node: %s, Number of Children: %d\n", root->stack_symbol->value.nt->name, root->children_count);
+        for(int i = 0; i < root->children_count; i++){
+            if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
+                printf("%s \t", tokenNameToString(root->children[i]->token_value->name));
+            else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
+                printf("%s \t", root->children[i]->stack_symbol->value.nt->name);
+            else
+                printf("EPSILON \t");
+        }
+        printf("\n\n");
+
+        for(int i = 0; i < root->children_count; i++)
+            if(root->children[i]->stack_symbol->type != SYM_EPSILON)
+                print_parse_tree(root->children[i]);
+    }
+
+    return;
+}
+
+void parse_tree_cleanup(node** root){
+    if(!root || !*root)
+        return;
+
+    for(int i = 0; i < (*root)->children_count; i++)
+        parse_tree_cleanup(&((*root)->children[i]));
+    
+    free((*root)->children);
+    free((*root)->stack_symbol);
+    free((*root)->token_value);
+
+    (*root)->children = NULL;
+    (*root)->stack_symbol = NULL;
+    (*root)->token_value = NULL;
+    (*root)->children_count = 0;
+
+    free(*root);
+    *root = NULL;
+    return;
 }
