@@ -27,5 +27,8 @@ void print_parse_tree(node* root);
 void generate_parse_table();
 void generate_parse_map();
 node* generate_parse_tree(FILE* src_code);
+node* parse_code(char* grammar_file, char* input_file);
+void parse_tree_cleanup(node** root);
+const char* tokenNameToString(TokenName token);
 
 #endif
