@@ -824,11 +824,11 @@ void print_parse_tree(node* root){
                 printf("%s \t", root->children[i]->stack_symbol->value.nt->name);
             else
                 printf("EPSILON \t");
-            printf("\n\n");
         }
+        printf("\n\n");
 
         for(int i = 0; i < root->children_count; i++)
-            if(root->children[i]->stack_symbol->type != SYM_TERMINAL)
+            if(root->children[i]->stack_symbol->type != SYM_EPSILON)
                 print_parse_tree(root->children[i]);
     }
 
