@@ -208,14 +208,7 @@ int main(int argc, char *argv[]) {
             start_symbol = nt;
     }
 
-    fclose(file);
-
-    file = fopen(argv[1], "r");
-    if (!file) {
-        perror("Error opening file");
-        return 1;
-    }
-
+    rewind(file);
     while (fgets(line, MAX_LINE_LENGTH, file)) {
 
         // Parse the production rule to remove the arrow
