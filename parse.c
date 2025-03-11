@@ -171,6 +171,58 @@ int main(int argc, char *argv[]) {
         if (!arrow) continue;
         *arrow = '\0';
         char* lhs = line;
+
+        // Parse the rule to remove leading and trailing spaces
+        while (isspace(*lhs)) 
+            lhs++;
+        char* end = lhs + strlen(lhs) - 1;
+        while (end > lhs && isspace(*end)) 
+            end--;
+        *(end + 1) = '\0';
+
+        // Check the LHS for non-terminal
+        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
+            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
+            continue;
+        }
+
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
+        if (!nt) {
+            nt = (non_terminal*)malloc(sizeof(non_terminal));
+            nt->name = strndup(lhs + 1, str_len);
+            nt->prod_count = 0;
+            nt->first_size = 0;
+            nt->follow_size = 0;
+            nt->productions = NULL;
+            nt->first_set = NULL;
+            nt->follow_set = NULL;
+            nt->has_epsilon_in_first = false;
+            
+            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
+            non_terminals[non_terminal_count++] = nt;
+        }
+
+        // Add start symbol if there is none
+        if (!start_symbol)
+            start_symbol = nt;
+    }
+
+    fclose(file);
+
+    file = fopen(argv[1], "r");
+    if (!file) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    while (fgets(line, MAX_LINE_LENGTH, file)) {
+
+        // Parse the production rule to remove the arrow
+        char* arrow = strstr(line, "===>");
+        if (!arrow) continue;
+        *arrow = '\0';
+        char* lhs = line;
         char* rhs = arrow + 4;
 
         // Parse the rule to remove leading and trailing spaces
@@ -193,29 +245,9 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
             continue;
         }
-        char* nt_name = strndup(lhs + 1, strlen(lhs) - 2);
 
-        non_terminal* nt = find_non_terminal(nt_name);
-        if (!nt) {
-            nt = (non_terminal*)malloc(sizeof(non_terminal));
-            nt->name = strdup(nt_name);
-            nt->prod_count = 0;
-            nt->first_size = 0;
-            nt->follow_size = 0;
-            nt->productions = NULL;
-            nt->first_set = NULL;
-            nt->follow_set = NULL;
-            nt->has_epsilon_in_first = false;
-            
-            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
-            non_terminals[non_terminal_count++] = nt;
-        }
-        free(nt_name);
-        nt_name = NULL;
-
-        // Add start symbol if there is none
-        if (!start_symbol)
-            start_symbol = nt;
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
 
         // Prase the RHS of the rule
         char* save_rule;
@@ -229,14 +261,15 @@ int main(int argc, char *argv[]) {
             char* save_token;
             char* token = strtok_r(alt, " \t", &save_token);
             while (token) {
+                int tok_str_len = strlen(token);
                 symbol* sym = (symbol*)malloc(sizeof(symbol));
                 if (strcmp(token, "EPS") == 0) {
                     sym->type = SYM_EPSILON;
                     sym->value.token_value = EPSILON;
                 } 
-                else if (token[0] == '<' && token[strlen(token)-1] == '>') {
+                else if (token[0] == '<' && token[tok_str_len -1] == '>') {
                     sym->type = SYM_NON_TERMINAL;
-                    sym->value.name = strndup(token + 1, strlen(token) - 2);
+                    sym->value.nt = find_non_terminal(token + 1, tok_str_len - 2);
                 } 
                 else if (strncmp(token, "TK_", 3) == 0) {
                     sym->type = SYM_TERMINAL;
@@ -264,6 +297,7 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(file);
+    file = NULL;
 
     struct timespec start, end;
     clock_gettime(CLOCK_MONOTONIC, &start);
@@ -285,10 +319,15 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-non_terminal* find_non_terminal(const char* name) {
+non_terminal* find_non_terminal(const char* name, int end) {
     for (int i = 0; i < non_terminal_count; i++) {
-        if (strcmp(non_terminals[i]->name, name) == 0) {
-            return non_terminals[i];
+        if(end == 0){
+            if (strcmp(non_terminals[i]->name, name) == 0)
+                return non_terminals[i];
+        }
+        else{
+            if(strlen(non_terminals[i]->name) == end && strncmp(non_terminals[i]->name, name, end) == 0)
+                return non_terminals[i];
         }
     }
     return NULL;
@@ -334,7 +373,7 @@ void compute_first_set(non_terminal* nt) {
                 break;
             }
             else{
-                non_terminal* prod_nt = find_non_terminal(sym->value.name);
+                non_terminal* prod_nt = sym->value.nt;
                 compute_first_set(prod_nt);
                 for(int k = 0; k < prod_nt->first_size; k++) {
                     if(prod_nt->first_set[k] != EPSILON)
@@ -393,7 +432,7 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
             for(int j = prod->count - 1; j >= 0; j--){
                 symbol* sym = prod->symbols[j];
                 if(sym->type == SYM_NON_TERMINAL)
-                    compute_follow_set(find_non_terminal(sym->value.name), nt, prod, j);
+                    compute_follow_set(sym->value.nt, nt, prod, j);
             }
         }
     }
@@ -445,10 +484,6 @@ void first_and_follow_cleanup(void){
         for (int j = 0; j < nt->prod_count; j++) {
             production* prod = nt->productions[j];
             for (int k = 0; k < prod->count; k++) {
-                if(prod->symbols[k]->type == SYM_NON_TERMINAL){
-                    free(prod->symbols[k]->value.name);
-                    prod->symbols[k]->value.name= NULL;
-                }
                 free(prod->symbols[k]);
                 prod->symbols[k] = NULL;
             }
@@ -513,7 +548,7 @@ TokenName* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* r
             break;
         } 
         else {
-            non_terminal* sym_nt = find_non_terminal(sym->value.name);
+            non_terminal* sym_nt = sym->value.nt;
             for (int j = 0; j < sym_nt->first_size; j++)
                 if (sym_nt->first_set[j] != EPSILON)
                     add_to_set(&result, &size, sym_nt->first_set[j]);
@@ -633,7 +668,7 @@ void print_parse_map(){
             printf("Production Rule: %s ===>", non_terminals[i]->name);
             for(int k = 0; k < prod->count; k++){
                 if(prod->symbols[k]->type == SYM_NON_TERMINAL)
-                    printf(" %s", prod->symbols[k]->value.name);
+                    printf(" %s", prod->symbols[k]->value.nt->name);
                 else
                     printf(" %s", tokenNameToString(prod->symbols[k]->value.token_value));
             }
@@ -648,3 +683,4 @@ void print_parse_map(){
     printf("Total number of collisions: %d\n", get_collision_count());
 
 }
+

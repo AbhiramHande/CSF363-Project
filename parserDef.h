@@ -3,8 +3,13 @@
 
 #include "lexerDef.h"
 
+typedef struct NonTerminal non_terminal;
+typedef struct Symbol symbol;
+typedef struct Production production;
+typedef struct NonTerminal non_terminal;
+
 typedef union {
-    char* name;
+    non_terminal* nt;
     TokenName token_value;
 } symbol_value;
 
@@ -14,17 +19,17 @@ typedef enum {
     SYM_EPSILON
 } symbol_type;
 
-typedef struct Symbol {
+struct Symbol {
     symbol_value value;
     symbol_type type;
-} symbol;
+};
 
-typedef struct Production {
+struct Production {
     symbol** symbols;
     int count;
-} production;
+};
 
-typedef struct NonTerminal {
+struct NonTerminal {
     char* name;
     int prod_count;
     int first_size;
@@ -33,6 +38,6 @@ typedef struct NonTerminal {
     TokenName* first_set;
     TokenName* follow_set;
     bool has_epsilon_in_first;
-} non_terminal;
+};
 
 #endif

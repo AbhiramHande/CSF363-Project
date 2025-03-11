@@ -7,10 +7,11 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#include "stack.h"
 #include "hash_map.h"
 #include "parserDef.h"
 
-non_terminal* find_non_terminal(const char* name);
+non_terminal* find_non_terminal(const char* name, int end);
 void add_to_first_set(non_terminal* nt, const TokenName element);
 void add_to_follow_set(non_terminal* nt, const TokenName element);
 void compute_first_set(non_terminal* nt);
