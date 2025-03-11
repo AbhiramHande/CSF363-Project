@@ -8,6 +8,7 @@
 #include <ctype.h>
 
 #include "stack.h"
+#include "lexer.h"
 #include "hash_map.h"
 #include "parserDef.h"
 
@@ -22,7 +23,9 @@ void add_to_set(TokenName** set, int* size, const TokenName element);
 void print_first_and_follow_sets(bool print_first, bool print_follow);
 void print_parse_tree();
 void print_parse_map();
+void print_parse_tree(node* root);
 void generate_parse_table();
 void generate_parse_map();
+node* generate_parse_tree(FILE* src_code);
 
 #endif

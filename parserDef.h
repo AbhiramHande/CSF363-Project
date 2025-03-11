@@ -4,9 +4,9 @@
 #include "lexerDef.h"
 
 typedef struct NonTerminal non_terminal;
-typedef struct Symbol symbol;
 typedef struct Production production;
-typedef struct NonTerminal non_terminal;
+typedef struct Symbol symbol;
+typedef struct TreeNode node;
 
 typedef union {
     non_terminal* nt;
@@ -38,6 +38,13 @@ struct NonTerminal {
     TokenName* first_set;
     TokenName* follow_set;
     bool has_epsilon_in_first;
+};
+
+struct TreeNode {
+    symbol* stack_symbol;
+    Token* token_value;
+    node** children; 
+    int children_count;
 };
 
 #endif

@@ -24,15 +24,16 @@ const char *getTokenName(TokenName token) {
 }
 
 int main() {
+    setbuf(stdout, NULL);
     // Open input file (test case)
-    FILE *inputFile = fopen("t1.txt", "r");
+    FILE *inputFile = fopen("t3.txt", "r");
     if (!inputFile) {
         printf("Error: Could not open t1.txt\n");
         return 1;
     }
 
     // Open output file to store tokenized results
-    FILE *outputFile = fopen("results.txt", "w");
+    FILE* outputFile = stdout;
     if (!outputFile) {
         printf("Error: Could not create results.txt\n");
         fclose(inputFile);
@@ -50,9 +51,9 @@ int main() {
                 token->lexeme,
                 token->lineno);
 
-        free(token->lexeme);  // Free dynamically allocated lexeme
-        free(token->value);    // Free value storage
-        free(token);           // Free token itself
+        // free(token->lexeme);  // Free dynamically allocated lexeme
+        // free(token->value);    // Free value storage
+        // free(token);           // Free token itself
     }
 
     // Close files
