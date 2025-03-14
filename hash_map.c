@@ -1,6 +1,27 @@
 #include "hash_map.h"
 
-int collision_count;
+#define INITIAL_TABLE_SIZE 400
+
+typedef struct Entry map_entry;
+typedef struct HashMap hash_map;
+
+struct Entry {
+    unsigned int key;
+    production* value;
+    bool is_occupied;
+};
+
+struct HashMap {
+    map_entry* entries;
+    int capacity;
+    int size;
+};
+
+static int collision_count = 0;
+hash_map* _table = NULL;
+
+static void map_create(void) __attribute__((constructor));
+static void map_cleanup(void) __attribute__((destructor));
 
 static unsigned long hash_function(unsigned int key) {
     unsigned long hash;
@@ -29,41 +50,55 @@ static int next_prime(int n) {
     return n;
 }
 
-hash_map* map_create(int total_entries) {
+static void map_create(void) {
     hash_map* map = malloc(sizeof(struct HashMap));
-    if (!map) 
-        return NULL;
+    if (!map){
+        perror("Unable to create hash map for parse table");
+        exit(EXIT_FAILURE);
+    }
+        
     
-    map->capacity = next_prime(total_entries << 1);
+    map->capacity = next_prime(INITIAL_TABLE_SIZE);
     map->entries = calloc(map->capacity, sizeof(struct Entry));
-    if (!map->entries) {
+    if (!map){
         free(map);
-        return NULL;
+        perror("Unable to create hash map for parse table");
+        exit(EXIT_FAILURE);
     }
 
     map->size = 0;
     collision_count = 0;
-    //atexit(map_cleanup);
-    return map;
+    _table = map;
+    return;
 }
 
-void map_insert(hash_map* map, const unsigned int key, production* value) {
-    if (!map) 
+static void map_cleanup(void) {
+    if (!_table) return;
+
+    free(_table->entries);
+    _table->entries = NULL;
+
+    free(_table);
+    _table = NULL;
+}
+
+void map_insert(const unsigned int key, production* value) {
+    if (!_table) 
         return;
 
     unsigned long hash = hash_function(key);
-    int capacity = map->capacity;
+    int capacity = _table->capacity;
 
     // Currently using linear probing --> change to Double hashing
     for (int i = 0; i < capacity; i++) {
         int index = (hash + i) % capacity;
-        entry* _entry = &map->entries[index];
+        map_entry* _entry = &_table->entries[index];
 
         if (!_entry->is_occupied) {
             _entry->key = key;
             _entry->value = value;
             _entry->is_occupied = true;
-            map->size++;
+            _table->size++;
             return;
         } 
         else if (_entry->key == key) {
@@ -75,15 +110,18 @@ void map_insert(hash_map* map, const unsigned int key, production* value) {
     }
 }
 
-production* map_fetch(hash_map* map, const unsigned int key) {
-    if (!map) return NULL;
+production* map_fetch(const unsigned int key) {
+    if (!_table){
+        perror("Invalid Read");
+        exit(EXIT_FAILURE);
+    }
 
     unsigned long hash = hash_function(key);
-    int capacity = map->capacity;
+    int capacity = _table->capacity;
 
     for (int i = 0; i < capacity; i++) {
         int index = (hash + i) % capacity;
-        entry* _entry = &map->entries[index];
+        map_entry* _entry = &_table->entries[index];
 
         if (_entry->is_occupied)
             if (_entry->key == key)
@@ -95,16 +133,6 @@ production* map_fetch(hash_map* map, const unsigned int key) {
     }
 
     return NULL;
-}
-
-void map_cleanup(hash_map* map) {
-    if (!map) return;
-
-    free(map->entries);
-    map->entries = NULL;
-
-    free(map);
-    map = NULL;
 }
 
 int get_collision_count(){

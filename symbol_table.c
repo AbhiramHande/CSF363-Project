@@ -17,7 +17,7 @@ struct SymbolTableNode {
     bool is_occupied;
 };
 
-int collision_count = 0;
+static int collision_count = 0;
 symbol_table* table = NULL;
 
 static void symbol_table_create(void) __attribute__((constructor));
@@ -229,6 +229,6 @@ entry* symbol_table_fetch(const char* key) {
     return NULL;
 }
 
-int get_collision_count(){
+int sym_get_collision_count(){
     return collision_count;
 }

@@ -10,7 +10,7 @@ typedef struct TreeNode node;
 
 typedef union {
     non_terminal* nt;
-    TokenName token_value;
+    token_type token_value;
 } symbol_value;
 
 typedef enum {
@@ -25,7 +25,7 @@ struct Symbol {
 };
 
 struct Production {
-    symbol** symbols;
+    symbol** symbols;   // change to int
     int count;
 };
 
@@ -34,15 +34,15 @@ struct NonTerminal {
     int prod_count;
     int first_size;
     int follow_size;
-    production** productions;
-    TokenName* first_set;
-    TokenName* follow_set;
+    production** productions;   //change to int
+    token_type* first_set;
+    token_type* follow_set;
     bool has_epsilon_in_first;
 };
 
 struct TreeNode {
-    symbol* stack_symbol;
-    Token* token_value;
+    symbol* stack_symbol;   // change to bool 
+    token* token_value;     // change to void*
     node** children; 
     int children_count;
 };
