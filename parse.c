@@ -752,7 +752,7 @@ node* generate_parse_tree(FILE* src_code){
     stack* parser_stack = stack_create();
     node* start = create_tree_node_nonterm(start_symbol);
     stack_push(parser_stack, start);
-
+    setbuf(stdout, NULL);
     token* tok = get_next_token(src_code);
     while(!stack_empty(parser_stack)){
         times++;
@@ -779,6 +779,8 @@ node* generate_parse_tree(FILE* src_code){
             else{
                 fprintf(stderr, "Invalid: token-token.\n");
                 //TODO: Error
+                stack_pop(parser_stack);
+                continue;
             }
         }
         else{
@@ -818,8 +820,9 @@ node* generate_parse_tree(FILE* src_code){
                 }
             }
             else{
-                fprintf(stderr, "Invalid: non-termibal-token.\n");
+                fprintf(stderr, "Invalid: non-terminal-token.\n");
                 //TODO: Error
+                // token_type* syn = 
             }
         }
     }
