@@ -180,24 +180,25 @@ void swap_buffer(FILE* file_ptr){
     return;
 }
 
-//TODO static and realloc
 char* retract_and_update(unsigned int no_of_times) {
     int new_pos = buffer->forward_ptr - no_of_times;
-    char* ret_tok = NULL;
+    static char* ret_tok = NULL;
 
     if(new_pos > 0){
         buffer->forward_ptr = new_pos;
         if(buffer->begin_ptr < 0){
             int begin_len = BUFFER_SIZE + buffer->begin_ptr;
             int str_len = buffer->forward_ptr + begin_len - 1;
-            ret_tok = calloc(str_len + 1, sizeof(char));
+            if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+                ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
             strncpy(ret_tok, buffer->load_buffer + begin_len, -(buffer->begin_ptr + 1));
             strncpy(ret_tok + begin_len, buffer->active_buffer, buffer->forward_ptr);
             ret_tok[str_len] = '\0';
         }
         else{
             int str_len = buffer->forward_ptr - buffer->begin_ptr;
-            ret_tok = calloc(str_len + 1, sizeof(char));
+            if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+                ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
             strncpy(ret_tok, buffer->active_buffer + buffer->begin_ptr, str_len);
             ret_tok[str_len] = '\0';
         }
@@ -214,7 +215,8 @@ char* retract_and_update(unsigned int no_of_times) {
     buffer->forward_ptr = BUFFER_SIZE - new_pos - 1; // May lead to an error MUST CHECK
         
     int str_len = buffer->forward_ptr - buffer->begin_ptr + 1;
-    ret_tok = calloc(str_len + 1, sizeof(char));
+    if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+        ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
     strncpy(ret_tok, buffer->active_buffer + buffer->begin_ptr, str_len);
     ret_tok[str_len] = '\0';
 
@@ -268,9 +270,10 @@ token* get_next_token_helper(FILE* file_ptr){
         comment = symbol_table_insert("%", TK_COMMENT);
 
     char buffer_char = buffer->active_buffer[buffer->forward_ptr];
+    char* lexeme = NULL;
     token* ret_tok = NULL;
     entry* sym_tab = NULL;
-
+    
     switch(state) {
         case 0:
             if(isdigit(buffer_char))
@@ -420,8 +423,8 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
 
         case 5:
-            char* temp = retract_and_update(1);
-            sym_tab = symbol_table_insert(temp, TK_FIELDID);
+            lexeme = retract_and_update(1);
+            sym_tab = symbol_table_insert(lexeme, TK_FIELDID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = sym_tab->type;
             ret_tok->lexeme = sym_tab->name;
@@ -432,7 +435,8 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
 
         case 6:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_FUNID);
+            lexeme = retract_and_update(1);
+            sym_tab = symbol_table_insert(lexeme, TK_FUNID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = sym_tab->type;
             ret_tok->lexeme = sym_tab->name;
@@ -547,21 +551,23 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
         
         case 31:
-            free(retract_and_update(1));
+            buffer->forward_ptr--;
+            buffer->begin_ptr = buffer->forward_ptr;
 
             state = 0;
             return ret_tok;
             break;
         
         case 32:
-            free(retract_and_update(0));
+            buffer->begin_ptr = buffer->forward_ptr;
             line_number++;
 
             state = 0;
+            return NULL;
             break;
 
         case 33:
-            free(retract_and_update(0));
+            buffer->begin_ptr = buffer->forward_ptr;
             ret_tok = calloc(1, sizeof(token));
             ret_tok->lexeme = comment->name;
             ret_tok->name = TK_COMMENT;

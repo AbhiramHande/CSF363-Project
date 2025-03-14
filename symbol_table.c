@@ -98,6 +98,8 @@ static void symbol_table_create(void) {
     symbol_table_insert("record", TK_RECORD);
     symbol_table_insert("endrecord", TK_ENDRECORD);
     symbol_table_insert("else", TK_ELSE);
+    
+    symbol_table_insert("_main", TK_MAIN);
 
     return;
 }
@@ -106,9 +108,9 @@ static void symbol_table_cleanup(void) {
     if (!table) return;
 
     for(int i = 0; i < table->capacity; i++){
-        if(table->entries->is_occupied){
+        if(table->entries[i].is_occupied){
             free(table->entries[i].value->name);
-            table->entries->value->name = NULL;
+            table->entries[i].value->name = NULL;
             free(table->entries[i].value);
             table->entries[i].value = NULL;
         }

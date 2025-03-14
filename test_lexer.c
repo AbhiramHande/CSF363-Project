@@ -26,14 +26,13 @@ int main() {
     token* tok;
     for(int i = 0; i < 1000; i++) {
         tok = get_next_token(inputFile);
-        fprintf(outputFile, "Token: %s, Lexeme: %s, Line: %d\n", 
-                token_to_string(tok->name),  
+        fprintf(outputFile, "Line No. %d \tLexeme: %s \tToken: %s\n", 
+                tok->line_num,  
                 tok->lexeme,
-                tok->line_num);
+                token_to_string(tok->name));
 
-        // free(token->lexeme);  // Free dynamically allocated lexeme
-        // free(token->value);    // Free value storage
-        // free(token);           // Free token itself
+        free(tok);
+        tok = NULL;
     }
 
     // Close files

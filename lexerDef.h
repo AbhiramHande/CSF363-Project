@@ -1,7 +1,7 @@
 #ifndef LEXERDEF_H
 #define LEXERDEF_H
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 64
 #define KEYWORD_END TK_ELSE
 #define KEYWORD_START TK_WITH //Verify there is none before or after
 #define TERMINAL_COUNT 60
