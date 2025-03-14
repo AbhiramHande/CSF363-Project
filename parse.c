@@ -337,6 +337,7 @@ node* parse_code(char* grammar_file, char* input_file) {
     // long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
     // printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
     node* root = generate_parse_tree(src_code);
+    fclose(src_code);
     return root;
 }
 
@@ -761,6 +762,7 @@ node* generate_parse_tree(FILE* src_code){
         }
         while(tok->name == TK_COMMENT) {
             times++;
+            free(tok);
             tok = get_next_token(src_code);
             if(tok == NULL){
                 fprintf(stderr, "WTF?!\n");
@@ -827,6 +829,10 @@ node* generate_parse_tree(FILE* src_code){
         }
     }
 
+    if(tok->name != TK_EOF){
+        fprintf(stderr, "Error");
+    }
+    free(tok);
     stack_cleanup(&parser_stack);
     return start;
 }
