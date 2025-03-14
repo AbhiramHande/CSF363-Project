@@ -235,6 +235,7 @@ char* retract_and_update(unsigned int no_of_times) {
 
 void buffer_init(FILE* file_ptr){
     buffer_cleanup();
+    get_next_token_helper(NULL);
     buffer = (twin_buffer*)calloc(1, sizeof(twin_buffer));
     if(!buffer){
         fprintf(stderr, "Error: Failed to initialize Twin buffer");
@@ -263,6 +264,8 @@ void buffer_init(FILE* file_ptr){
 }
 
 token* get_next_token(FILE* file_ptr){
+    if(file_ptr == NULL)
+        fprintf(stderr, "Error: Invalid file passed.\n");
     token* ret;
     while(!(ret = get_next_token_helper(file_ptr)));
     return ret;
@@ -273,6 +276,11 @@ token* get_next_token_helper(FILE* file_ptr){
     static int line_number = 1;
     static entry* comment = NULL;
 
+    if(file_ptr == NULL){
+        state = 0;
+        line_number = 1;
+        return NULL;
+    }
     if(buffer == NULL)
         buffer_init(file_ptr);
     if(comment == NULL)

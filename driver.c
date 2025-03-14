@@ -7,6 +7,11 @@ int main(int argc, char* argv[]){
         printf("Usage: ./%s <test_case>.txt <output_file>.txt\n", argv[0]);
         exit(EXIT_FAILURE);
     }
+    FILE* input_file = fopen(argv[1], "r");
+    if (!input_file) {
+        printf("Error: Could not open %s.\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
 
     printf("Press 0 to exit.\n");
     printf("Press 1 to remove comments and print the comment free code on the console.\n");
@@ -18,9 +23,9 @@ int main(int argc, char* argv[]){
         char choice;
         node* root = NULL;
         scanf("\n%c", &choice);
-
         switch (choice) {
             case '0':
+                fclose(input_file);
                 exit(EXIT_SUCCESS);
                 break;
             
@@ -29,13 +34,7 @@ int main(int argc, char* argv[]){
                 break;
 
             case '2':
-                FILE* input_file = fopen(argv[1], "r");
-                if (!input_file) {
-                    printf("Error: Could not open %s.\n", argv[1]);
-                    exit(EXIT_FAILURE);
-                }
-
-
+                buffer_init(input_file);
                 token* tok = NULL;
                 while ((tok = get_next_token(input_file)) != NULL) {
                     if(tok->name != TK_EOF){
@@ -44,19 +43,23 @@ int main(int argc, char* argv[]){
                     else{
                         break;
                     }
+                    free(tok);
+                    tok = NULL;
                 }
-                fclose(input_file);
-            
+                free(tok);
+                tok = NULL;
                 printf("\nLexical analysis complete.\n");
                 break;
                 
             case '3':
+                buffer_init(input_file);
                 root = parse_code("grammar.txt", argv[1]);
                 print_parse_tree(root);       //Change this to in-order traversal and then write to file argv[2] 
                 parse_tree_cleanup(&root);
                 break;
             
             case '4':
+                buffer_init(input_file);
                 clock_t start_time, end_time;
                 double total_CPU_time, total_CPU_time_in_seconds;
                 start_time = clock();
@@ -75,5 +78,7 @@ int main(int argc, char* argv[]){
                 printf("Error: Invalid choice.\n");
                 break;
         }
+
+        rewind(input_file);
     }
 }
