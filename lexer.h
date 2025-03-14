@@ -11,6 +11,7 @@
 #include "symbol_table.h"
 
 void print_token(token *t);
+void buffer_init(FILE* file_ptr);
 token* get_next_token(FILE *fileptr);
 token_type string_to_token(const char* string);
 const char* token_to_string(token_type token);

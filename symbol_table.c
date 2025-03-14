@@ -18,7 +18,7 @@ struct SymbolTableNode {
 };
 
 static int collision_count = 0;
-symbol_table* table = NULL;
+static symbol_table* table = NULL;
 
 static void symbol_table_create(void) __attribute__((constructor));
 static void symbol_table_cleanup(void) __attribute__((destructor));

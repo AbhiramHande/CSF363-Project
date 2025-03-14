@@ -18,7 +18,7 @@ struct HashMap {
 };
 
 static int collision_count = 0;
-hash_map* _table = NULL;
+static hash_map* _table = NULL;
 
 static void map_create(void) __attribute__((constructor));
 static void map_cleanup(void) __attribute__((destructor));

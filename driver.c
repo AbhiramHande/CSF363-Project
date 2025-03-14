@@ -38,14 +38,12 @@ int main(int argc, char* argv[]){
 
                 token* tok = NULL;
                 while ((tok = get_next_token(input_file)) != NULL) {
-                    fprintf(stdout, "Token: %s, Lexeme: %s, Line: %d\n", 
-                            token_to_string(tok->name),  
-                            tok->lexeme,
-                            tok->line_num);
-            
-                    // free(token->lexeme);  // Free dynamically allocated lexeme
-                    // free(token->value);    // Free value storage
-                    // free(token);           // Free token itself
+                    if(tok->name != TK_EOF){
+                        fprintf(stdout, "Token: %s, Lexeme: %s, Line: %d\n", token_to_string(tok->name), tok->lexeme, tok->line_num);
+                    }
+                    else{
+                        break;
+                    }
                 }
                 fclose(input_file);
             

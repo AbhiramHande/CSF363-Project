@@ -3,7 +3,7 @@
 #include "lexer.h"
 #include "symbol_table.h"
 
-twin_buffer* buffer = NULL;
+static twin_buffer* buffer = NULL;
 token* get_next_token_helper(FILE* file_ptr);
 void buffer_cleanup(void) __attribute__((destructor));
 
@@ -282,6 +282,12 @@ token* get_next_token_helper(FILE* file_ptr){
     char* lexeme = NULL;
     token* ret_tok = NULL;
     entry* sym_tab = NULL;
+
+    if(state == 0 && buffer_char == '\0' && buffer->forward_ptr != BUFFER_SIZE - 1){
+        ret_tok = calloc(1, sizeof(struct Token));
+        ret_tok->name = TK_EOF;
+        return ret_tok;
+    }
     
     switch(state) {
         case 0:
@@ -385,7 +391,7 @@ token* get_next_token_helper(FILE* file_ptr){
 
                     case '=':
                         state = 61;
-                        break;
+                        break;                        
 
                     default:
                         state = 62;
@@ -785,6 +791,7 @@ token* get_next_token_helper(FILE* file_ptr){
             else    
                 state = 62;
             break;
+            
         
         default: 
             if(buffer_char == '\0')

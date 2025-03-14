@@ -73,7 +73,8 @@ enum TokenType{
     TK_RECORD,
     TK_ENDRECORD,
     TK_ELSE,
-    TK_ERROR
+    TK_ERROR,
+    TK_EOF
 };
 
 struct TwinBuffer {
