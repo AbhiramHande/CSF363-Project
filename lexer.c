@@ -290,6 +290,7 @@ token* get_next_token_helper(FILE* file_ptr){
     char* lexeme = NULL;
     token* ret_tok = NULL;
     entry* sym_tab = NULL;
+    int error_retract = 1;
 
     if(state == 0 && buffer_char == '\0' && buffer->forward_ptr != BUFFER_SIZE - 1){
         ret_tok = calloc(1, sizeof(struct Token));
@@ -414,28 +415,34 @@ token* get_next_token_helper(FILE* file_ptr){
             ret_tok->name = TK_NUM;
             ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
-            ret_tok->value.num = atoi(ret_tok->lexeme);
+            ret_tok->value.num = strtoll(ret_tok->lexeme, NULL, 10);
             ret_tok->is_value_int = true;
             
             state = 0;
             return ret_tok;
             break;
         
-        case 2: case 3:
+        case 2: case 3: //TODO: take care of 0.00E-123
             sym_tab = symbol_table_insert(state == 2 ? retract_and_update(1) : retract_and_update(0), TK_RNUM);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_RNUM;
             ret_tok->lexeme =  sym_tab->name;
             ret_tok->line_num = line_number;
-            ret_tok->value.r_num = strtof(ret_tok->lexeme, NULL);
+            ret_tok->value.r_num = strtold(ret_tok->lexeme, NULL);
             ret_tok->is_value_int = false;
             
             state = 0;
             return ret_tok;
             break;
 
-        case 4:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_ID);
+        case 4: //TODO: check lengths for 4, 5 and 6
+            lexeme = retract_and_update(1);
+            if(strlen(lexeme) > 20){
+                fprintf(stderr, "Line no. %d: Error: Variable identifier \"%s\" is longer than the prescribed length of 20 characters.", line_number, lexeme);
+                state = 0;
+                return NULL;
+            }
+            sym_tab = symbol_table_insert(lexeme, TK_ID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_ID;
             ret_tok->lexeme = sym_tab->name;
@@ -459,6 +466,11 @@ token* get_next_token_helper(FILE* file_ptr){
 
         case 6:
             lexeme = retract_and_update(1);
+            if(strlen(lexeme) > 30){
+                fprintf(stderr, "Line no. %d: Error: Function identifier \"%s\" is longer than the prescribed length of 30 characters.", line_number, lexeme);
+                state = 0;
+                return NULL;
+            }
             sym_tab = symbol_table_insert(lexeme, TK_FUNID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = sym_tab->type;
@@ -623,21 +635,23 @@ token* get_next_token_helper(FILE* file_ptr){
             if(isdigit(buffer_char))
                 state = 37;
             else
-                state = 62; //TODO or put the error here itself ig
+                state = 63; 
             break;
         
         case 37:
             if(isdigit(buffer_char))
                 state = 38;
             else
-                state = 62;
+                state = 63;
             break;
                 
         case 38:
             if(buffer_char == 'E')
                 state = 39;
+            else if(isdigit(buffer_char))
+                state = 64;
             else
-                state = 2; //TODO maybe on digit go to 62?
+                state = 2;
             break;
         
         case 39:
@@ -646,14 +660,14 @@ token* get_next_token_helper(FILE* file_ptr){
             else if(buffer_char == '+' || buffer_char == '-')
                 state = 41;
             else
-                state = 62;
+                state = 63;
             break;
         
         case 40:
             if(isdigit(buffer_char))
                 state = 3;
             else
-                state = 62;
+                state = 63;
             break;
         
         case 41:
@@ -669,7 +683,7 @@ token* get_next_token_helper(FILE* file_ptr){
             else if(buffer_char >= '2' && buffer_char <= '7')
                 state = 43;
             else
-                state = 62;
+                state = 63;
             break;
             
         case 43:
@@ -696,7 +710,7 @@ token* get_next_token_helper(FILE* file_ptr){
             if(isalpha(buffer_char))
                 state = 47;
             else 
-                state = 62;
+                state = 63;
             
         case 47:
             if(isalpha(buffer_char)){
@@ -715,7 +729,7 @@ token* get_next_token_helper(FILE* file_ptr){
             if(islower(buffer_char))
                 state = 50;
             else 
-                state = 62;
+                state = 63;
             break;
         
         case 50:
@@ -745,7 +759,7 @@ token* get_next_token_helper(FILE* file_ptr){
             if(buffer_char == '-')
                 state = 9;
             else 
-                state = 62;
+                state = 63;
             break;
 
         case 54:
@@ -768,28 +782,28 @@ token* get_next_token_helper(FILE* file_ptr){
             if(buffer_char == '&')
                 state = 57;
             else
-                state = 62;
+                state = 63;
             break;
 
         case 57:
             if(buffer_char == '&')
                 state = 26;
             else
-                state = 62;
+                state = 63;
             break; 
 
         case 58:
             if(buffer_char == '@')
                 state = 57;
             else
-                state = 62;
+                state = 63;
             break;
 
         case 59:
             if(buffer_char == '@')
                 state = 27;
             else
-                state = 62;
+                state = 63;
             break;
 
         case 60: 
@@ -797,10 +811,31 @@ token* get_next_token_helper(FILE* file_ptr){
             if(buffer_char == '=')
                 state -= 31;
             else    
-                state = 62;
+                state = 63;
             break;
             
+        case 62:
+            lexeme = retract_and_update(0);
+            printf("Line no. %d: Error: Unknown Symbol <%s>\n", line_number, lexeme);
+            state = 0;
+            return NULL;
+            break;
         
+        case 63:
+            lexeme = retract_and_update(error_retract);
+            printf("Line no. %d: Error: Unknown Pattern <%s>\n", line_number, lexeme);
+            state = 0;
+            error_retract = 1;
+            return NULL;
+            break;
+
+        case 64:
+            if(isdigit(buffer_char))
+                error_retract++;
+            else 
+                state = 63; // TODO: handle cases like 0.000E-04 0.000E-0003
+            break;
+
         default: 
             if(buffer_char == '\0')
                 exit(EXIT_SUCCESS);
