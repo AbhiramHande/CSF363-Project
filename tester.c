@@ -2,6 +2,7 @@
 #define BUFFER_SIZE 1024
 
 #include <pty.h>
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -15,7 +16,36 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-int process_line(const char *line, FILE* file_ptr) {
+void remove_extra_whitespace(char *str) {
+    int i = 0, j = 0;
+    int len = strlen(str);
+    int space_needed = 0;  // Flag to indicate space should be added
+
+    while (i < len) {
+        // Skip leading whitespace
+        while (i < len && isspace(str[i])) {
+            i++;
+        }
+
+        while (i < len) {
+            if (isspace(str[i])) {
+                space_needed = 1;  // Mark that a space should be added later
+            } else {
+                // Add space if needed before adding a non-space character
+                if (space_needed && j > 0) {
+                    str[j++] = ' ';
+                }
+                str[j++] = str[i];
+                space_needed = 0;  // Reset space flag
+            }
+            i++;
+        }
+    }
+
+    str[j] = '\0';  // Null-terminate the result string
+}
+
+int process_line(char *line, FILE* file_ptr) {
     char* expected_output = NULL;
     size_t buf_size = 0;
     int chars_read = getline(&expected_output, &buf_size, file_ptr);
@@ -26,6 +56,9 @@ int process_line(const char *line, FILE* file_ptr) {
 
     if(expected_output[chars_read - 1] == '\n')
         expected_output[chars_read - 1] = '\0';
+    remove_extra_whitespace(line);
+    remove_extra_whitespace(expected_output);
+    
     if (strcmp(line, expected_output)) {
         fprintf(stderr, "\033[32mExpected:\033[0m \"%s\"\n", expected_output);
         fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);     
@@ -42,7 +75,7 @@ int process_line(const char *line, FILE* file_ptr) {
 
 int main(int argc, char *argv[]) {
     if(argc != 4){
-        fprintf(stderr, "Error: Usage: test_exe <program> <test_case_dir> <expected_oputput_dir>.\n");
+        fprintf(stderr, "Error: Usage: test_exe <program> <test_case>.txt <expected_oputput>.txt\n");
         exit(EXIT_FAILURE);
     }
     else{
@@ -53,7 +86,7 @@ int main(int argc, char *argv[]) {
         #endif
     }
 
-    FILE* file_ptr = fopen("./tests/test.txt", "r");
+    FILE* file_ptr = fopen(argv[3], "r");
     if(file_ptr == NULL){
         perror("Invalid file");
         exit(EXIT_FAILURE);
@@ -120,7 +153,8 @@ int main(int argc, char *argv[]) {
         dup2(slave_fd, STDERR_FILENO);
         close(slave_fd);
 
-        execvp(argv[1], &argv[1]);
+        char* child_argv[] = {argv[1], argv[2], NULL};
+        execvp(argv[1], child_argv);
         perror("execvp failed");
         exit(EXIT_FAILURE);
     } 

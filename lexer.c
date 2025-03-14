@@ -174,31 +174,37 @@ void swap_buffer(FILE* file_ptr){
     if(buffer->forward_ptr == buffer->begin_ptr)
         buffer->begin_ptr = 0;
     else 
-    buffer->begin_ptr -= BUFFER_SIZE;
+        buffer->begin_ptr -= BUFFER_SIZE;
+    
     buffer->forward_ptr = 0;
     buffer->buffer_loaded = false;
     return;
 }
 
 char* retract_and_update(unsigned int no_of_times) {
-    int new_pos = buffer->forward_ptr - no_of_times;
     static char* ret_tok = NULL;
+    static int ret_tok_size = 0;
+    int new_pos = buffer->forward_ptr - no_of_times;
 
-    if(new_pos > 0){
+    if(new_pos >= 0){
         buffer->forward_ptr = new_pos;
         if(buffer->begin_ptr < 0){
-            int begin_len = BUFFER_SIZE + buffer->begin_ptr;
+            int begin_len = -buffer->begin_ptr;
             int str_len = buffer->forward_ptr + begin_len - 1;
-            if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+            if(ret_tok_size < str_len + 1){
                 ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
-            strncpy(ret_tok, buffer->load_buffer + begin_len, -(buffer->begin_ptr + 1));
-            strncpy(ret_tok + begin_len, buffer->active_buffer, buffer->forward_ptr);
+                ret_tok_size = str_len + 1;
+            }
+            strncpy(ret_tok, buffer->load_buffer + BUFFER_SIZE + buffer->begin_ptr, -(buffer->begin_ptr + 1));
+            strncpy(ret_tok - (buffer->begin_ptr + 1), buffer->active_buffer, buffer->forward_ptr);
             ret_tok[str_len] = '\0';
         }
         else{
             int str_len = buffer->forward_ptr - buffer->begin_ptr;
-            if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+            if(ret_tok_size < str_len + 1){
                 ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
+                ret_tok_size = str_len + 1;
+            }
             strncpy(ret_tok, buffer->active_buffer + buffer->begin_ptr, str_len);
             ret_tok[str_len] = '\0';
         }
@@ -212,15 +218,18 @@ char* retract_and_update(unsigned int no_of_times) {
     buffer->active_buffer = temp;
 
     buffer->buffer_loaded = true;
-    buffer->forward_ptr = BUFFER_SIZE - new_pos - 1; // May lead to an error MUST CHECK
-        
-    int str_len = buffer->forward_ptr - buffer->begin_ptr + 1;
-    if(ret_tok == NULL || strlen(ret_tok) < str_len + 1)
+    buffer->forward_ptr = BUFFER_SIZE + new_pos - 1; // May lead to an error MUST CHECK
+    buffer->begin_ptr += BUFFER_SIZE;
+
+    int str_len = buffer->forward_ptr - buffer->begin_ptr;
+    if(ret_tok_size < str_len + 1){
         ret_tok = realloc(ret_tok, (str_len + 1)*sizeof(char));
+        ret_tok_size = str_len + 1;
+    }
     strncpy(ret_tok, buffer->active_buffer + buffer->begin_ptr, str_len);
     ret_tok[str_len] = '\0';
 
-    buffer->begin_ptr = BUFFER_SIZE - new_pos - 1;
+    buffer->begin_ptr = buffer->forward_ptr;
     return ret_tok;
 }
 
@@ -402,7 +411,7 @@ token* get_next_token_helper(FILE* file_ptr){
             sym_tab = symbol_table_insert(state == 2 ? retract_and_update(1) : retract_and_update(0), TK_RNUM);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_RNUM;
-            ret_tok->lexeme =  (state == 2 ? retract_and_update(1) : retract_and_update(0));
+            ret_tok->lexeme =  sym_tab->name;
             ret_tok->line_num = line_number;
             ret_tok->value.r_num = strtof(ret_tok->lexeme, NULL);
             ret_tok->is_value_int = false;
@@ -551,7 +560,12 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
         
         case 31:
-            buffer->forward_ptr--;
+            if(buffer->forward_ptr == 0){
+                buffer->forward_ptr = BUFFER_SIZE - 1;
+                swap_buffer(file_ptr);
+            }
+            else
+                buffer->forward_ptr--;
             buffer->begin_ptr = buffer->forward_ptr;
 
             state = 0;
@@ -585,10 +599,10 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
             
         case 35:
-            if(!isdigit(buffer_char))
-                state = 1;
-            else if(buffer_char == '.')
+            if(buffer_char == '.')
                 state = 36;
+            else if(!isdigit(buffer_char))
+                state = 1;
             break;
         
         case 36:

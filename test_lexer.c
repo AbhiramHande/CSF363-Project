@@ -15,7 +15,7 @@ int main() {
     }
 
     // Open output file to store tokenized results
-    FILE* outputFile = fopen("result.dump", "w");
+    FILE* outputFile = stdout;//fopen("result.dump", "w");
     if (!outputFile) {
         printf("Error: Could not create results.txt\n");
         fclose(inputFile);
@@ -26,7 +26,7 @@ int main() {
     token* tok;
     for(int i = 0; i < 1000; i++) {
         tok = get_next_token(inputFile);
-        fprintf(outputFile, "Line No. %d \tLexeme: %s \tToken: %s\n", 
+        fprintf(outputFile, "Line no. %d \tLexeme %s \tToken %s\n", 
                 tok->line_num,  
                 tok->lexeme,
                 token_to_string(tok->name));
@@ -37,7 +37,7 @@ int main() {
 
     // Close files
     fclose(inputFile);
-    fclose(outputFile);
+    //fclose(outputFile);
 
     printf("Lexical analysis complete. Check results.txt for output.\n");
     return 0;
