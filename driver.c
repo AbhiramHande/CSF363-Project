@@ -25,8 +25,8 @@ int main(int argc, char* argv[]){
         scanf("\n%c", &choice);
         switch (choice) {
             case '0':
-                exit(EXIT_SUCCESS);
                 fclose(input_file);
+                exit(EXIT_SUCCESS);
                 break;
             
             case '1':
@@ -43,8 +43,11 @@ int main(int argc, char* argv[]){
                     else{
                         break;
                     }
+                    free(tok);
+                    tok = NULL;
                 }
-            
+                free(tok);
+                tok = NULL;
                 printf("\nLexical analysis complete.\n");
                 break;
                 
