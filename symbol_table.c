@@ -1,6 +1,6 @@
 #include "symbol_table.h"
 
-#define INITIAL_TABLE_SIZE 1000
+#define INITIAL_TABLE_SIZE 100
 
 typedef struct SymbolTable symbol_table;
 typedef struct SymbolTableNode symbol_table_node;
@@ -136,8 +136,8 @@ static void symbol_table_insert_entry(entry* _entry){
         symbol_table_node node = table->entries[index];
 
         if (!node.is_occupied) {
-            node.value = _entry;
-            node.is_occupied = true;
+            table->entries[index].value = _entry;
+            table->entries[index].is_occupied = true;
             table->occupancy++;
             return;
         }
@@ -149,7 +149,7 @@ static void symbol_table_insert_entry(entry* _entry){
 }
 
 static void symbol_table_resize(void) {   
-    int capacity = next_prime(table->capacity << 1);
+    int capacity = next_prime(table->capacity << 2);
 
     symbol_table_node* entries = calloc(capacity, sizeof(struct SymbolTableNode));
     if (!entries){
@@ -163,8 +163,10 @@ static void symbol_table_resize(void) {
     table->entries = entries;
     table->occupancy = 0;
     
-    for(int i = old_table->capacity - 1; i >= 0; i--)
-        symbol_table_insert_entry(old_table->entries[i].value);
+    for(int i = old_table->capacity - 1; i >= 0; i--){
+        if(old_table->entries[i].is_occupied)
+            symbol_table_insert_entry(old_table->entries[i].value);
+    }
 
     return;
 }
