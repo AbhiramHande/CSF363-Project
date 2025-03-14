@@ -1,7 +1,7 @@
 #include <assert.h>
-#include <omp.h>
 
 #include "lexer.h"
+#include "symbol_table.h"
 
 twin_buffer* buffer = NULL;
 token* get_next_token_helper(FILE* file_ptr);
@@ -187,7 +187,6 @@ char* retract_and_update(unsigned int no_of_times) {
 
     if(new_pos > 0){
         buffer->forward_ptr = new_pos;
-    
         if(buffer->begin_ptr < 0){
             int begin_len = BUFFER_SIZE + buffer->begin_ptr;
             int str_len = buffer->forward_ptr + begin_len - 1;
@@ -261,13 +260,17 @@ token* get_next_token(FILE* file_ptr){
 token* get_next_token_helper(FILE* file_ptr){
     static int state = 0;
     static int line_number = 1;
+    static entry* comment = NULL;
 
     if(buffer == NULL)
         buffer_init(file_ptr);
+    if(comment == NULL)
+        comment = symbol_table_insert("%", TK_COMMENT);
 
     char buffer_char = buffer->active_buffer[buffer->forward_ptr];
     token* ret_tok = NULL;
-    bool increment = true;
+    entry* sym_tab = NULL;
+
     switch(state) {
         case 0:
             if(isdigit(buffer_char))
@@ -380,136 +383,139 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
         
         case 1:
-            state = 0;
+            entry* sym_tab = symbol_table_insert(retract_and_update(1), TK_NUM);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_NUM;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             ret_tok->value.num = atoi(ret_tok->lexeme);
-            ret_tok->value_is_int = true;
+            ret_tok->is_value_int = true;
             
+            state = 0;
             return ret_tok;
             break;
         
         case 2: case 3:
-            state = 0;
+            sym_tab = symbol_table_insert(state == 2 ? retract_and_update(1) : retract_and_update(0), TK_RNUM);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_RNUM;
             ret_tok->lexeme =  (state == 2 ? retract_and_update(1) : retract_and_update(0));
             ret_tok->line_num = line_number;
             ret_tok->value.r_num = strtof(ret_tok->lexeme, NULL);
-            ret_tok->value_is_int = false;
+            ret_tok->is_value_int = false;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 4:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(1), TK_ID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_ID;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 5:
-            //TODO add lookup for keyword
-            state = 0;
+            char* temp = retract_and_update(1);
+            sym_tab = symbol_table_insert(temp, TK_FIELDID);
             ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ID;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->name = sym_tab->type;
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
-            
+
+            state = 0;
             return ret_tok;
             break;
 
         case 6:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(1), TK_FUNID);
             ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_FUNID;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->name = sym_tab->type;
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
         
         case 7:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(1), TK_RUID);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_RUID;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
-            
+
+            state = 0;
             return ret_tok;
             break;
         
         case 8:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(0), TK_LE);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_LE;
-            ret_tok->lexeme = retract_and_update(0);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 9:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(0), TK_ASSIGNOP);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_ASSIGNOP;
-            ret_tok->lexeme = retract_and_update(0);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 10:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(2), TK_LT);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_LT;
-            ret_tok->lexeme = retract_and_update(2);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
         
         case 11:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(1), TK_LT);
             ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ID;
+            ret_tok->name = sym_tab->type;
             ret_tok->lexeme = retract_and_update(1);
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 12:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(0), TK_GE);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_GE;
-            ret_tok->lexeme = retract_and_update(0);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
         case 13:
-            //TODO add lookup for keyword
-            state = 0;
+            sym_tab = symbol_table_insert(retract_and_update(1), TK_GT);
             ret_tok = calloc(1, sizeof(token));
             ret_tok->name = TK_GT;
-            ret_tok->lexeme = retract_and_update(1);
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
+            state = 0;
             return ret_tok;
             break;
 
@@ -530,9 +536,10 @@ token* get_next_token_helper(FILE* file_ptr){
         case 28:
         case 29:
         case 30:
+            sym_tab = symbol_table_insert(retract_and_update(0), (token_type)state);
             ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = (token_type)state;
-            ret_tok->lexeme = retract_and_update(0);
+            ret_tok->name = sym_tab->type;
+            ret_tok->lexeme = sym_tab->name;
             ret_tok->line_num = line_number;
             
             state = 0;
@@ -540,25 +547,27 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
         
         case 31:
-            state = 0;
             free(retract_and_update(1));
+
+            state = 0;
             return ret_tok;
             break;
         
         case 32:
-            state = 0;
             free(retract_and_update(0));
             line_number++;
-            //return ret_tok;
+
+            state = 0;
             break;
 
         case 33:
-            state = 0;
             free(retract_and_update(0));
             ret_tok = calloc(1, sizeof(token));
+            ret_tok->lexeme = comment->name;
             ret_tok->name = TK_COMMENT;
             ret_tok->line_num = line_number++;
             
+            state = 0;
             return ret_tok;
             break;
 
@@ -570,10 +579,10 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
             
         case 35:
-            if(buffer_char == '.')
-                state = 36;
-            else if(!isdigit(buffer_char))
+            if(!isdigit(buffer_char))
                 state = 1;
+            else if(buffer_char == '.')
+                state = 36;
             break;
         
         case 36:

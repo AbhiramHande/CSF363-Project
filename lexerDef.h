@@ -1,14 +1,19 @@
 #ifndef LEXERDEF_H
 #define LEXERDEF_H
+
 #define BUFFER_SIZE 512
+#define KEYWORD_END TK_ELSE
+#define KEYWORD_START TK_WITH //Verify there is none before or after
+#define TERMINAL_COUNT 60
 
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef enum TokenType token_type;
 typedef struct TwinBuffer twin_buffer;
 typedef struct Token token;
 
-typedef enum {
+enum TokenType{
     TK_ASSIGNOP,
     TK_COMMENT,
     TK_FIELDID,
@@ -17,12 +22,12 @@ typedef enum {
     TK_RNUM,
     TK_FUNID,
     TK_RUID,
-    TK_WITH,
-    TK_PARAMETERS,
-    TK_END,
-    TK_WHILE,
-    TK_UNION,
-    TK_ENDUNION,
+    TK_LT,
+    TK_LE,
+    TK_GT,
+    TK_GE,
+    EPSILON,
+    DOLLAR,
     TK_SQL,
     TK_SQR,
     TK_COMMA,
@@ -40,6 +45,12 @@ typedef enum {
     TK_NOT,
     TK_NE,
     TK_EQ,
+    TK_WITH,
+    TK_PARAMETERS,
+    TK_END,
+    TK_WHILE,
+    TK_UNION,
+    TK_ENDUNION,
     TK_DEFINETYPE,
     TK_AS,
     TK_TYPE,
@@ -62,20 +73,8 @@ typedef enum {
     TK_RECORD,
     TK_ENDRECORD,
     TK_ELSE,
-    TK_LT,
-    TK_LE,
-    TK_GT,
-    TK_GE,
-    TK_ERROR,
-    EPSILON,
-    DOLLAR
-} token_type;
-
-//int and float enough?
-typedef union {
-    int num;
-    float r_num;
-} value;
+    TK_ERROR
+};
 
 struct TwinBuffer {
     char* active_buffer;
@@ -88,8 +87,13 @@ struct TwinBuffer {
 struct Token {
     token_type name;
     char* lexeme;
-    value value;
-    bool value_is_int;
     int line_num;
+    bool is_value_int;
+
+    union {
+        long long num;
+        long double r_num;
+    } value;
 };
+
 #endif

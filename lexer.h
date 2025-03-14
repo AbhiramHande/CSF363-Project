@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include "lexerDef.h"
+#include "symbol_table.h"
 
 void print_token(token *t);
 token* get_next_token(FILE *fileptr);

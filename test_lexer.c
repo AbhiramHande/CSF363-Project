@@ -15,7 +15,7 @@ int main() {
     }
 
     // Open output file to store tokenized results
-    FILE* outputFile = fopen("result.txt", "w");
+    FILE* outputFile = fopen("result.dump", "w");
     if (!outputFile) {
         printf("Error: Could not create results.txt\n");
         fclose(inputFile);
