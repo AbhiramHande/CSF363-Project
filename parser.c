@@ -680,7 +680,7 @@ node* generate_parse_tree(FILE* src_code){
     }
 
     if(tok->name != TK_EOF){
-        fprintf(stderr, "Error: Expected EOF but got %s\n", token_to_string(tok->name));
+        fprintf(stderr, "\033[1;31mError:\033[0m Expected EOF but got %s\n", token_to_string(tok->name));
         error_present = true;
     }
     free(tok);
