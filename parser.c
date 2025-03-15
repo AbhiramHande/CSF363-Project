@@ -759,7 +759,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                     root->stack_symbol->value.nt->name);
             }
             else{
-                fprintf(output_file, "|            ----------           | %-25s  | Not Def.  |          ----------        | Not a number | NULL                        | yes          | %-25s |\n",
+                fprintf(output_file, "|            ----------           | %-25s  | Not Def.  |          ----------        | Not a number | NULL                       | yes          | %-25s |\n",
                     root->stack_symbol->value.nt->name, 
                     root->stack_symbol->value.nt->name);
             }
@@ -772,7 +772,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
             fprintf(output_file, "|            ----------           | EPSILON                  | Not Def.  |          ----------        | Not a number | %-25s  | yes          |                           |\n",
                 parent->stack_symbol->value.nt->name);   
     }
-    else printf("Errors Present. Parse tree not printed\n");
+    else printf("Errors Present. Empty Parse tree printed\n");
     return;
 }
 
