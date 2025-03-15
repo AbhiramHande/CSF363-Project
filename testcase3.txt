@@ -1,0 +1,29 @@
+%Palindrome function
+
+_palindromeYesorNo input parameter list[int c2d67, int d4b5]output parameter list[int b2dcbcbd3];
+    type int: b3b3; type int: d2cbd; type int: c6dc34; type int: c2d66;
+    c2d66 <--- c2d67;
+    b3b3 <--- 0;
+    while(d4b5 > 0)
+        d2cbd <--- c2d66 / 10;
+        c6dc34 <--- c2d66 - (d2cbd * 10);
+        b3b3 <--- (b3b3 * 10) + c6dc34;
+        d4b5 <--- d4b5 - 1;
+    endwhile
+
+    if(b3b3 == c2d67)
+    then
+        b2dcbcbd3 <--- 1;
+    else
+        b2dcbcbd3 <--- 0;
+    endif
+    return[b2dcbcbd3];
+end
+
+_main
+    type int: d5c453; type int: d5cb55; type int: b34345;
+    read(d5c453); read(d5cb55);
+    [b34345] <--- call _palindromeYesorNo with parameters[d5c453, d5cb55];
+    write(b34345);
+    return;
+end
