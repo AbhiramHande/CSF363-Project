@@ -18,178 +18,6 @@ void first_and_follow_cleanup(void);
 node* create_tree_node_nonterm(non_terminal* nt);
 node* create_tree_node_term(token_type tok_name);
 
-// int main(int argc, char *argv[]) {
-//     setbuf(stderr, NULL);
-//     atexit(first_and_follow_cleanup);
-
-//     if (argc != 3) {
-//         fprintf(stderr, "Usage: %s <grammar_file> <test_file>\n", argv[0]);
-//         return 1;
-//     }
-
-//     FILE* file = fopen(argv[1], "r");
-//     if (!file) {
-//         perror("Error opening file");
-//         return 1;
-//     }
-
-//     char line[MAX_LINE_LENGTH];
-//     while (fgets(line, MAX_LINE_LENGTH, file)) {
-
-//         // Parse the production rule to remove the arrow
-//         char* arrow = strstr(line, "===>");
-//         if (!arrow) continue;
-//         *arrow = '\0';
-//         char* lhs = line;
-
-//         // Parse the rule to remove leading and trailing spaces
-//         while (isspace(*lhs)) 
-//             lhs++;
-//         char* end = lhs + strlen(lhs) - 1;
-//         while (end > lhs && isspace(*end)) 
-//             end--;
-//         *(end + 1) = '\0';
-
-//         // Check the LHS for non-terminal
-//         if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
-//             fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
-//             continue;
-//         }
-
-//         int str_len = strlen(lhs) - 2;
-//         non_terminal* nt = find_non_terminal(lhs + 1, str_len);
-//         if (!nt) {
-//             nt = (non_terminal*)malloc(sizeof(non_terminal));
-//             nt->name = strndup(lhs + 1, str_len);
-//             nt->prod_count = 0;
-//             nt->first_size = 0;
-//             nt->follow_size = 0;
-//             nt->productions = NULL;
-//             nt->first_set = NULL;
-//             nt->follow_set = NULL;
-//             nt->has_epsilon_in_first = false;
-            
-//             non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
-//             non_terminals[non_terminal_count++] = nt;
-//         }
-
-//         // Add start symbol if there is none
-//         if (!start_symbol)
-//             start_symbol = nt;
-//     }
-
-//     rewind(file);
-//     while (fgets(line, MAX_LINE_LENGTH, file)) {
-
-//         // Parse the production rule to remove the arrow
-//         char* arrow = strstr(line, "===>");
-//         if (!arrow) continue;
-//         *arrow = '\0';
-//         char* lhs = line;
-//         char* rhs = arrow + 4;
-
-//         // Parse the rule to remove leading and trailing spaces
-//         while (isspace(*lhs)) 
-//             lhs++;
-//         char* end = lhs + strlen(lhs) - 1;
-//         while (end > lhs && isspace(*end)) 
-//             end--;
-//         *(end + 1) = '\0';
-
-//         while (isspace(*rhs)) 
-//             rhs++;
-//         end = rhs + strlen(rhs) - 1;
-//         while (end > rhs && isspace(*end)) 
-//             end--;
-//         *(end + 1) = '\0';
-
-//         // Check the LHS for non-terminal
-//         if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
-//             fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
-//             continue;
-//         }
-
-//         int str_len = strlen(lhs) - 2;
-//         non_terminal* nt = find_non_terminal(lhs + 1, str_len);
-
-//         // Prase the RHS of the rule
-//         char* save_rule;
-//         char* alt = strtok_r(rhs, "|", &save_rule);
-//         while (alt) {
-//             production* prod = (production*)malloc(sizeof(production));
-//             prod->symbols = NULL;
-//             prod->count = 0;
-            
-//             // Parse each rule for tokens, non-terminals and epsilon
-//             char* save_token;
-//             char* token = strtok_r(alt, " \t", &save_token);
-//             while (token) {
-//                 int tok_str_len = strlen(token);
-//                 symbol* sym = (symbol*)malloc(sizeof(symbol));
-//                 if (strcmp(token, "EPS") == 0) {
-//                     sym->type = SYM_EPSILON;
-//                     sym->value.token_value = EPSILON;
-//                 } 
-//                 else if (token[0] == '<' && token[tok_str_len -1] == '>') {
-//                     sym->type = SYM_NON_TERMINAL;
-//                     sym->value.nt = find_non_terminal(token + 1, tok_str_len - 2);
-//                 } 
-//                 else if (strncmp(token, "TK_", 3) == 0) {
-//                     sym->type = SYM_TERMINAL;
-//                     sym->value.token_value = string_to_token(token);
-//                 } 
-//                 else {
-//                     fprintf(stderr, "Invalid symbol: %s\n", token);
-//                     free(sym);
-//                     sym = NULL;
-//                     token = strtok(NULL, " \t");
-//                     continue;
-//                 }
-
-//                 prod->symbols = (symbol**)realloc(prod->symbols, (prod->count + 1) * sizeof(symbol*));
-//                 prod->symbols[prod->count++] = sym;
-
-//                 token = strtok_r(NULL, " \t", &save_token);
-//             }
-
-//             nt->productions = (production**)realloc(nt->productions, (nt->prod_count + 1)*sizeof(production*));
-//             nt->productions[nt->prod_count++] = prod;
-
-//             alt = strtok_r(NULL, "|", &save_rule);
-//         }
-//     }
-
-//     fclose(file);
-//     file = NULL;
-
-//     struct timespec start, end;
-//     clock_gettime(CLOCK_MONOTONIC, &start);
-
-//         for(int i = 0; i < non_terminal_count; i++)
-//             compute_first_set(non_terminals[i]);
-//         compute_follow_set(start_symbol, NULL, NULL, 0);
-
-//         //print_first_and_follow_sets(true, true);
-//         //generate_parse_table();
-//         initializations();
-
-//         generate_parse_map();
-
-//         FILE* src_code = fopen(argv[2], "r");
-//         node* root = generate_parse_tree(src_code);
-
-//     clock_gettime(CLOCK_MONOTONIC, &end);
-
-//     //print_parse_table();
-//     //print_parse_map();
-//     print_parse_tree(root);
-//     long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
-//     printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
-
-//     parse_tree_cleanup(&root);
-//     return 0;
-// }
-
 node* parse_code(char* grammar_file, char* input_file) {
     atexit(first_and_follow_cleanup);
 
@@ -328,18 +156,12 @@ node* parse_code(char* grammar_file, char* input_file) {
     fclose(file);
     file = NULL;
 
-    // struct timespec start, end;
-    // clock_gettime(CLOCK_MONOTONIC, &start);
-
     for(int i = 0; i < non_terminal_count; i++)
         compute_first_set(non_terminals[i]);
     compute_follow_set(start_symbol, NULL, NULL, 0);
     generate_parse_map();
 
     FILE* src_code = fopen(input_file, "r");
-    // clock_gettime(CLOCK_MONOTONIC, &end);
-    // long long time = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
-    // printf("\nTotal time taken to create first and follow sets and generate parse table is %lld ns\n", time);
     node* root = generate_parse_tree(src_code);
     fclose(src_code);
     return root;

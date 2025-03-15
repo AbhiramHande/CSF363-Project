@@ -3,6 +3,74 @@
 #include "lexer.h"
 #include "symbol_table.h"
 
+#define STATE_START             0
+#define STATE_FIN_NUM           1
+#define STATE_FIN_RNUM_NO_EXP   2
+#define STATE_FIN_RNUM_EXP      3
+#define STATE_FIN_ID            4
+#define STATE_FIN_KEY_OR_FIELD  5
+#define STATE_FIN_FUNCTION      6
+#define STATE_FIN_RUID          7
+#define STATE_FIN_LE            8
+#define STATE_FIN_ASSIGNOP      9
+#define STATE_FIN_LT_MIUNS      10
+#define STATE_FIN_LT            11
+#define STATE_FIN_GE            12
+#define STATE_FIN_GT            13
+#define STATE_FIN_SQR_OPEN      TK_SQL
+#define STATE_FIN_SQR_CLOSE     TK_SQR
+#define STATE_FIN_COMMA         TK_COMMA
+#define STATE_FIN_SEMI_COLON    TK_SEM
+#define STATE_FIN_COLON         TK_COLON
+#define STATE_FIN_DOT           TK_DOT
+#define STATE_FIN_PAREN_OPEN    TK_OP
+#define STATE_FIN_PAREN_CLOSE   TK_CL
+#define STATE_FIN_PLUS          TK_PLUS
+#define STATE_FIN_MINUS         TK_MINUS
+#define STATE_FIN_MUL           TK_MUL
+#define STATE_FIN_DIV           TK_DIV
+#define STATE_FIN_AND           26
+#define STATE_FIN_OR            27
+#define STATE_FIN_NOT           28
+#define STATE_FIN_NOT_EQUAL     29
+#define STATE_FIN_EQUAL         30
+#define STATE_FIN_WHITESPACE    31
+#define STATE_FIN_NEWLINE       32
+#define STATE_FIN_COMMENT       33                 
+
+#define STATE_INTR_COMMENT                  34
+#define STATE_INTR_NUM                      35
+#define STATE_INTR_RNUM_NO_EXP_NO_DIGIT     36
+#define STATE_INTR_RNUM_NO_EXP_ONE_DIGIT    37
+#define STATE_INTR_RNUM_NO_EXP_TWO_DIGIT    38
+#define STATE_INTR_RNUM_EXP_NO_DIGIT        39
+#define STATE_INTR_RNUM_EXP_ONE_DIGIT       40
+#define STATE_INTR_RNUM_EXP_NO_DIGIT_SIGNED 41
+#define STATE_INTR_ID_ONE_CHAR              42
+#define STATE_INTR_ID_MORE_CHARS            43
+#define STATE_INTR_ID_MORE_DIGITS           44
+#define STATE_INTR_KEY_OR_FIELD             45
+#define STATE_INTR_FUNCTION_                46
+#define STATE_INTR_FUNCTION_CHARS           47
+#define STATE_INTR_FUNCTION_DIGITS          48
+#define STATE_INTR_RUID_HASH                49
+#define STATE_INTR_RUID_CHARS               50
+#define STATE_INTR_ANGULAR_OPEN             51
+#define STATE_INTR_ANGULAR_OPEN_MINUS       52
+#define STATE_INTR_ALMOST_ASSIGN            53
+#define STATE_INTR_ANGULAR_CLOSE            54
+#define STATE_INTR_WHITESPACE               55
+#define STATE_INTR_AND_ONE                  56
+#define STATE_INTR_AND_TWO                  57
+#define STATE_INTR_AT_ONE                   58
+#define STATE_INTR_AT_TWO                   59
+#define STATE_INTR_BANG                     60
+#define STATE_INTR_EQUAL                    61
+
+#define STATE_TRAP_SYMBOL_START             62      
+#define STATE_TRAP_PATTERN                  63
+#define STATE_TRAP_SYMBOL_INTR              65
+
 static twin_buffer* buffer = NULL;
 token* get_next_token_helper(FILE* file_ptr);
 void buffer_cleanup(void) __attribute__((destructor));
@@ -68,10 +136,8 @@ token_type string_to_token(const char* string) {
     if (strcmp(string, "EPS") == 0) return EPSILON;
     if (strcmp(string, "TK_ERROR") == 0) return TK_ERROR;
     if (strcmp(string, "$") == 0) return DOLLAR;
-    //if (strcmp(string, "SYN") == 0) return SYN;
 
-    // If no match is found, return a default or error value
-    return TK_ERROR;  // You could choose to return an error code or handle this case differently
+    return TK_ERROR;
 }
 
 const char* token_to_string(token_type token) {
@@ -136,7 +202,7 @@ const char* token_to_string(token_type token) {
         case EPSILON: return "EPS";
         case TK_ERROR: return "TK_ERROR";
         case DOLLAR: return "$";
-        //case SYN: return "SYN";
+        case TK_EOF: return "EOF";
         default: return "TK_ERROR";
     }
 }
@@ -238,14 +304,14 @@ void buffer_init(FILE* file_ptr){
     get_next_token_helper(NULL);
     buffer = (twin_buffer*)calloc(1, sizeof(twin_buffer));
     if(!buffer){
-        fprintf(stderr, "Error: Failed to initialize Twin buffer");
+        fprintf(stderr, "\033[1;31mError:\033[0m Failed to initialize Twin buffer");
         exit(EXIT_FAILURE);
     }
     
     buffer->active_buffer = (char*)calloc(BUFFER_SIZE, sizeof(char));
     buffer->load_buffer = (char*)calloc(BUFFER_SIZE, sizeof(char));
     if(!buffer->active_buffer || !buffer->load_buffer){
-        fprintf(stderr, "Error: Failed to initialize Twin buffer");
+        fprintf(stderr, "\033[1;31mError:\033[0m Failed to initialize Twin buffer");
 
         free(buffer->active_buffer);
         free(buffer->load_buffer);
@@ -263,21 +329,32 @@ void buffer_init(FILE* file_ptr){
     buffer->buffer_loaded = false; 
 }
 
+token* create_token(char* lexeme, token_type type, int line){
+    token* ret_tok = calloc(1, sizeof(token));
+    entry* sym_tab = symbol_table_insert(lexeme, type);
+
+    ret_tok->name = sym_tab->type;
+    ret_tok->lexeme = sym_tab->name;
+    ret_tok->line_num = line;
+
+    return ret_tok;
+}
+
 token* get_next_token(FILE* file_ptr){
     if(file_ptr == NULL)
-        fprintf(stderr, "Error: Invalid file passed.\n");
+        fprintf(stderr, "\033[1;31mError:\033[0m Invalid file passed.\n");
     token* ret;
     while(!(ret = get_next_token_helper(file_ptr)));
     return ret;
 }
 
 token* get_next_token_helper(FILE* file_ptr){
-    static int state = 0;
+    static int state = STATE_START;
     static int line_number = 1;
     static entry* comment = NULL;
 
     if(file_ptr == NULL){
-        state = 0;
+        state = STATE_START;
         line_number = 1;
         return NULL;
     }
@@ -289,8 +366,8 @@ token* get_next_token_helper(FILE* file_ptr){
     char buffer_char = buffer->active_buffer[buffer->forward_ptr];
     char* lexeme = NULL;
     token* ret_tok = NULL;
-    entry* sym_tab = NULL;
-    int error_retract = 1;
+    entry* sym_tab = NULL; 
+    static int error_retract = 1;      //TODO: might be depracated --must remove
 
     if(state == 0 && buffer_char == '\0' && buffer->forward_ptr != BUFFER_SIZE - 1){
         ret_tok = calloc(1, sizeof(struct Token));
@@ -299,293 +376,254 @@ token* get_next_token_helper(FILE* file_ptr){
     }
     
     switch(state) {
-        case 0:
+        case STATE_START:
             if(isdigit(buffer_char))
-                state = 35;
+                state = STATE_INTR_NUM;
             else if(buffer_char == 'b' || buffer_char == 'c' || buffer_char == 'd')
-                state = 42;
+                state = STATE_INTR_ID_ONE_CHAR;
             else if(islower(buffer_char))
-                state = 45;
+                state = STATE_INTR_KEY_OR_FIELD;
             else{
                 switch (buffer_char) {
                     case '%':
-                        state = 34;
+                        state = STATE_INTR_COMMENT;
                         break;
 
                     case '_':
-                        state = 46;
+                        state = STATE_INTR_FUNCTION_;
                         break;
                     
                     case '#':
-                        state = 49;
+                        state = STATE_INTR_RUID_HASH;
                         break;
                     
                     case '<':
-                        state = 51;
+                        state = STATE_INTR_ANGULAR_OPEN;
                         break;
 
                     case '>':
-                        state = 54;
+                        state = STATE_INTR_ANGULAR_CLOSE;
                         break;
 
                     case '[':
-                        state = 14;
+                        state = STATE_FIN_SQR_OPEN;
                         break;
 
                     case ']':
-                        state = 15;
+                        state = STATE_FIN_SQR_CLOSE;
                         break;
 
                     case '\t':
                     case ' ':
-                        state = 55;
+                        state = STATE_INTR_WHITESPACE;
                         break;
 
                     case '\n':
-                        state = 32;
+                        state = STATE_FIN_NEWLINE;
                         break;
 
                     case ',':
-                        state = 16;
+                        state = STATE_FIN_COMMA;
                         break;
 
                     case ';':
-                        state = 17;
+                        state = STATE_FIN_SEMI_COLON;
                         break;
 
                     case ':':
-                        state = 18;
+                        state = STATE_FIN_COLON;
                         break;
 
                     case '.':
-                        state = 19;
+                        state = STATE_FIN_DOT;
                         break;
 
                     case '(':
+                        state = STATE_FIN_PAREN_OPEN;
+                        break;
+
                     case ')':
-                        state = buffer_char - 20;
+                        state = STATE_FIN_PAREN_CLOSE;
                         break;
 
                     case '+':
-                        state = 22;
+                        state = STATE_FIN_PLUS;
                         break;
 
                     case '-':
-                        state = 23;
+                        state = STATE_FIN_MINUS;
                         break;
 
                     case '*':
-                        state = 24;
+                        state = STATE_FIN_MUL;
                         break;
 
                     case '/':
-                        state = 25;
+                        state = STATE_FIN_DIV;
                         break;
 
                     case '&':
-                        state = 56;
+                        state = STATE_INTR_AND_ONE;
                         break;
 
                     case '@':
-                        state = 58;
+                        state = STATE_INTR_AT_ONE;
                         break;
                     
                     case '~':
-                        state = 28;
+                        state = STATE_FIN_NOT;
                         break;
                     
                     case '!':
-                        state = 60;
+                        state = STATE_INTR_BANG;
                         break;
 
                     case '=':
-                        state = 61;
+                        state = STATE_INTR_EQUAL;
                         break;                        
 
                     default:
-                        state = 62;
+                        state = STATE_TRAP_SYMBOL_START;
                         break;
                 }
             }
             break;
         
-        case 1:
-            entry* sym_tab = symbol_table_insert(retract_and_update(1), TK_NUM);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_NUM;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_NUM:
+            char* lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_NUM, line_number);
             ret_tok->value.num = strtoll(ret_tok->lexeme, NULL, 10);
             ret_tok->is_value_int = true;
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 2: case 3: //TODO: take care of 0.00E-123
-            sym_tab = symbol_table_insert(state == 2 ? retract_and_update(1) : retract_and_update(0), TK_RNUM);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_RNUM;
-            ret_tok->lexeme =  sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_RNUM_NO_EXP: case STATE_FIN_RNUM_EXP:
+            lexeme = (state == 2 ? retract_and_update(1) : retract_and_update(0));
+            ret_tok = create_token(lexeme, TK_RNUM, line_number);
             ret_tok->value.r_num = strtold(ret_tok->lexeme, NULL);
             ret_tok->is_value_int = false;
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 4: //TODO: check lengths for 4, 5 and 6
+        case STATE_FIN_ID:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 20){
-                fprintf(stderr, "Line no. %d: Error: Variable identifier \"%s\" is longer than the prescribed length of 20 characters.", line_number, lexeme);
-                state = 0;
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Variable identifier is longer than the prescribed length of \033[1m20\033[0m characters.\n", line_number);
+                state = STATE_START;
                 return NULL;
             }
-            sym_tab = symbol_table_insert(lexeme, TK_ID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ID;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_ID, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 5:
+        case STATE_FIN_KEY_OR_FIELD: //TODO: check lengths for 5 like in 4 and 6
             lexeme = retract_and_update(1);
-            sym_tab = symbol_table_insert(lexeme, TK_FIELDID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_FIELDID, line_number);
 
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 6:
+        case STATE_FIN_FUNCTION:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 30){
-                fprintf(stderr, "Line no. %d: Error: Function identifier \"%s\" is longer than the prescribed length of 30 characters.", line_number, lexeme);
-                state = 0;
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Function identifier is longer than the prescribed length of \033[1m30\033[0m characters.\n", line_number);
+                state = STATE_START;
                 return NULL;
             }
-            sym_tab = symbol_table_insert(lexeme, TK_FUNID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_FUNID, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 7:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_RUID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_RUID;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_RUID:
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_RUID, line_number);
 
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 8:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_LE);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_LE;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_LE:
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_LE, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 9:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_ASSIGNOP);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ASSIGNOP;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_ASSIGNOP:
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_ASSIGNOP, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 10:
-            sym_tab = symbol_table_insert(retract_and_update(2), TK_LT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_LT;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_LT_MIUNS:
+            lexeme = retract_and_update(2);
+            ret_tok = create_token(lexeme, TK_LT, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 11:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_LT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = retract_and_update(1);
-            ret_tok->line_num = line_number;
+        case STATE_FIN_LT:
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_LT, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 12:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_GE);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_GE;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_GE:
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_GE, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 13:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_GT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_GT;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_GT:
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_GT, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-        case 28:
-        case 29:
-        case 30:
-            sym_tab = symbol_table_insert(retract_and_update(0), (token_type)state);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+        case STATE_FIN_SQR_OPEN:
+        case STATE_FIN_SQR_CLOSE:
+        case STATE_FIN_COMMA:
+        case STATE_FIN_SEMI_COLON:
+        case STATE_FIN_COLON:
+        case STATE_FIN_DOT:
+        case STATE_FIN_PAREN_OPEN:
+        case STATE_FIN_PAREN_CLOSE:
+        case STATE_FIN_PLUS:
+        case STATE_FIN_MINUS:
+        case STATE_FIN_MUL:
+        case STATE_FIN_DIV:
+        case STATE_FIN_AND:
+        case STATE_FIN_OR:
+        case STATE_FIN_NOT:
+        case STATE_FIN_NOT_EQUAL:
+        case STATE_FIN_EQUAL:
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, (token_type)state, line_number);
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 31:
+        case STATE_FIN_WHITESPACE:
             if(buffer->forward_ptr == 0){
                 buffer->forward_ptr = BUFFER_SIZE - 1;
                 swap_buffer(file_ptr);
@@ -593,247 +631,264 @@ token* get_next_token_helper(FILE* file_ptr){
             else
                 buffer->forward_ptr--;
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
 
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
         
-        case 32:
+        case STATE_FIN_NEWLINE:
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
             line_number++;
 
-            state = 0;
+            state = STATE_START;
             return NULL;
             break;
 
-        case 33:
+        case STATE_FIN_COMMENT:
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
             ret_tok = calloc(1, sizeof(token));
             ret_tok->lexeme = comment->name;
             ret_tok->name = TK_COMMENT;
             ret_tok->line_num = line_number++;
             
-            state = 0;
+            state = STATE_START;
             return ret_tok;
             break;
 
-        case 34:
+        case STATE_INTR_COMMENT:
             if(buffer_char != '\n')
-                state = 34;
+                state = STATE_INTR_COMMENT;
             else 
-                state = 33;
+                state = STATE_FIN_COMMENT;
             break;
             
-        case 35:
+        case STATE_INTR_NUM:
             if(buffer_char == '.')
-                state = 36;
+                state = STATE_INTR_RNUM_NO_EXP_NO_DIGIT;
             else if(!isdigit(buffer_char))
-                state = 1;
+                state = STATE_FIN_NUM;
             break;
         
-        case 36:
+        case STATE_INTR_RNUM_NO_EXP_NO_DIGIT:
             if(isdigit(buffer_char))
-                state = 37;
+                state = STATE_INTR_RNUM_NO_EXP_ONE_DIGIT;
             else
-                state = 63; 
+                state = STATE_TRAP_PATTERN; 
             break;
         
-        case 37:
+        case STATE_INTR_RNUM_NO_EXP_ONE_DIGIT:
             if(isdigit(buffer_char))
-                state = 38;
+                state = STATE_INTR_RNUM_NO_EXP_TWO_DIGIT;
             else
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
                 
-        case 38:
+        case STATE_INTR_RNUM_NO_EXP_TWO_DIGIT:
             if(buffer_char == 'E')
-                state = 39;
-            else if(isdigit(buffer_char))
-                state = 64;
+                state = STATE_INTR_RNUM_EXP_NO_DIGIT;
             else
-                state = 2;
+                state = STATE_FIN_RNUM_NO_EXP;
             break;
         
-        case 39:
+        case STATE_INTR_RNUM_EXP_NO_DIGIT:
             if(isdigit(buffer_char))
-                state = 40;
+                state = STATE_INTR_RNUM_EXP_ONE_DIGIT;
             else if(buffer_char == '+' || buffer_char == '-')
-                state = 41;
+                state = STATE_INTR_RNUM_EXP_NO_DIGIT_SIGNED;
             else
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
         
-        case 40:
+        case STATE_INTR_RNUM_EXP_ONE_DIGIT:
             if(isdigit(buffer_char))
-                state = 3;
+                state = STATE_FIN_RNUM_EXP;
             else
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
         
-        case 41:
+        case STATE_INTR_RNUM_EXP_NO_DIGIT_SIGNED:
             if(isdigit(buffer_char))
-                state = 40;
+                state = STATE_INTR_RNUM_EXP_ONE_DIGIT;
             else
-                state = 62;
+                state = STATE_TRAP_PATTERN;
             break;
         
-        case 42:
+        case STATE_INTR_ID_ONE_CHAR:
             if(islower(buffer_char))
-                state = 45;
+                state = STATE_INTR_KEY_OR_FIELD;
             else if(buffer_char >= '2' && buffer_char <= '7')
-                state = 43;
+                state = STATE_INTR_ID_MORE_CHARS;
             else
-                state = 63;
+                state = STATE_FIN_KEY_OR_FIELD;
             break;
             
-        case 43:
+        case STATE_INTR_ID_MORE_CHARS:
             if(buffer_char == 'b' || buffer_char == 'c' || buffer_char == 'd'){
-                state = 43;
+                state = STATE_INTR_ID_MORE_CHARS;
                 break;
             }
         
-        case 44:
+        case STATE_INTR_ID_MORE_DIGITS:
             if(buffer_char >= '2' && buffer_char <= '7')
-                state = 44;
+                state = STATE_INTR_ID_MORE_DIGITS;
             else 
-                state = 4;
+                state = STATE_FIN_ID;
             break;
         
-        case 45:
+        case STATE_INTR_KEY_OR_FIELD:
             if(islower(buffer_char))
-                state = 45;
+                state = STATE_INTR_KEY_OR_FIELD;
             else
-                state = 5;
+                state = STATE_FIN_KEY_OR_FIELD;
             break;
 
-        case 46:
+        case STATE_INTR_FUNCTION_:
             if(isalpha(buffer_char))
-                state = 47;
+                state = STATE_INTR_FUNCTION_CHARS;
             else 
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             
-        case 47:
+        case STATE_INTR_FUNCTION_CHARS:
             if(isalpha(buffer_char)){
-                state = 47;
+                state = STATE_INTR_FUNCTION_CHARS;
                 break;
             }
 
-        case 48:
+        case STATE_INTR_FUNCTION_DIGITS:
             if(isdigit(buffer_char))
-                state = 48;
+                state = STATE_INTR_FUNCTION_DIGITS;
             else 
-                state = 6;
+                state = STATE_FIN_FUNCTION;
             break;
         
-        case 49:
+        case STATE_INTR_RUID_HASH:
             if(islower(buffer_char))
-                state = 50;
+                state = STATE_INTR_RUID_CHARS;
             else 
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
         
-        case 50:
+        case STATE_INTR_RUID_CHARS:
             if(islower(buffer_char))
-                state = 50;
+                state = STATE_INTR_RUID_CHARS;
             else 
-                state = 7;
+                state = STATE_FIN_RUID;
             break;
 
-        case 51:
+        case STATE_INTR_ANGULAR_OPEN:
             if(buffer_char == '=')
-                state = 8;
+                state = STATE_FIN_LE;
             else if(buffer_char == '-')
-                state = 52;
+                state = STATE_INTR_ANGULAR_OPEN_MINUS;
             else 
-                state = 11;
+                state = STATE_FIN_LT;
             break;
 
-        case 52:
+        case STATE_INTR_ANGULAR_OPEN_MINUS:
             if(buffer_char == '-')
-                state = 53;
+                state = STATE_INTR_ALMOST_ASSIGN;
             else 
-                state = 10;
+                state = STATE_FIN_LT_MIUNS;
             break;
 
-        case 53:
+        case STATE_INTR_ALMOST_ASSIGN:
             if(buffer_char == '-')
-                state = 9;
+                state = STATE_FIN_ASSIGNOP;
             else 
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
 
-        case 54:
+        case STATE_INTR_ANGULAR_CLOSE:
             if(buffer_char == '=')
-                state = 12;
+                state = STATE_FIN_GE;
             else 
-                state = 13;
+                state = STATE_FIN_GT;
             break;
 
-        case 55:
+        case STATE_INTR_WHITESPACE:
             if(!isspace(buffer_char))
-                state = 31;
+                state = STATE_FIN_WHITESPACE;
             else if(buffer_char == '\n')
-                state = 32;
+                state = STATE_FIN_NEWLINE;
             else
-                state = 55;
+                state = STATE_INTR_WHITESPACE;
             break;
 
-        case 56:
+        case STATE_INTR_AND_ONE:
             if(buffer_char == '&')
-                state = 57;
+                state = STATE_INTR_AND_TWO;
             else
-                state = 63;
+                state = STATE_TRAP_SYMBOL_INTR;
             break;
 
-        case 57:
+        case STATE_INTR_AND_TWO:
             if(buffer_char == '&')
-                state = 26;
+                state = STATE_FIN_AND;
             else
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break; 
 
-        case 58:
+        case STATE_INTR_AT_ONE:
             if(buffer_char == '@')
-                state = 57;
+                state = STATE_INTR_AT_TWO;
             else
-                state = 63;
+                state = STATE_TRAP_SYMBOL_INTR;
             break;
 
-        case 59:
+        case STATE_INTR_AT_TWO:
             if(buffer_char == '@')
-                state = 27;
+                state = STATE_FIN_OR;
             else
-                state = 63;
+                state = STATE_TRAP_PATTERN;
             break;
 
-        case 60: 
-        case 61:
+        case STATE_INTR_BANG: 
             if(buffer_char == '=')
-                state -= 31;
+                state = STATE_FIN_NOT_EQUAL;
             else    
-                state = 63;
+                state = STATE_TRAP_SYMBOL_INTR;
+            break;
+
+        case STATE_INTR_EQUAL:
+            if(buffer_char == '=')
+                state = STATE_FIN_EQUAL;
+            else    
+                state = STATE_TRAP_SYMBOL_INTR;
             break;
             
-        case 62:
+        case STATE_TRAP_SYMBOL_START:
             lexeme = retract_and_update(0);
-            printf("Line no. %d: Error: Unknown Symbol <%s>\n", line_number, lexeme);
-            state = 0;
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Symbol \"\033[1m%s\033[0m\"\n", line_number, lexeme);
+            state = STATE_START;
             return NULL;
             break;
         
-        case 63:
+        case STATE_TRAP_PATTERN:
             lexeme = retract_and_update(error_retract);
-            printf("Line no. %d: Error: Unknown Pattern <%s>\n", line_number, lexeme);
-            state = 0;
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Pattern \"\033[1m%s\033[0m\"\n", line_number, lexeme);
+            state = STATE_START;
             error_retract = 1;
             return NULL;
             break;
 
-        case 64:
-            if(isdigit(buffer_char))
-                error_retract++;
-            else 
-                state = 63; // TODO: handle cases like 0.000E-04 0.000E-0003
+        // case 64:
+        //     if(isdigit(buffer_char))
+        //         error_retract++;
+        //     else 
+        //         state = 63; // TODO: handle cases like 0.000E-04 0.000E-0003
+        //     break;
+
+        case STATE_TRAP_SYMBOL_INTR:
+            lexeme = retract_and_update(1);
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Symbol \"\033[1m%s\033[0m\"\n", line_number, lexeme);
+            state = STATE_START;
+            return NULL;
             break;
 
         default: 

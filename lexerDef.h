@@ -2,9 +2,9 @@
 #define LEXERDEF_H
 
 #define BUFFER_SIZE 2048
-#define KEYWORD_END TK_ELSE
-#define KEYWORD_START TK_WITH //Verify there is none before or after
 #define TERMINAL_COUNT 60
+#define KEYWORD_END TK_ELSE
+#define KEYWORD_START TK_WITH
 
 #include <stdio.h>
 #include <stdlib.h>
