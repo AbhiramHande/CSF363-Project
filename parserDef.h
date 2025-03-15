@@ -8,27 +8,32 @@ typedef struct Production production;
 typedef struct Symbol symbol;
 typedef struct TreeNode node;
 
+// Union data structure defined for symbol_value
 typedef union {
     non_terminal* nt;
     token_type token_value;
 } symbol_value;
 
+// Enum data structure defined for symbol_type
 typedef enum {
     SYM_NON_TERMINAL,
     SYM_TERMINAL,
     SYM_EPSILON
 } symbol_type;
 
+// Structure for a symbol
 struct Symbol {
     symbol_value value;
     symbol_type type;
 };
 
+// Structure for a Production
 struct Production {
     symbol** symbols;   // change to int
     int count;
 };
 
+// Structure for a non terminal symbol
 struct NonTerminal {
     char* name;
     int prod_count;
@@ -40,6 +45,7 @@ struct NonTerminal {
     bool has_epsilon_in_first;
 };
 
+// Structure for the node of the parse tree
 struct TreeNode {
     symbol* stack_symbol;   // change to bool 
     token* token_value;     // change to void*

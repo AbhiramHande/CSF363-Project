@@ -13,6 +13,7 @@ typedef enum TokenType token_type;
 typedef struct TwinBuffer twin_buffer;
 typedef struct Token token;
 
+// Defining an enum data structure for all different tokens
 enum TokenType{
     TK_ASSIGNOP,
     TK_COMMENT,
@@ -77,6 +78,7 @@ enum TokenType{
     TK_EOF
 };
 
+// Defining the structure for the twin buffer
 struct TwinBuffer {
     char* active_buffer;
     char* load_buffer;
@@ -85,6 +87,7 @@ struct TwinBuffer {
     bool buffer_loaded;
 };
 
+// Defining the structure of a token
 struct Token {
     token_type name;
     char* lexeme;

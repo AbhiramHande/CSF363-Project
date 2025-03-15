@@ -8,6 +8,7 @@
 #include "lexerDef.h"
 #include "parserDef.h"
 
+// Function declarations for all the functions of the hash map
 void map_insert(const unsigned int key, production* value);
 production* map_fetch(const unsigned int key);
 int get_collision_count();

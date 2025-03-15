@@ -9,12 +9,15 @@
 
 #define STACK_SIZE 1024
 
+// Structure for Stack
 typedef struct Stack {
     node** data;
     int top;
     int capacity;
 } stack;
 
+// Function Declarations of functions for stack creation, pushing an element, popping an element, getting the top of the stack 
+// and to check if the stack is empty
 stack* stack_create(void);
 bool stack_push(stack* s, node* nt);
 node* stack_pop(stack* s);

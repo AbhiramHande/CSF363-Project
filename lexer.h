@@ -10,6 +10,7 @@
 #include "lexerDef.h"
 #include "symbol_table.h"
 
+// Function declarations for all functions of the lexer
 void print_token(token *t);
 void buffer_init(FILE* file_ptr);
 token* get_next_token(FILE *fileptr);
