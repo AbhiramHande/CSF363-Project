@@ -1,7 +1,7 @@
 % Fibonacci function
 _fibonacci
-input parameter list [int c2d55]output parameter list[int d5bc23];
-type int: c235; type int: d5ddb5; type int: c2d54; type int: c2d53;
+input parameter list [int c2d55]output parameter list[int d5bc23]; % lol
+type int: c235; type int: d5ddb5; type int: c2d54; type int: c2d53; % lmao
 if((c2d55 == 0) @@@ (c2d55 == 1))
 then
     d5bc23 <--- 1;

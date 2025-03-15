@@ -2,6 +2,23 @@
 
 #include "parse.h"
 
+void removeComments(FILE* input_file) {
+    char* temp = NULL;
+    size_t bufferSize = 0;
+    ssize_t characters;
+    while ((characters = getline(&temp, &bufferSize, input_file)) != -1) {
+        for (int i = 0; i < characters; i++) {
+            if (temp[i] == '%') {
+                printf("\n");
+                break;
+            }
+            printf("%c", temp[i]);
+        }
+    }
+    printf("\n");
+    free(temp);
+}
+
 int main(int argc, char* argv[]){
     if(argc != 3){
         printf("Requires 3 arguments: Usage: %s <test_case>.txt <output_file>.txt\n", argv[0]);
@@ -53,7 +70,7 @@ int main(int argc, char* argv[]){
                 break;
             
             case '1':
-                //TODO
+                removeComments(input_file);
                 break;
 
             case '2':
