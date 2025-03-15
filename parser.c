@@ -692,15 +692,58 @@ void print_parse_tree_inorder(node* root, node* parent){
         if(root -> stack_symbol -> type == SYM_TERMINAL){
             
             if(parent != NULL){
-                if(root -> token_value -> name == TK_NUM) printf("%s \t %s \t %d \t %s \t %llu \t %s \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value.num, parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
-                else if(root -> token_value -> name == TK_RNUM) printf("%s \t %s \t %d \t %s \t %Lf \t %s \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value.r_num, parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
-                else printf("%s \t %s \t %s \t %s \t Not Number \t %s \t yes \t %d \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
+                if(root -> token_value -> name == TK_NUM) 
+                    printf("%s \t %s \t %d \t %s \t %lld \t %s \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value ->value.num, 
+                        parent->stack_symbol->value.nt->name, 
+                        token_to_string(root->token_value->name));
+                else if(root -> token_value -> name == TK_RNUM) 
+                    printf("%s \t %s \t %d \t %s \t %Lf \t %s \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value ->value.r_num, 
+                        parent->stack_symbol->value.nt->name, 
+                        token_to_string(root->token_value->name));
+                else 
+                    printf("%s \t %s \t %d \t %s \t Not Number \t %s \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        parent->stack_symbol->value.nt->name, 
+                        token_to_string(root->token_value->name));
                 
             }
             else{
-                if(root -> token_value -> name == TK_NUM) printf("%s \t %s \t %s \t %d \t %llu \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value.num, token_to_string(root->token_value->name));
-                else if(root -> token_value -> name == TK_RNUM) printf("%s \t %s \t %d \t %s \t %Lf \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value.r_num, token_to_string(root->token_value->name));
-                else printf("%s \t %s \t %d \t %s \t Not Number \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), token_to_string(root->token_value->name));
+                if(root -> token_value -> name == TK_NUM) 
+                    printf("%s \t %s \t %d \t %s \t %lld \t NULL \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value ->value.num, 
+                        token_to_string(root->token_value->name));
+                else if(root -> token_value -> name == TK_RNUM) 
+                    printf("%s \t %s \t %d \t %s \t %Lf \t NULL \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value ->value.r_num, 
+                        token_to_string(root->token_value->name));
+                else 
+                    printf("%s \t %s \t %d \t %s \t Not Number \t NULL \t yes \t %s \t\n", 
+                        root->token_value->lexeme, 
+                        token_to_string(root->token_value->name), 
+                        root -> token_value -> line_num , 
+                        token_to_string(root->token_value->name), 
+                        token_to_string(root->token_value->name));
             }
             return;  
         }
@@ -710,10 +753,10 @@ void print_parse_tree_inorder(node* root, node* parent){
             
             // Print
             if(parent != NULL){
-                printf("---- \t %s \t Not Defined \t ---- \t Not Number \t %s \t no \t %s \t\n", root->stack_symbol->value.nt->name, parent->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
+                printf("---- \t\t %s \t Not Defined \t ---- \t Not Number \t %s \t no \t %s \t\n", root->stack_symbol->value.nt->name, parent->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
             }
             else{
-                printf("---- \t %s \t Not Defined \t ---- \t Not Number \t NULL \t no \t %s \t\n", root->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
+                printf("---- \t\t %s \t Not Defined \t ---- \t Not Number \t NULL \t no \t %s \t\n", root->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
             }
             // Go Right
             for(int i = 1 ; i < root -> children_count ; i++){
