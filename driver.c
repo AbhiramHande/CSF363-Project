@@ -41,15 +41,15 @@ int main(int argc, char* argv[]){
 
     printf("\n                      \033[1;36mCS F363 - Compiler Project \033[1;92m(Group 14)\033[0m               \n");
     printf("\033[1;34m*********************************************************************************\033[0m\n");
-    // TODO: Add IDs before submission
+
     printf("\033[1;35mTeam Members:\033[0m                                  \n");
-    printf("\t- Abhiram H \n");
-    printf("\t- Ankur Renduchintala\n");    
-    printf("\t- Avyakth Kumar\n");
-    printf("\t- Suchit Chebolu\n");
-    printf("\t- Vikram Hariharan\n");
+    printf("\t- (2021B4A71134P) Abhiram H \n");
+    printf("\t- (2021B5A71159P) Ankur Renduchintala\n");    
+    printf("\t- (2021B3A71111P) Avyakth Kumar\n");
+    printf("\t- (2021B1A72281P) Suchit Chebolu\n");
+    printf("\t- (2022A7PS0013P) Vikram Hariharan\n");
     printf("\n");   
-    // TODO: Add more if necessary
+
     printf("\033[1;35mImplementation details:\033[0m                        \n");
     printf("\t- Both lexical and syntax analyzer modules implemented        \n");
     printf("\t- First and Follow sets automated                             \n");
@@ -113,7 +113,7 @@ int main(int argc, char* argv[]){
                 fprintf(output_file, "|             Lexeme              |       Current Node         |  Line no. |         Token Name         |     Value    |        Parent Node         |     Leaf     |        Node Symbol        |\n");
                 fprintf(output_file, "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n");
 
-                print_parse_tree_inorder(root, NULL, output_file);       //TODO Change this to in-order traversal and then write to file argv[2] 
+                print_parse_tree_inorder(root, NULL, output_file);       
                 fprintf(output_file, "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n");
                 fclose(output_file);
                 parse_tree_cleanup(&root);
