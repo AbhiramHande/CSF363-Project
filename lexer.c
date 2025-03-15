@@ -306,14 +306,14 @@ void buffer_init(FILE* file_ptr){
     get_next_token_helper(NULL);
     buffer = (twin_buffer*)calloc(1, sizeof(twin_buffer));
     if(!buffer){
-        fprintf(stderr, "Error: Failed to initialize Twin buffer");
+        fprintf(stderr, "\033[1;31mError:\033[0m Failed to initialize Twin buffer");
         exit(EXIT_FAILURE);
     }
     
     buffer->active_buffer = (char*)calloc(BUFFER_SIZE, sizeof(char));
     buffer->load_buffer = (char*)calloc(BUFFER_SIZE, sizeof(char));
     if(!buffer->active_buffer || !buffer->load_buffer){
-        fprintf(stderr, "Error: Failed to initialize Twin buffer");
+        fprintf(stderr, "\033[1;31mError:\033[0m Failed to initialize Twin buffer");
 
         free(buffer->active_buffer);
         free(buffer->load_buffer);
@@ -344,7 +344,7 @@ token* create_token(char* lexeme, token_type type, int line){
 
 token* get_next_token(FILE* file_ptr){
     if(file_ptr == NULL)
-        fprintf(stderr, "Error: Invalid file passed.\n");
+        fprintf(stderr, "\033[1;31mError:\033[0m Invalid file passed.\n");
     token* ret;
     while(!(ret = get_next_token_helper(file_ptr)));
     return ret;
@@ -369,7 +369,7 @@ token* get_next_token_helper(FILE* file_ptr){
     char* lexeme = NULL;
     token* ret_tok = NULL;
     entry* sym_tab = NULL; 
-    int error_retract = 1;      //TODO: might be depracated --must remove
+    static int error_retract = 1;      //TODO: might be depracated --must remove
 
     if(state == 0 && buffer_char == '\0' && buffer->forward_ptr != BUFFER_SIZE - 1){
         ret_tok = calloc(1, sizeof(struct Token));
@@ -514,7 +514,7 @@ token* get_next_token_helper(FILE* file_ptr){
         case STATE_FIN_ID:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 20){
-                fprintf(stderr, "Line no. %d: Error: Variable identifier is longer than the prescribed length of 20 characters.\n", line_number);
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Variable identifier is longer than the prescribed length of \033[1m20\033[0m characters.\n", line_number);
                 state = STATE_START;
                 return NULL;
             }
@@ -535,7 +535,7 @@ token* get_next_token_helper(FILE* file_ptr){
         case STATE_FIN_FUNCTION:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 30){
-                fprintf(stderr, "Line no. %d: Error: Function identifier is longer than the prescribed length of 30 characters.\n", line_number);
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Function identifier is longer than the prescribed length of \033[1m30\033[0m characters.\n", line_number);
                 state = STATE_START;
                 return NULL;
             }
@@ -860,15 +860,15 @@ token* get_next_token_helper(FILE* file_ptr){
             
         case STATE_TRAP_SYMBOL_START:
             lexeme = retract_and_update(0);
-            printf("Line no. %d: Error: Unknown Symbol <%s>\n", line_number, lexeme);
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Symbol \"\033[1m%s\033[0m\"\n", line_number, lexeme);
             state = STATE_START;
             return NULL;
             break;
         
         case STATE_TRAP_PATTERN:
             lexeme = retract_and_update(error_retract);
-            printf("Line no. %d: Error: Unknown Pattern <%s>\n", line_number, lexeme);
-            state = STATE_TRAP_PATTERN;
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Pattern \"\033[1m%s\033[0m\"\n", line_number, lexeme);
+            state = STATE_START;
             error_retract = 1;
             return NULL;
             break;
@@ -882,7 +882,7 @@ token* get_next_token_helper(FILE* file_ptr){
 
         case STATE_TRAP_SYMBOL_INTR:
             lexeme = retract_and_update(1);
-            printf("Line no. %d: Error: Unknown Symbol <%s>\n", line_number, lexeme);
+            printf("Line no. %-4d: \033[1;31mError:\033[0m Unknown Symbol \"\033[1m%s\033[0m\"\n", line_number, lexeme);
             state = STATE_START;
             return NULL;
             break;
