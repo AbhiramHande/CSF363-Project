@@ -25,7 +25,7 @@ void print_first_and_follow_sets(bool print_first, bool print_follow);
 void print_parse_tree_inorder();
 void print_parse_map();
 // void print_parse_tree(node* root); // Uncomment Later
-void print_parse_tree_inorder(node* root);
+void print_parse_tree_inorder(node* root, node* parent);
 void generate_parse_table();
 void generate_parse_map();
 node* generate_parse_tree(FILE* src_code);

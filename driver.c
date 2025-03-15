@@ -94,7 +94,10 @@ int main(int argc, char* argv[]){
             case '3':
                 buffer_init(input_file);
                 root = parse_code("grammar.txt", input_file);
-                print_parse_tree_inorder(root);       //TODO Change this to in-order traversal and then write to file argv[2] 
+                printf("Lexeme          CurrentNode          LineNo     TokenName            ValueIfNumber        ParentNode           Leaf       NodeSymbol\n");
+                printf("------------------------------------------------------------------------------------------------------------------------------------\n");
+
+                print_parse_tree_inorder(root, NULL);       //TODO Change this to in-order traversal and then write to file argv[2] 
                 parse_tree_cleanup(&root);
                 break;
             

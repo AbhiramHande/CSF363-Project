@@ -687,36 +687,36 @@ node* generate_parse_tree(FILE* src_code){
     stack_cleanup(&parser_stack);
     return start;
 }
-void print_parse_tree_inorder(node* root){
+void print_parse_tree_inorder(node* root, node* parent){
     if(!error_present){
         if(root -> stack_symbol -> type == SYM_TERMINAL){
-            printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", token_to_string(root->token_value->name), root->token_value->lexeme);
+            
+            if(parent != NULL){
+                if(root -> token_value -> name == TK_NUM) printf("%s \t %s \t %s \t %s \t %llu \t %s \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value, parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
+                else if(root -> token_value -> name == TK_RNUM) printf("%s \t %s \t %s \t %s \t %lld \t %s \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value, parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
+                else printf("%s \t %s \t %s \t %s \t Not Number \t %s \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), parent->stack_symbol->value.nt->name, token_to_string(root->token_value->name));
+            }
+            else{
+                if(root -> token_value -> name == TK_NUM) printf("%s \t %s \t %s \t %s \t %llu \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value, token_to_string(root->token_value->name));
+                else if(root -> token_value -> name == TK_RNUM) printf("%s \t %s \t %s \t %s \t %lld \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), root -> token_value ->value, token_to_string(root->token_value->name));
+                else printf("%s \t %s \t %s \t %s \t Not Number \t NULL \t yes \t %s \t\n", root->token_value->lexeme, token_to_string(root->token_value->name), root -> token_value -> line_num , token_to_string(root->token_value->name), token_to_string(root->token_value->name));
+            }
             return;  
         }
         else if(root -> stack_symbol -> type == SYM_NON_TERMINAL){
             // Go Left
-            if(root->children[0]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[0]);
+            if(root->children[0]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[0], root);
             
             // Print
-            printf("Leftmost Child: ");
-            if(root->children[0]->stack_symbol->type == SYM_TERMINAL)
-                printf("%s -->", token_to_string(root->children[0]->token_value->name));
-            else if(root->children[0]->stack_symbol->type == SYM_NON_TERMINAL)
-                printf("%s -->", root->children[0]->stack_symbol->value.nt->name);
-            printf(" Parent Node: %s --> Remaining Siblings (Excluding Leftmost Child) : ", root->stack_symbol->value.nt->name);
-            for(int i = 1 ; i < root -> children_count ; i++){
-                if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
-                    printf(" %s ", token_to_string(root->children[i]->token_value->name));
-                else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
-                    printf(" %s ", root->children[i]->stack_symbol->value.nt->name);
-                else
-                    printf("EPSILON \t");                    
+            if(parent != NULL){
+                printf("---- \t %s \t Not Defined \t ---- \t Not Number \t %s \t no \t %s \t\n", root->stack_symbol->value.nt->name, parent->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
             }
-            printf("\n\n");
-
+            else{
+                printf("---- \t %s \t Not Defined \t ---- \t Not Number \t NULL \t no \t %s \t\n", root->stack_symbol->value.nt->name, root->stack_symbol->value.nt->name);
+            }
             // Go Right
             for(int i = 1 ; i < root -> children_count ; i++){
-                if(root->children[i]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[i]);
+                if(root->children[i]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[i], root);
             }
         }
     }
