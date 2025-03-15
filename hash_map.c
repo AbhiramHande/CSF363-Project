@@ -23,6 +23,10 @@ static hash_map* _table = NULL;
 static void map_create(void) __attribute__((constructor));
 static void map_cleanup(void) __attribute__((destructor));
 
+static unsigned long hash_function(unsigned int key);
+static bool is_prime(unsigned int n);
+static int next_prime(int n);
+
 static unsigned long hash_function(unsigned int key) {
     unsigned long hash;
     for(hash = 5381; key; key >>= 8)
