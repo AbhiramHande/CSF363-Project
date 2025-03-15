@@ -24,7 +24,7 @@ void add_to_set(token_type** set, int* size, const token_type element);
 void print_first_and_follow_sets(bool print_first, bool print_follow);
 void print_parse_tree_inorder();
 void print_parse_map();
-void print_parse_tree_inorder(node* root, node* parent);
+void print_parse_tree_inorder(node* root, node* parent, FILE* output_file);
 void generate_parse_table();
 void generate_parse_map();
 node* generate_parse_tree(FILE* src_code);
