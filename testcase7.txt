@@ -1,0 +1,352 @@
+%Test Case 2: Syntactically correct test case
+%Following function computes the sum of user defined real numbers
+%The variable d3 maintains the sum of values
+_sumN  input parameter list [int d5cc34]  
+output parameter list[real d3];
+	type int : b5b567;
+	b5b567 <--- 1;
+	d3 <--- 0.00;
+	while ( b5b567 <= d5cc34)
+		read( c3bd);
+		d3 <--- d3 + c3bd;
+		b5b567 <--- b5b567 + 1;
+	endwhile
+	return [d3];
+end
+
+
+%Test Case 3: Syntactically correct testcase
+%Following function reads marks of a student in all subjects and returns as a record variable
+% Note that the variable b7 is not used anywhere but it is the syntactic requirement to have atleast one input parameter
+_readMarks input parameter list[int b7]
+output parameter list [ record #marks b3c45];
+	read(b3c45.maths);
+	read(b3c45.physics);
+	read(b3c45.chemistry);
+	return [b3c45];
+end
+% Notice here that  your compiler recognizes the type definition of marks even before it is declared. This will be handled at the semantic analyzer phase.
+
+
+%Test Case 4: Syntactically correct testcase
+% The following function computes the function value for the given inputs 
+_computeFunctionValue input parameter list[int c3, int c4, int c5]
+output parameter list [real c6];
+	type real : d4cbcd5677;
+	type real : c4bbb;
+	c6 <--- 5000.79;
+	d4cbcd5677<--- ((c3 + 2*c4)-(c5-5))/ 4;
+	c4bbb <--- ((d4cbcd5677- 2.35)*(2345-234*8))+5*c3;
+	if((~(c4bbb == 0)) &&& (c4bbb > 78.56)) 
+	then
+		c6<--- d4cbcd5677/c4bbb;
+	else
+		write(c4bbb);
+	endif
+
+	return [c6];
+end
+
+
+%Test Case 5: The following source code is expected to be syntactically correct as per the modified LL(1) grammar.
+%If any line has syntax error, please inform me as that error needs to be fixed in this test case.
+_unionfunction  input parameter list [record #two d5cc34, #point b5c6]  
+output parameter list[real d3];
+
+	record #two
+		type #point: beginpoint;
+		type #point: endpoint;
+	endrecord
+
+
+	type record #two : b5b567;
+	type record #one : b3;
+	type #point: d5;
+	b5b567 <--- c6*2;
+	b3 <--- c6-c3;
+	while ( b5b567 <= d5cc34)
+		read(c3bd);
+		d3 <--- d3 + c3bd;
+		b5b567 <--- b5b567 + 1;
+	endwhile
+	return [d3];
+end
+% type checking will be required in stage 2. Despite some type errors, undeclared variables etc the code is syntactically correct
+%in this function.
+
+
+% Fibonacci function
+_fibonacci
+input parameter list [int c2d55]output parameter list[int d5bc23]; % lol
+type int: c235; type int: d5ddb5; type int: c2d54; type int: c2d53; % lmao
+if((c2d55 == 0) @@@ (c2d55 == 1))
+then
+    d5bc23 <--- 1;
+else
+    c2d53 <--- c2d55 - 1; c2d54 <--- c2d55 - 2;
+    [c235] <--- call _fibonacci with parameters[c2d53];
+    [d5ddb5] <--- call _fibonacci with parameters[c2d54];
+    d5bc23 <--- c235 + d5ddb5;
+endif
+return [d5bc23];
+end
+
+
+% Swap function
+_swap
+input parameter list [int c2d55, int c2d56]output parameter list[int c2d62, int c2d63];
+c2d62 <--- c2d56;
+c2d63 <--- c2d55;
+return [c2d62, c2d63];
+end
+
+
+%Palindrome function
+_palindromeYesorNo input parameter list[int c2d67, int d4b5]output parameter list[int b2dcbcbd3];
+    type int: b3b3; type int: d2cbd; type int: c6dc34; type int: c2d66;
+    c2d66 <--- c2d67;
+    b3b3 <--- 0;
+    while(d4b5 > 0)
+        d2cbd <--- c2d66 / 10;
+        c6dc34 <--- c2d66 - (d2cbd * 10);
+        b3b3 <--- (b3b3 * 10) + c6dc34;
+        d4b5 <--- d4b5 - 1;
+    endwhile
+
+    if(b3b3 == c2d67)
+    then
+        b2dcbcbd3 <--- 1;
+    else
+        b2dcbcbd3 <--- 0;
+    endif
+    return[b2dcbcbd3];
+end
+
+
+% Swap function
+_simpleInterest
+input parameter list [int c2d55, int c2d56, int c2d57]output parameter list[int c2d62];
+c2d62 <--- c2d55 * c2d56 * c2d57;
+return [c2d62];
+end
+
+
+% Test Case 5: Syntactically and Lexically Correct
+% Program to print if the given number is an Armstrong Number or not
+% Convention: variables beginning with d are returned
+% Convention: variables beginning with b are taken as input
+% Convention: variables beginning with c are local to the function
+% Function to compute the number of digits in the number
+_numberofdigits input parameter list [int b2cbd2443] output parameter list [int d2cdb5334];
+    d2cdb5334 <--- 0;
+    while(d2cbd2443 > 0)
+        b2cbd2443 <--- b2cbd2443 / 10;
+        d2cdb5334 <--- d2cdb5334 + 1;
+    endwhile
+    return [d2cdb5334];
+end
+
+% Function to raise the number to a power of a given number
+_power input parameter list [int b2bbbbcc234567, int b3ccc333] output parameter list [int d6];
+    d6 <--- 1;
+    while(b3ccc333 > 0)
+        d6 <--- d6 * b2bbbbcc234567;
+        b3ccc333 <--- b3ccc333 - 1;
+    endwhile
+    return [d6];
+end
+
+% Function to get the units digit to a given number
+_unitsdigit input parameter list [int b6cdcd234] output parameter list [int d7dd2323];
+    d7dd2323 <--- b2cbd2443 - (b6cdcd234 / 10) * 10;
+    return [d7dd2323];
+end
+
+
+_main
+    record #marks
+		type real : maths; 
+		type real: physics; 
+		type real: chemistry;
+	endrecord                                           % each field above represents the marks obtained in corresponding subject
+	
+    record #one
+		type real:x;
+		type real:y;
+	endrecord
+    definetype record #one as #point
+	
+    %definetype record #two as #line
+
+    union #four
+		type #line : ln; 
+		type #point: pt; 
+		type #traingle:tr;
+	endunion
+    
+    definetype record #three as #triangle  
+	
+    record #three 
+		type #line: base;
+		type #line: height;
+	endrecord
+	
+    definetype union #four as #shape
+	
+    record #variantrecord
+		type int: tag;
+		type #shape: s;
+	endrecord
+
+    %test2.txt
+    type int :b3;
+	type real :c4bd56;
+
+
+    %t3.txt
+    type record #marks : d4;                            % The variable d4 stores the marks of one student
+	type int : b5;
+	type int : d5cb34567;
+	type record #marks : b5c6;                          %The identifier b5c6 stores the sum of marks
+	
+
+    %t4.txt
+    type int : b6;
+	type int : d5cb34567;
+	type int :  b3b444 : global;
+	type real: c3;
+
+
+    %t5.txt	
+    type record #variantrecord : d4;
+	type int : b5;
+	type int : d5cb34567;
+	type record #variantrecord: b5c6;
+
+
+    %testcase1.txt
+    type int : c5dcbbcd67;
+    type int : b567;
+
+
+    %testcase2.txt
+    type int : c2d22;
+    type int : c2d23;
+
+
+    %testcase3.txt
+    type int: d5c453;
+    type int: d5cb55;
+    type int: b34345;
+
+
+    %testcase4.txt
+    type int : c2d22;
+    type int : c2d23;
+    type int : c2d24;
+    type int : c2d25;
+
+
+    %testcase5.txt
+    type int : c5dcbbcd67;                                      %Takes number as input from user
+    type int : c7bcbc765432;                                    %Stores number of digits
+    type int : c6;                                              %Stores the unit digits
+    type int : d3d3;                                            %Stores the final result
+    type int : c4ccc444;                                        %Temp variable to store the user input
+    type int : c5d675;                                          %Temp variable to store power of units digit
+
+
+    
+    b3 <--- 7;
+	[c4bd56]<--- call _sumN with parameters [b3];
+	write(c4bd56);
+	
+
+    b5 <--- 1;
+	read(d5cb34567);
+	b5c6.maths <--- 0.00;
+	b5c6.physics <--- 0.00;
+	b5c6.chemistry <---0.00;
+
+	while(b5<=d5cb34567)
+		[d4] <--- call _readMarks with parameters [b5];
+		b5c6 <--- b5c6 + d4; 
+		% above displays the sum of records
+		b5 <--- b5 +1;
+	endwhile
+
+	d4 <--- b5c6 / d5cb34567;
+
+	write(d4.maths);
+	write(d4.physics);
+	write(d4.chemistry);
+
+
+	b6 <--- 1;
+	read(d5cb34567);
+	read(b3b444);
+
+	[c3] <--- call _computeFunctionValue with parameters [b5, d5cb34567, b3b444];
+
+	write(c3);
+
+    
+	b5c6 <--- b5c6.tag + d4.s.ln.beginpoint.x - b5c6.s.tr.base.beginpoint.y; 
+	b5 <--- b5 +1;
+	d4 <--- b5c6 / d5cb34567;
+
+	write(d4);
+	write(d4.s.ln.beginpoint.x );
+	write(b5c6.tag );
+
+    
+    read(c5dcbbcd67);
+    [b567] <--- call _fibonacci with parameters[c5dcbbcd67];
+    write(b567);
+
+    
+    read(c2d22);
+    read(c2d23);
+
+    [c2d22, c2d23] <--- call _swap with parameters[c2d22, c2d23];
+
+    write(c2d22);
+    write(c2d23);
+
+    
+    read(d5c453);
+    read(d5cb55);
+
+    [b34345] <--- call _palindromeYesorNo with parameters[d5c453, d5cb55];
+
+    write(b34345);
+
+    
+    read(c2d22);
+    read(c2d23);
+    read(c2d24);
+
+    [c2d25] <--- call _swap with parameters[c2d22, c2d23, c2d24];
+
+    write(c2d25);
+
+    
+    read(c5dcbbcd67);
+    d3 <--- 0;
+    [c7bcbc765432] <--- call _numberofdigits with parameters[c5dcbbcd67];
+    c4ccc444 <--- c5dcbbcd67;
+
+    while(c4ccc444 > 0)
+        [c6] <--- call _unitsdigit with parameters[c4ccc444];
+        [c5d675] <--- call _power with parameters[c6, c7bcbc765432];
+        d3d3 <--- d3d3 + c5d675;
+        c4ccc444 <--- c4ccc444 / 10;
+    endwhile
+
+    if(d3d3 == c5dcbbcd67) then
+        write(0);
+    else
+        write(1);
+    endif
+    return;
+end
