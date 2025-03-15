@@ -17,22 +17,22 @@ end
 % Function to raise the number to a power of a given number
 _power input parameter list [int b2bbbbcc234567, int b3ccc333] output parameter list [int d];       %Should falg it as a field token
     d6 <--- 1.000;                                                                                  %Should flag RNUM (1.00) and NUM (0) 
-    while(b3ccc > 0.0)                                                                              %Should not flad as ID, SHould falg error unrecognized pattern
+    while(b3ccc > 0.0)                                                                              %Should flad as ID, SHould falg error unrecognized pattern
         d6 <--- d6 * b2bbbbcc234567;
-        b3 <--- b3ccc333c3 - 1;                                                                     %First Should not flad as ID (b3), second should flag as ID (b3ccc333) and ID (c3)
+        b3 <--- b3ccc333c3 - 1;                                                                     %First Should not flad as ID (b3), ASSIGNOP, then flag as ID (b3ccc333) and ID (c3)
     endwhile
     return [d6];
 end
 
 % Function to get the units digit to a given number
-_unitsdigitunitsdigitunitsdigitunitsdigit input parameter list [int b6cdcd234] output parameter list [int d7dd2323];
+_unitsdigitunitsdigitunitsdigitunitsdigit input parameter list [int b6cdcd234] output parameter list [int d7dd2323];    %Should flag function name longer than prescribed length
     d7dd2323 <--- b2cbd2443 - (b6cdcd234 / 10.000E-03) * 10;                                        %Should flag as RNUM (10.00), NUM (0), error unknown symbol (E), minus token, NUM(03)
     return [d7dd2323];
 end
 
 _main
     type int : c5dcbbcd67;                                       
-    type int : c7bcbc765432234523455235523454;                                    
+    type int : c7bcbc765432234523455235523454;                                                      %Should flag error of variable length                                 
     type int : c6;                                              
     type int : d3d3;                                            
     type int : c4cacc444;                                                                           %Should return ID (c4c), fieldid (acc), NUM (444)                               
@@ -43,14 +43,14 @@ _main
     [c7bcbc765432] <--- call _numberofdigits with parameters[c5dcbbcd67];
     c4ccc444 <--- c5dcbbcd67;
 
-    while(c4ccc444 > 0)
+    while(c4ccc444 > 0 & c4ccc444 > 0 && c4ccc444 > 0 &&& c4ccc444 > 0)                             %Should flag unknown symbol &, unknown pattern &&, and &&&
         [c6] <--- call _unitsdigit with parameters[c4ccc444];
         [c5d675] <--- call _power with parameters[c6, c7bcbc765432];
         d3d3 <--- d3d3 + c5d675;
         c4ccc444 <--- c4ccc444 / 10.00E+;                                                           %Should flag unknown pattern          
     endwhile
 
-    if(d3d3 == c5dcbbcd67) then
+    if(d3d3 == c5dcbbcd67 @ c4ccc444 > 0 @@ c4ccc444 > 0 @@@ c4ccc444 > 0) then                     %Should flag unknown symbol @, unknown pattern @@, and @@@
         write(0.00E004);                                                                            %Should return RNUM (0.00E00) and NUM (4)
     else
         write(1);
