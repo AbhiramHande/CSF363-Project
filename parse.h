@@ -21,9 +21,11 @@ token_type* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* 
 bool contains_EPS(token_type* set, int size);
 void add_to_set(token_type** set, int* size, const token_type element);
 void print_first_and_follow_sets(bool print_first, bool print_follow);
-//void print_parse_tree();
+// void print_parse_tree(); // Uncomment Later
+void print_parse_tree_inorder();
 void print_parse_map();
-void print_parse_tree(node* root);
+// void print_parse_tree(node* root); // Uncomment Later
+void print_parse_tree_inorder(node* root);
 void generate_parse_table();
 void generate_parse_map();
 node* generate_parse_tree(FILE* src_code);

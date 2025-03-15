@@ -686,6 +686,47 @@ node* generate_parse_tree(FILE* src_code){
     stack_cleanup(&parser_stack);
     return start;
 }
+void print_parse_tree_inorder(node* root){
+    if(!error_present){
+        if(root -> stack_symbol -> type == SYM_TERMINAL){
+            printf("1 \n");
+            printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", token_to_string(root->token_value->name), root->token_value->lexeme);
+            return;  
+        }
+        else if(root -> stack_symbol -> type = SYM_NON_TERMINAL){
+            printf("2 \n");
+            printf("Node : %s \n", root->stack_symbol->value.nt->name);
+            // Go Left
+            if(root->children[0]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[0]);
+            
+            // Print
+            printf("Leftmost Child: ");
+            if(root->children[0]->stack_symbol->type == SYM_TERMINAL)
+                printf("%s -->", token_to_string(root->children[0]->token_value->name));
+            else if(root->children[0]->stack_symbol->type == SYM_NON_TERMINAL)
+                printf("%s -->", root->children[0]->stack_symbol->value.nt->name);
+            printf(" Parent Node: %s --> Remaining Siblings (Excluding Leftmost Child) : ", root->stack_symbol->value.nt->name);
+            for(int i = 1 ; i < root -> children_count ; i++){
+                if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
+                    printf(" %s ", token_to_string(root->children[i]->token_value->name));
+                else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
+                    printf(" %s ", root->children[i]->stack_symbol->value.nt->name);
+                else
+                    printf("EPSILON \t");                    
+            }
+            printf("\n\n");
+
+            // Go Right
+            for(int i = 1 ; i < root -> children_count ; i++){
+                printf("3 \n");
+                if(root->children[i]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[i]);
+            }
+        }
+        else printf("4 \n");
+    }
+    else printf("Error Present");
+    return;
+}
 
 void print_parse_tree(node* root){
     if(!error_present){
