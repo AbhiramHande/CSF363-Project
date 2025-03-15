@@ -689,13 +689,10 @@ node* generate_parse_tree(FILE* src_code){
 void print_parse_tree_inorder(node* root){
     if(!error_present){
         if(root -> stack_symbol -> type == SYM_TERMINAL){
-            printf("1 \n");
             printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", token_to_string(root->token_value->name), root->token_value->lexeme);
             return;  
         }
-        else if(root -> stack_symbol -> type = SYM_NON_TERMINAL){
-            printf("2 \n");
-            printf("Node : %s \n", root->stack_symbol->value.nt->name);
+        else if(root -> stack_symbol -> type == SYM_NON_TERMINAL){
             // Go Left
             if(root->children[0]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[0]);
             
@@ -718,11 +715,9 @@ void print_parse_tree_inorder(node* root){
 
             // Go Right
             for(int i = 1 ; i < root -> children_count ; i++){
-                printf("3 \n");
                 if(root->children[i]->stack_symbol->type != SYM_EPSILON) print_parse_tree_inorder(root -> children[i]);
             }
         }
-        else printf("4 \n");
     }
     else printf("Error Present");
     return;
