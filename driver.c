@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
             case '3':
                 buffer_init(input_file);
                 root = parse_code("grammar.txt", input_file);
-                print_parse_tree(root);       //TODO Change this to in-order traversal and then write to file argv[2] 
+                print_parse_tree_inorder(root);       //TODO Change this to in-order traversal and then write to file argv[2] 
                 parse_tree_cleanup(&root);
                 break;
             
