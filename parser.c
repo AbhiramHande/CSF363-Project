@@ -693,7 +693,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
             
             if(parent != NULL){
                 if(root -> token_value -> name == TK_NUM) 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | %-11lld  | %-25s  | yes          | %-25s\n", 
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | %-11lld  | %-25s  | yes          | %-25s\n", 
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -702,7 +702,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                         parent->stack_symbol->value.nt->name, 
                         token_to_string(root->token_value->name));
                 else if(root -> token_value -> name == TK_RNUM) 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | %-11Lf  | %-25s  | yes          | %-25s\n",
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | %-11Lf  | %-25s  | yes          | %-25s\n",
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -711,7 +711,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                         parent->stack_symbol->value.nt->name, 
                         token_to_string(root->token_value->name));
                 else 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | Not a number | %-25s  | yes          | %-25s\n",
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | Not a number | %-25s  | yes          | %-25s\n",
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -722,7 +722,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
             }
             else{
                 if(root -> token_value -> name == TK_NUM) 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | %-11lld  | NULL                       | yes          | %-25s\n",
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | %-11lld  | NULL                       | yes          | %-25s\n",
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -730,7 +730,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                         root -> token_value ->value.num, 
                         token_to_string(root->token_value->name));
                 else if(root -> token_value -> name == TK_RNUM) 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | %-11Lf  | NULL                       | yes          | %-25s\n",
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | %-11Lf  | NULL                       | yes          | %-25s\n",
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -738,7 +738,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                         root -> token_value ->value.r_num, 
                         token_to_string(root->token_value->name));
                 else 
-                    fprintf(output_file, "%-30s  | %-25s  | %-8d  | %-25s  | Not a number | NULL                       | yes          | %-25s\n",
+                    fprintf(output_file, "| %-30s  | %-25s  | %-8d  | %-25s  | Not a number | NULL                       | yes          | %-25s\n",
                         root->token_value->lexeme, 
                         token_to_string(root->token_value->name), 
                         root -> token_value -> line_num , 
@@ -753,13 +753,13 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
             
             // Print
             if(parent != NULL){
-                fprintf(output_file, "           ----------           | %-25s  | Not Def.  |          ----------        | Not a number | %-25s  | yes          | %-25s\n",
+                fprintf(output_file, "|            ----------           | %-25s  | Not Def.  |          ----------        | Not a number | %-25s  | yes          | %-25s\n",
                     root->stack_symbol->value.nt->name, 
                     parent->stack_symbol->value.nt->name, 
                     root->stack_symbol->value.nt->name);
             }
             else{
-                fprintf(output_file, "           ----------           | %-25s  | Not Def.  |          ----------        | Not a number | NULL                        | yes          | %-25s\n",
+                fprintf(output_file, "|            ----------           | %-25s  | Not Def.  |          ----------        | Not a number | NULL                        | yes          | %-25s\n",
                     root->stack_symbol->value.nt->name, 
                     root->stack_symbol->value.nt->name);
             }
@@ -769,7 +769,7 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
             }
         }
         else 
-            fprintf(output_file, "           ----------           | EPSILON                  | Not Def.  |          ----------        | Not a number | %-25s  | yes          | \n",
+            fprintf(output_file, "|            ----------           | EPSILON                  | Not Def.  |          ----------        | Not a number | %-25s  | yes          | \n",
                 parent->stack_symbol->value.nt->name);   
     }
     else printf("Errors Present. Parse tree not printed\n");
