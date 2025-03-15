@@ -720,7 +720,7 @@ void print_parse_tree_inorder(node* root){
             }
         }
     }
-    else printf("Error Present");
+    else printf("Errors Present. Parse tree not printed\n");
     return;
 }
 
