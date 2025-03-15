@@ -136,10 +136,8 @@ token_type string_to_token(const char* string) {
     if (strcmp(string, "EPS") == 0) return EPSILON;
     if (strcmp(string, "TK_ERROR") == 0) return TK_ERROR;
     if (strcmp(string, "$") == 0) return DOLLAR;
-    //if (strcmp(string, "SYN") == 0) return SYN;
 
-    // If no match is found, return a default or error value
-    return TK_ERROR;  // You could choose to return an error code or handle this case differently
+    return TK_ERROR;
 }
 
 const char* token_to_string(token_type token) {
@@ -633,6 +631,8 @@ token* get_next_token_helper(FILE* file_ptr){
             else
                 buffer->forward_ptr--;
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
 
             state = STATE_START;
             return ret_tok;
@@ -640,6 +640,8 @@ token* get_next_token_helper(FILE* file_ptr){
         
         case STATE_FIN_NEWLINE:
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
             line_number++;
 
             state = STATE_START;
@@ -648,6 +650,8 @@ token* get_next_token_helper(FILE* file_ptr){
 
         case STATE_FIN_COMMENT:
             buffer->begin_ptr = buffer->forward_ptr;
+            if(buffer->buffer_loaded)
+                buffer->buffer_loaded = false;
             ret_tok = calloc(1, sizeof(token));
             ret_tok->lexeme = comment->name;
             ret_tok->name = TK_COMMENT;
