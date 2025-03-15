@@ -1,0 +1,16 @@
+% Swap function
+_simpleInterest
+input parameter list [int c2d55, int c2d56, int c2d57]output parameter list[int c2d62];
+c2d62 <--- c2d55 * c2d56 * c2d57;
+return [c2d62];
+end
+
+_main
+    type int : c2d22;      type int : c2d23;      type int : c2d24;      type int : c2d25;
+    read(c2d22);
+    read(c2d23);
+    read(c2d24);
+    [c2d25] <--- call _swap with parameters[c2d22, c2d23, c2d24];
+    write(c2d25);
+    return;
+end

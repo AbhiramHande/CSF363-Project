@@ -1,0 +1,17 @@
+% Swap function
+_swap
+input parameter list [int c2d55, int c2d56]output parameter list[int c2d62, int c2d63];
+c2d62 <--- c2d56;
+c2d63 <--- c2d55;
+return [c2d62, c2d63];
+end
+
+_main
+    type int : c2d22;      type int : c2d23;
+    read(c2d22);
+    read(c2d23);
+    [c2d22, c2d23] <--- call _swap with parameters[c2d22, c2d23];
+    write(c2d22);
+    write(c2d23);
+    return;
+end
