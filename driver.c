@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "parse.h"
+#include "parser.h"
 
 void removeComments(FILE* input_file) {
     char* temp = NULL;

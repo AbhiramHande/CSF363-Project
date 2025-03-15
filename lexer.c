@@ -74,6 +74,7 @@
 static twin_buffer* buffer = NULL;
 token* get_next_token_helper(FILE* file_ptr);
 void buffer_cleanup(void) __attribute__((destructor));
+char* retract_and_update(int no_of_times);
 
 token_type string_to_token(const char* string) {
     if (strcmp(string, "TK_ASSIGNOP") == 0) return TK_ASSIGNOP;
@@ -210,7 +211,8 @@ const char* token_to_string(token_type token) {
 void buffer_cleanup(void){
     if(buffer == NULL)
         return;
-
+    
+    retract_and_update(-1);
     free(buffer->active_buffer);
     free(buffer->load_buffer);
 
@@ -247,10 +249,17 @@ void swap_buffer(FILE* file_ptr){
     return;
 }
 
-char* retract_and_update(unsigned int no_of_times) {
+char* retract_and_update( int no_of_times) {
     static char* ret_tok = NULL;
     static int ret_tok_size = 0;
     int new_pos = buffer->forward_ptr - no_of_times;
+
+    if(no_of_times < 0){
+        free(ret_tok);
+        ret_tok = NULL;
+        ret_tok_size = 0;
+        return NULL;
+    }
 
     if(new_pos >= 0){
         buffer->forward_ptr = new_pos;
