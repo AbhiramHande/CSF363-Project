@@ -50,7 +50,6 @@ int main(int argc, char* argv[]){
     printf("\t- Modules work on custom test cases as well                   \n");
     printf("\t- Parse tree generated in the beautiful prescribed format     \n");
     printf("\t- No memory leaks with all pointers being freed after use     \n");
-    printf("\t- ... and whatever else is applicable. Throw everything you got at us!\n");
     printf("\n"); 
     printf("\033[1;35mProgram:\033[0m                                       \n");
 
