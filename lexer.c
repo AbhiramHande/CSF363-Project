@@ -3,6 +3,8 @@
 #include "lexer.h"
 #include "symbol_table.h"
 
+//TODO: if time define all states here instead
+
 static twin_buffer* buffer = NULL;
 token* get_next_token_helper(FILE* file_ptr);
 void buffer_cleanup(void) __attribute__((destructor));
@@ -263,6 +265,17 @@ void buffer_init(FILE* file_ptr){
     buffer->buffer_loaded = false; 
 }
 
+token* create_token(char* lexeme, token_type type, int line){
+    token* ret_tok = calloc(1, sizeof(token));
+    entry* sym_tab = symbol_table_insert(lexeme, type);
+
+    ret_tok->name = sym_tab->type;
+    ret_tok->lexeme = sym_tab->name;
+    ret_tok->line_num = line;
+
+    return ret_tok;
+}
+
 token* get_next_token(FILE* file_ptr){
     if(file_ptr == NULL)
         fprintf(stderr, "Error: Invalid file passed.\n");
@@ -410,11 +423,8 @@ token* get_next_token_helper(FILE* file_ptr){
             break;
         
         case 1:
-            entry* sym_tab = symbol_table_insert(retract_and_update(1), TK_NUM);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_NUM;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            char* lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_NUM, line_number);
             ret_tok->value.num = strtoll(ret_tok->lexeme, NULL, 10);
             ret_tok->is_value_int = true;
             
@@ -422,12 +432,9 @@ token* get_next_token_helper(FILE* file_ptr){
             return ret_tok;
             break;
         
-        case 2: case 3: //TODO: take care of 0.00E-123
-            sym_tab = symbol_table_insert(state == 2 ? retract_and_update(1) : retract_and_update(0), TK_RNUM);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_RNUM;
-            ret_tok->lexeme =  sym_tab->name;
-            ret_tok->line_num = line_number;
+        case 2: case 3:
+            lexeme = (state == 2 ? retract_and_update(1) : retract_and_update(0));
+            ret_tok = create_token(lexeme, TK_RNUM, line_number);
             ret_tok->value.r_num = strtold(ret_tok->lexeme, NULL);
             ret_tok->is_value_int = false;
             
@@ -435,30 +442,22 @@ token* get_next_token_helper(FILE* file_ptr){
             return ret_tok;
             break;
 
-        case 4: //TODO: check lengths for 4, 5 and 6
+        case 4:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 20){
-                fprintf(stderr, "Line no. %d: Error: Variable identifier \"%s\" is longer than the prescribed length of 20 characters.", line_number, lexeme);
+                fprintf(stderr, "Line no. %d: Error: Variable identifier is longer than the prescribed length of 20 characters.\n", line_number);
                 state = 0;
                 return NULL;
             }
-            sym_tab = symbol_table_insert(lexeme, TK_ID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ID;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_ID, line_number);
             
             state = 0;
             return ret_tok;
             break;
 
-        case 5:
+        case 5: //TODO: check lengths for 5 like in 4 and 6
             lexeme = retract_and_update(1);
-            sym_tab = symbol_table_insert(lexeme, TK_FIELDID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_FIELDID, line_number);
 
             state = 0;
             return ret_tok;
@@ -467,92 +466,67 @@ token* get_next_token_helper(FILE* file_ptr){
         case 6:
             lexeme = retract_and_update(1);
             if(strlen(lexeme) > 30){
-                fprintf(stderr, "Line no. %d: Error: Function identifier \"%s\" is longer than the prescribed length of 30 characters.", line_number, lexeme);
+                fprintf(stderr, "Line no. %d: Error: Function identifier is longer than the prescribed length of 30 characters.\n", line_number);
                 state = 0;
                 return NULL;
             }
-            sym_tab = symbol_table_insert(lexeme, TK_FUNID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            ret_tok = create_token(lexeme, TK_FUNID, line_number);
             
             state = 0;
             return ret_tok;
             break;
         
         case 7:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_RUID);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_RUID;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_RUID, line_number);
 
             state = 0;
             return ret_tok;
             break;
         
         case 8:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_LE);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_LE;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_LE, line_number);
             
             state = 0;
             return ret_tok;
             break;
 
         case 9:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_ASSIGNOP);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_ASSIGNOP;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_ASSIGNOP, line_number);
             
             state = 0;
             return ret_tok;
             break;
 
         case 10:
-            sym_tab = symbol_table_insert(retract_and_update(2), TK_LT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_LT;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(2);
+            ret_tok = create_token(lexeme, TK_LT, line_number);
             
             state = 0;
             return ret_tok;
             break;
         
         case 11:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_LT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = retract_and_update(1);
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_LT, line_number);
             
             state = 0;
             return ret_tok;
             break;
 
         case 12:
-            sym_tab = symbol_table_insert(retract_and_update(0), TK_GE);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_GE;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, TK_GE, line_number);
             
             state = 0;
             return ret_tok;
             break;
 
         case 13:
-            sym_tab = symbol_table_insert(retract_and_update(1), TK_GT);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = TK_GT;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(1);
+            ret_tok = create_token(lexeme, TK_GT, line_number);
             
             state = 0;
             return ret_tok;
@@ -575,11 +549,8 @@ token* get_next_token_helper(FILE* file_ptr){
         case 28:
         case 29:
         case 30:
-            sym_tab = symbol_table_insert(retract_and_update(0), (token_type)state);
-            ret_tok = calloc(1, sizeof(token));
-            ret_tok->name = sym_tab->type;
-            ret_tok->lexeme = sym_tab->name;
-            ret_tok->line_num = line_number;
+            lexeme = retract_and_update(0);
+            ret_tok = create_token(lexeme, (token_type)state, line_number);
             
             state = 0;
             return ret_tok;
@@ -648,8 +619,6 @@ token* get_next_token_helper(FILE* file_ptr){
         case 38:
             if(buffer_char == 'E')
                 state = 39;
-            else if(isdigit(buffer_char))
-                state = 64;
             else
                 state = 2;
             break;
@@ -811,7 +780,7 @@ token* get_next_token_helper(FILE* file_ptr){
             if(buffer_char == '=')
                 state -= 31;
             else    
-                state = 63;
+                state = 65;
             break;
             
         case 62:
@@ -834,6 +803,13 @@ token* get_next_token_helper(FILE* file_ptr){
                 error_retract++;
             else 
                 state = 63; // TODO: handle cases like 0.000E-04 0.000E-0003
+            break;
+
+        case 65:
+            lexeme = retract_and_update(1);
+            printf("Line no. %d: Error: Unknown Symbol <%s>\n", line_number, lexeme);
+            state = 0;
+            return NULL;
             break;
 
         default: 

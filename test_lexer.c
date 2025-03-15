@@ -1,44 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "lexerDef.h"
-//#include "symbolTable.h"  // Includes getNextToken(), initializations(), and Token definition
 #include "lexer.h"
 
-int main() {
+int main(int argc, char** argv) {
     setbuf(stdout, NULL);
-    // Open input file (test case)
-    FILE *inputFile = fopen("tests/test_cases/test2.txt", "r");
+    if(argc < 2){
+        printf("Atleast 2 inputs expected.\n");
+        exit(EXIT_FAILURE);
+    }
+    FILE *inputFile = fopen(argv[1], "r");
     if (!inputFile) {
-        printf("Error: Could not open t2.txt\n");
+        printf("Error: Could not open %s\n", argv[1]);
         return 1;
     }
 
-    // Open output file to store tokenized results
-    FILE* outputFile = stdout;//fopen("result.dump", "w");
+    FILE* outputFile = stdout;
     if (!outputFile) {
         printf("Error: Could not create results.txt\n");
         fclose(inputFile);
         return 1;
     }
 
-        // Read tokens one by one
     token* tok;
-    for(int i = 0; i < 1000; i++) {
-        tok = get_next_token(inputFile);
-        fprintf(outputFile, "Line no. %d \tLexeme %s \tToken %s\n", 
-                tok->line_num,  
-                tok->lexeme,
-                token_to_string(tok->name));
+    while(tok = get_next_token(inputFile)) {
+        if(tok->name != TK_EOF)
+            fprintf(outputFile, "Line no. %d \tLexeme %s \tToken %s\n", 
+                    tok->line_num,  
+                    tok->lexeme,
+                    token_to_string(tok->name));
+        else    
+            break;
 
         free(tok);
         tok = NULL;
     }
+    free(tok);
 
-    // Close files
     fclose(inputFile);
-    //fclose(outputFile);
-
-    printf("Lexical analysis complete. Check results.txt for output.\n");
     return 0;
 }

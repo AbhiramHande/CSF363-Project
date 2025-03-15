@@ -28,6 +28,7 @@ int main(int argc, char* argv[]){
     printf("\t- Both lexical and syntax analyzer modules implemented        \n");
     printf("\t- First and Follow sets automated                             \n");
     printf("\n"); 
+    printf("\033[1;35mProgram:\033[0m                                       \n");
 
     while(true){
         printf("\033[1;34m+===============================================================================+\033[0m\n");
@@ -46,6 +47,7 @@ int main(int argc, char* argv[]){
         scanf("\n%c", &choice);
         switch (choice) {
             case '0':
+                printf("Exiting.\n");
                 fclose(input_file);
                 exit(EXIT_SUCCESS);
                 break;
