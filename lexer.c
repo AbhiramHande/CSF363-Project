@@ -539,7 +539,7 @@ token* get_next_token_helper(FILE* file_ptr){
             return ret_tok;
             break;
 
-        case STATE_FIN_KEY_OR_FIELD: //TODO: check lengths for 5 like in 4 and 6
+        case STATE_FIN_KEY_OR_FIELD: 
             lexeme = retract_and_update(1);
             ret_tok = create_token(lexeme, TK_FIELDID, line_number);
 
@@ -893,13 +893,6 @@ token* get_next_token_helper(FILE* file_ptr){
             error_retract = 1;
             return NULL;
             break;
-
-        // case 64:
-        //     if(isdigit(buffer_char))
-        //         error_retract++;
-        //     else 
-        //         state = 63; // TODO: handle cases like 0.000E-04 0.000E-0003
-        //     break;
 
         case STATE_TRAP_SYMBOL_INTR:
             lexeme = retract_and_update(1);
