@@ -3,6 +3,7 @@
 #include <time.h>
 
 #define MAX_LINE_LENGTH 256
+#define SUPER_SYN_SIZE 9
 
 //TODO
 static bool error_present = false;
@@ -759,6 +760,7 @@ node* generate_parse_tree(FILE* src_code){
     stack_push(parser_stack, start);
     setbuf(stdout, NULL);
     token* tok = get_next_token(src_code);
+    token_type super_syn[SUPER_SYN_SIZE] = {TK_SEM, TK_ELSE, TK_END, TK_ENDIF, TK_ENDRECORD, TK_ENDUNION, TK_ENDWHILE, TK_CL, TK_SQR};
     while(!stack_empty(parser_stack)){
         times++;
         if(tok->name == TK_EOF){
@@ -829,8 +831,8 @@ node* generate_parse_tree(FILE* src_code){
                 }
             }
             else{
-                fprintf(stderr, "Line %d. The non-terminal %s does not have a rule that generates %s\n",
-                    tok->line_num, parser_stack_top->stack_symbol->value.nt->name, token_to_string(tok->name));
+                fprintf(stderr, "Line %d. Invalid token %s encountered with value %s stack top %s\n",
+                    tok->line_num, token_to_string(tok->name), tok->lexeme, parser_stack_top->stack_symbol->value.nt->name);
                 //TODO: Error
                 error_present = true;
                 token_type* syn = parser_stack_top->stack_symbol->value.nt->follow_set;
@@ -843,7 +845,15 @@ node* generate_parse_tree(FILE* src_code){
                     }
                 }
                 if (i == syn_count){
-                    tok = get_next_token(src_code);
+                    int j = 0;
+                    for(; j < SUPER_SYN_SIZE; j++){
+                        if(super_syn[j] == tok->name){
+                            stack_pop(parser_stack);
+                            break;
+                        }
+                    }
+                    if(j == SUPER_SYN_SIZE)
+                        tok = get_next_token(src_code);
                 }
             }
         }
