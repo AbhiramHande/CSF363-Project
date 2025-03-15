@@ -1,0 +1,23 @@
+% Fibonacci function
+_fibonacci
+input parameter list [int c2d55]output parameter list[int d5bc23];
+type int: c235; type int: d5ddb5; type int: c2d54; type int: c2d53;
+if((c2d55 == 0) @@@ (c2d55 == 1))
+then
+    d5bc23 <--- 1;
+else
+    c2d53 <--- c2d55 - 1; c2d54 <--- c2d55 - 2;
+    [c235] <--- call _fibonacci with parameters[c2d53];
+    [d5ddb5] <--- call _fibonacci with parameters[c2d54];
+    d5bc23 <--- c235 + d5ddb5;
+endif
+return [d5bc23];
+end
+
+_main
+    type int : c5dcbbcd67;      type int : b567;
+    read(c5dcbbcd67);
+    [b567] <--- call _fibonacci with parameters[c5dcbbcd67];
+    write(b567);
+    return;
+end

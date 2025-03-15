@@ -698,9 +698,7 @@ void print_parse_tree(node* root){
         else if(root->stack_symbol->type == SYM_NON_TERMINAL){
             printf("Parse Tree Node: %s, Number of Children: %d\n", root->stack_symbol->value.nt->name, root->children_count);
             for(int i = 0; i < root->children_count; i++){
-                if(root->children[i]->stack_symbol->type )
-                    printf("(null)\t");
-                else if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
+                if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
                     printf("%s \t", token_to_string(root->children[i]->token_value->name));
                 else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
                     printf("%s \t", root->children[i]->stack_symbol->value.nt->name);
