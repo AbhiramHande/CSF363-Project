@@ -608,7 +608,7 @@ node* generate_parse_tree(FILE* src_code){
                 tok = get_next_token(src_code);
             }
             else{
-                fprintf(stderr, "Line no. %-4d: Error: The token %-15s for lexeme %s does not match with the expected token %s\n",
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m The token %-15s for lexeme %s does not match with the expected token %s\n",
                     tok->line_num, token_to_string(tok->name), tok->lexeme, token_to_string(parser_stack_top->stack_symbol->value.token_value));
                 //TODO: Error
                 error_present = true;
@@ -649,11 +649,11 @@ node* generate_parse_tree(FILE* src_code){
 
                     if(new_node->stack_symbol->type != SYM_EPSILON)
                         if(!stack_push(parser_stack, new_node))
-                            fprintf(stderr, "Stack overflow");
+                            fprintf(stderr, "\033[1;31mError:\033[0m Stack overflow.\n");
                 }
             }
             else{
-                fprintf(stderr, "Line no. %-4d: Error: Invalid token %-15s encountered with value %s stack top %s\n",
+                fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Invalid token %-15s encountered with value %s stack top %s\n",
                     tok->line_num, token_to_string(tok->name), tok->lexeme, parser_stack_top->stack_symbol->value.nt->name);
                 //TODO: Error
                 error_present = true;
@@ -682,7 +682,7 @@ node* generate_parse_tree(FILE* src_code){
     }
 
     if(tok->name != TK_EOF){
-        fprintf(stderr, "Error");
+        fprintf(stderr, "Error: Not EOF\n");
     }
     free(tok);
     stack_cleanup(&parser_stack);

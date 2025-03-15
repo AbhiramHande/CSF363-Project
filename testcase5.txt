@@ -1,0 +1,58 @@
+% Program to print if the given number is an Armstrong Number or not
+% Convention: variables beginning with d are returned
+% Convention: variables beginning with b are taken as imput
+% Convention: variables beginning with c are local to the function
+
+% Function to compute the number of digits in the number
+_numberofdigits input parameter list [int b2cbd2443] output parameter list [int d2cdb5334];
+    d2cdb5334 <--- 0;
+    while(d2cbd2443 > 0)
+        b2cbd2443 <--- b2cbd2443 / 10;
+        d2cdb5334 <--- d2cdb5334 + 1;
+    endwhile
+    return [d2cdb5334];
+end
+
+% Function to raise the number to a power of a given number
+_power input parameter list [int b2bbbbcc234567, int b3ccc333] output parameter list [int d6];
+    d6 <--- 1;
+    while(b3ccc333 > 0)
+        d6 <--- d6 * b2bbbbcc234567;
+        b3ccc333 <--- b3ccc333 - 1;
+    endwhile
+    return [d6];
+end
+
+% Function to get the units digit to a given number
+_unitsdigit input parameter list [int b6cdcd234] output parameter list [int d7dd2323];
+    d7dd2323 <--- b2cbd2443 - (b6cdcd234 / 10) * 10;
+    return [d7dd2323];
+end
+
+_main
+    type int : c5dcbbcd67;                                      %Takes number as input from user
+    type int : c7bcbc765432;                                    %Stores number of digits
+    type int : c6;                                              %Stores the unit digits
+    type int : d3d3;                                            %Stores the final result
+    type int : c4ccc444;                                        %Temp variable to store the user input
+    type int : c5d675;                                          %Temp variable to store power of units digit
+
+    read(c5dcbbcd67);
+    d3 <--- 0;
+    [c7bcbc765432] <--- call _numberofdigits with parameters[c5dcbbcd67];
+    c4ccc444 <--- c5dcbbcd67;
+
+    while(c4ccc444 > 0)
+        [c6] <--- call _unitsdigit with parameters[c4ccc444];
+        [c5d675] <--- call _power with parameters[c6, c7bcbc765432];
+        d3d3 <--- d3d3 + c5d675;
+        c4ccc444 <--- c4ccc444 / 10;
+    endwhile
+
+    if(d3d3 == c5dcbbcd67) then
+        write(0);
+    else
+        write(1);
+    endif
+    return;
+end
