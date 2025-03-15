@@ -76,7 +76,7 @@ int main(int argc, char* argv[]){
                 
             case '3':
                 buffer_init(input_file);
-                root = parse_code("grammar.txt", argv[1]);
+                root = parse_code("grammar.txt", input_file);
                 print_parse_tree(root);       //TODO Change this to in-order traversal and then write to file argv[2] 
                 parse_tree_cleanup(&root);
                 break;
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
                 clock_t start_time, end_time;
                 double total_CPU_time, total_CPU_time_in_seconds;
                 start_time = clock();
-                    root = parse_code("grammar.txt", argv[1]);
+                    root = parse_code("grammar.txt", input_file);
                 end_time = clock();
                 total_CPU_time = (double)(end_time - start_time);
                 total_CPU_time_in_seconds = total_CPU_time / CLOCKS_PER_SEC;

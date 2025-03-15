@@ -18,7 +18,7 @@ void first_and_follow_cleanup(void);
 node* create_tree_node_nonterm(non_terminal* nt);
 node* create_tree_node_term(token_type tok_name);
 
-node* parse_code(char* grammar_file, char* input_file) {
+node* parse_code(char* grammar_file, FILE* src_code) {
     atexit(first_and_follow_cleanup);
 
     FILE* file = fopen(grammar_file, "r");
@@ -161,9 +161,7 @@ node* parse_code(char* grammar_file, char* input_file) {
     compute_follow_set(start_symbol, NULL, NULL, 0);
     generate_parse_map();
 
-    FILE* src_code = fopen(input_file, "r");
     node* root = generate_parse_tree(src_code);
-    fclose(src_code);
     return root;
 }
 
