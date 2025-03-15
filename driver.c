@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "parse.h"
+#include "parser.h"
 
 int main(int argc, char* argv[]){
     if(argc != 3){
