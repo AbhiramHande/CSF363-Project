@@ -115,6 +115,7 @@ int main(int argc, char* argv[]){
 
                 print_parse_tree_inorder(root, NULL, output_file);       //TODO Change this to in-order traversal and then write to file argv[2] 
                 fprintf(output_file, "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n");
+                fclose(output_file);
                 parse_tree_cleanup(&root);
                 break;
             
