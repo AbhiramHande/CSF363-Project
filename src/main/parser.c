@@ -5,7 +5,6 @@
 #define MAX_LINE_LENGTH 256
 #define SUPER_SYN_SIZE 9
 
-//TODO
 static bool error_present = false;
 
 non_terminal** non_terminals = NULL;
@@ -608,7 +607,7 @@ node* generate_parse_tree(FILE* src_code){
             else{
                 fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m The token %-15s for lexeme %s does not match with the expected token %s\n",
                     tok->line_num, token_to_string(tok->name), tok->lexeme, token_to_string(parser_stack_top->stack_symbol->value.token_value));
-                //TODO: Error
+                
                 error_present = true;
                 stack_pop(parser_stack);
                 continue;
@@ -653,7 +652,7 @@ node* generate_parse_tree(FILE* src_code){
             else{
                 fprintf(stderr, "Line no. %-4d: \033[1;31mError:\033[0m Invalid token %-15s encountered with value %s stack top %s\n",
                     tok->line_num, token_to_string(tok->name), tok->lexeme, parser_stack_top->stack_symbol->value.nt->name);
-                //TODO: Error
+                
                 error_present = true;
                 token_type* syn = parser_stack_top->stack_symbol->value.nt->follow_set;
                 int syn_count = parser_stack_top->stack_symbol->value.nt->follow_size;
