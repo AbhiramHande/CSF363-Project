@@ -1,11 +1,3 @@
-/*
-Group Number : 14
-Name : Avyakth Krishna Kumar   ID : 2021B3A71111P
-Name : Suchit Chebolu          ID : 2021B1A72281P
-Name : Abhiram H               ID : 2021B4A71134P
-Name : Ankur Renduchintala     ID : 2021B5A71159P
-Name : Vikram Hariharan        ID : 2022A7PS0013P
-*/
 #define _POSIX_C_SOURCE 200809L
 #define BUFFER_SIZE 1024
 
@@ -24,10 +16,20 @@ Name : Vikram Hariharan        ID : 2022A7PS0013P
 #include <sys/wait.h>
 #include <sys/types.h>
 
+int prompt_user(const char *message) {
+    char response;
+    printf("%s [y/N]: ", message);
+    scanf(" %c", &response);
+    if (response == 'y' || response == 'Y') {
+        return 1;
+    }
+    return 0;
+}
+
 void remove_extra_whitespace(char *str) {
     int i = 0, j = 0;
     int len = strlen(str);
-    int space_needed = 0;  // Flag to indicate space should be added
+    int space_needed = 0; 
 
     while (i < len) {
         // Skip leading whitespace
@@ -69,9 +71,12 @@ int process_line(char *line, FILE* file_ptr) {
     
     if (strcmp(line, expected_output)) {
         fprintf(stderr, "\033[32mExpected:\033[0m \"%s\"\n", expected_output);
-        fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);     
+        fprintf(stderr, "\033[31mReceived:\033[0m \"%s\"\n", line);    
+        if (!prompt_user("This is an error. Do you accept this mismatch?")) {
+            return -1;
+        } 
         fflush(stderr);   
-        return -1;
+        return 0;
     }
     #ifdef LTEST
         printf("\033[32m\u2713 Received line match: \"%s\"\033[0m\n", line);

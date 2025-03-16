@@ -1,15 +1,7 @@
-/*
-Group Number : 14
-Name : Avyakth Krishna Kumar   ID : 2021B3A71111P
-Name : Suchit Chebolu          ID : 2021B1A72281P
-Name : Abhiram H               ID : 2021B4A71134P
-Name : Ankur Renduchintala     ID : 2021B5A71159P
-Name : Vikram Hariharan        ID : 2022A7PS0013P
-*/
 #include <time.h>
 #include <sys/types.h>
 
-#include "parser.h"
+#include "../../include/parser.h"
 
 void removeComments(FILE* input_file) {
     char* temp = NULL;
@@ -108,7 +100,7 @@ int main(int argc, char* argv[]){
             case '3':
                 buffer_init(input_file);
                 FILE* output_file = fopen(argv[2], "w");
-                root = parse_code("grammar.txt", input_file);
+                root = parse_code("docs/grammar.txt", input_file);
                 fprintf(output_file, "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n");
                 fprintf(output_file, "|             Lexeme              |       Current Node         |  Line no. |         Token Name         |     Value    |        Parent Node         |     Leaf     |        Node Symbol        |\n");
                 fprintf(output_file, "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n");

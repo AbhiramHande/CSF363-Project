@@ -1,12 +1,4 @@
-/*
-Group Number : 14
-Name : Avyakth Krishna Kumar   ID : 2021B3A71111P
-Name : Suchit Chebolu          ID : 2021B1A72281P
-Name : Abhiram H               ID : 2021B4A71134P
-Name : Ankur Renduchintala     ID : 2021B5A71159P
-Name : Vikram Hariharan        ID : 2022A7PS0013P
-*/
-#include "parser.h"
+#include "../../include/parser.h"
 
 #include <time.h>
 
@@ -31,7 +23,7 @@ node* parse_code(char* grammar_file, FILE* src_code) {
 
     FILE* file = fopen(grammar_file, "r");
     if (!file) {
-        perror("Error opening file");
+        perror("Error opening grammar file");
         exit(EXIT_FAILURE);
     }
 
