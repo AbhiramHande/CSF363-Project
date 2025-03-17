@@ -3,6 +3,13 @@
 
 #include "../../include/parser.h"
 
+/**
+ * @brief This function removes all comments and prints the resulting comment-free code on the terminal.
+ *
+ * @param input_file File pointer to the source code file from which comments should be removed.
+ * 
+ * @return void - This function doesn't return anything
+ */
 void removeComments(FILE* input_file) {
     char* temp = NULL;
     size_t bufferSize = 0;

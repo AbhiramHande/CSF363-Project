@@ -2,6 +2,12 @@
 
 #define INITIAL_TABLE_SIZE 400
 
+/*****************************************************************************
+ *                                                                           *
+ *                     STRUCTURES INTERNAL TO THE FILE                       *
+ *                                                                           *
+ *****************************************************************************/
+
 typedef struct Entry map_entry;
 typedef struct HashMap hash_map;
 
@@ -17,15 +23,86 @@ struct HashMap {
     int size;
 };
 
+/*****************************************************************************
+ *                                                                           *
+ *                      GLOBAL VARIABLES IN THIS FILE                        *
+ *                                                                           *
+ *****************************************************************************/
+
 static int collision_count = 0;
 static hash_map* _table = NULL;
 
+/*****************************************************************************
+ *                                                                           *
+ *                     FUNCTIONS INTERNAL TO THE FILE                        *
+ *                                                                           *
+ *****************************************************************************/
+
+/**
+ * @ingroup Hash map internal
+ * 
+ * @brief Initializes the hash map (automatically called on startup).
+ * 
+ * @pre `_table` should be uninitialized or `NULL`.
+ *
+ * @post `_table` is set to a newly created empty hash table.
+ * @post `collision_count` is reset to `0`.
+ * 
+ * @warning Modifies the global variables `_table` and `collision_count`. 
+ */
 static void map_create(void) __attribute__((constructor));
+
+/**
+ * @ingroup Hash map internal
+ * 
+ * @brief Deallocates the hash map (automatically called at program termination).
+ * 
+ * @post `_table` is freed and set to `NULL`.
+ * 
+ * @details Frees the memory allocated for the hash table and its entries.
+ *          However, the caller is responsible for freeing any values (pointers) 
+ *          that were inserted into the table.
+ */
 static void map_cleanup(void) __attribute__((destructor));
 
+/**
+ * @ingroup Hash map internal
+ * 
+ * @brief Computes a hash value for a given key.
+ * 
+ * @details Implements a variation of the **djb2** hash function. 
+ *          - Starts with a prime number `5381`.
+ *          - Multiplies by `33`, XORs with the key, and shifts the key left by `8` bits.
+ *          - Repeats until the key becomes `0`.
+ * 
+ * @param key The unsigned integer key for which the hash is computed.
+ * 
+ * @return The computed hash as an `unsigned long`.
+ */
 static unsigned long hash_function(unsigned int key);
+
+/**
+ * @ingroup Hash map internal
+ * 
+ * @brief Determines whether a given number is prime in \(O(\sqrt{n})\).
+ * 
+ * @param n The number to check for primality.
+ * 
+ * @return `true` if the number is prime, otherwise `false`.
+ */
 static bool is_prime(unsigned int n);
+
+/**
+ * @ingroup Hash map internal
+ * 
+ * @brief Finds the next prime number greater than a given value.
+ * 
+ * @param n The number after which the next prime is sought.
+ * 
+ * @return The next prime number as an `int`.
+ */
 static int next_prime(int n);
+
 
 static unsigned long hash_function(unsigned int key) {
     unsigned long hash;
@@ -85,6 +162,13 @@ static void map_cleanup(void) {
     free(_table);
     _table = NULL;
 }
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                  FUNCTIONS DEFINED IN THE HEADER FILE                     *
+ *                                                                           *
+ *****************************************************************************/
 
 void map_insert(const unsigned int key, production* value) {
     if (!_table) 

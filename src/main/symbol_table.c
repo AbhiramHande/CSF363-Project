@@ -20,13 +20,109 @@ struct SymbolTableNode {
 static int collision_count = 0;
 static symbol_table* table = NULL;
 
+/*****************************************************************************
+ *                                                                           *
+ *                     FUNCTIONS INTERNAL TO THE FILE                        *
+ *                                                                           *
+ *****************************************************************************/
+
+ /**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Initializes the symbol table (automatically called on startup, uses a hash map).
+ * 
+ * @pre `table` should be uninitialized or `NULL`.
+ *
+ * @post `table` is set to a newly created empty hash table.
+ * @post `collision_count` is reset to `0`.
+ * 
+ * @warning Modifies the global variables `table` and `collision_count`. 
+ */
 static void symbol_table_create(void) __attribute__((constructor));
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Deallocates the symbol table (automatically called at program termination).
+ * 
+ * @post `table` and all associated memory are freed and set to `NULL`.
+ * 
+ * @details Frees the memory allocated for the hash table, its entries, and stored lexemes.
+ *          The caller must **NOT** free any values (pointers) inserted or retrieved from the symbol table.
+ */
 static void symbol_table_cleanup(void) __attribute__((destructor));
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Computes a hash value for a given key.
+ * 
+ * @details Implements the **djb2** hash function:
+ *          - Starts with an initial hash value of `5381`.
+ *          - Iterates through each character in the key:
+ *              - Multiplies the current hash by `33`.
+ *              - Adds the ASCII value of the character.
+ *          - Continues until the end of the string.
+ * 
+ * @param key The string key for which the hash is computed.
+ * 
+ * @return The computed hash as an `unsigned long`.
+ */
+static unsigned long hash_function(const char* key);
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Determines whether a given number is prime in \(O(\sqrt{n})\) time complexity.
+ * 
+ * @param n The number to check for primality.
+ * 
+ * @return `true` if the number is prime, otherwise `false`.
+ */
+static bool is_prime(unsigned int n);
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Finds the next prime number greater than a given value.
+ * 
+ * @param n The number after which the next prime is sought.
+ * 
+ * @return The next prime number as an `int`.
+ */
+static int next_prime(int n);
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Inserts an existing entry into a newly created symbol table.
+ * 
+ * @note This function is used internally to transfer entries during resizing.
+ * 
+ * @param _entry A pointer to an entry in the old symbol table. 
+ * 
+ * @warning Modifies the global variables `table` and `collision_count`.
+ */
+static void symbol_table_insert_entry(entry* _entry);
+
+/**
+ * @ingroup Symbol table internal
+ * 
+ * @brief Resizes the symbol table when it reaches capacity.
+ * 
+ * @pre `table` must point to the current symbol table.
+ * @post `table` will point to the newly allocated larger symbol table.
+ * 
+ * @note This function is automatically triggered when the table becomes full.
+ * 
+ * @warning Modifies the global variables `table` and `collision_count`.
+ */
+static void symbol_table_resize(void);
 
 static unsigned long hash_function(const char* key) {
     unsigned long hash;
     for(hash = 5381; *key != '\0'; key++)
-        hash = ((hash << 5) + hash) ^ *key;
+        hash = ((hash << 5) + hash) + *key;
     return hash;
 }
 
@@ -50,7 +146,6 @@ static int next_prime(int n) {
     return n;
 }
 
-//add all keywords here
 static void symbol_table_create(void) {
     symbol_table* map = malloc(sizeof(struct SymbolTable));
     if (!map){
@@ -142,7 +237,6 @@ static void symbol_table_insert_entry(entry* _entry){
             return;
         }
         else{
-            assert(strcmp(node.value->name, _entry->name) != 0);
             collision_count++;
         }
     }
@@ -177,7 +271,12 @@ static void symbol_table_resize(void) {
     return;
 }
 
-// should add token_type
+/*****************************************************************************
+ *                                                                           *
+ *                  FUNCTIONS DEFINED IN THE HEADER FILE                     *
+ *                                                                           *
+ *****************************************************************************/
+
 entry* symbol_table_insert(const char* lexeme, token_type type) {
     if (!table) 
         return NULL;
