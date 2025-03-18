@@ -33,8 +33,10 @@ static symbol_table* table = NULL;
  * 
  * @pre `table` should be uninitialized or `NULL`.
  *
- * @post `table` is set to a newly created empty hash table.
+ * @post `table` is set to a newly created symbol table.
  * @post `collision_count` is reset to `0`.
+ * 
+ * @note Adds all keywords to the symbol table.
  * 
  * @warning Modifies the global variables `table` and `collision_count`. 
  */
