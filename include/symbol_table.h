@@ -64,5 +64,4 @@ entry* symbol_table_fetch(const char* key);
  */
 int sym_get_collision_count();
 
-
 #endif

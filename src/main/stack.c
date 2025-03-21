@@ -1,5 +1,11 @@
 #include "../../include/stack.h"
 
+/*****************************************************************************
+ *                                                                           *
+ *                  FUNCTIONS DEFINED IN THE HEADER FILE                     *
+ *                                                                           *
+ *****************************************************************************/
+
 stack* stack_create(void){
     stack* s = (stack*)calloc(1, sizeof(stack));
     if(!s)

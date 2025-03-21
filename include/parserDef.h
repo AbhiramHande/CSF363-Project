@@ -29,7 +29,7 @@ struct Symbol {
 
 // Structure for a Production
 struct Production {
-    symbol** symbols;   // change to int
+    symbol** symbols;
     int count;
 };
 
@@ -39,7 +39,7 @@ struct NonTerminal {
     int prod_count;
     int first_size;
     int follow_size;
-    production** productions;   //change to int
+    production** productions;
     token_type* first_set;
     token_type* follow_set;
     bool has_epsilon_in_first;
@@ -47,8 +47,8 @@ struct NonTerminal {
 
 // Structure for the node of the parse tree
 struct TreeNode {
-    symbol* stack_symbol;   // change to bool 
-    token* token_value;     // change to void*
+    symbol* stack_symbol;
+    token* token_value;
     node** children; 
     int children_count;
 };
