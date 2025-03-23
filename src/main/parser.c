@@ -1,7 +1,5 @@
 #include "../../include/parser.h"
 
-#include <time.h>
-
 #define MAX_LINE_LENGTH 256
 #define SUPER_SYN_SIZE 9
 
@@ -12,157 +10,263 @@ int non_terminal_count = 0;
 non_terminal* start_symbol = NULL;
 production** parse_table = NULL;
 
+/*****************************************************************************
+ *                                                                           *
+ *                         PARSER INTERNAL FUNCTIONS                         *
+ *                                                                           *
+ *****************************************************************************/
 
-void first_and_follow_cleanup(void);
+/**
+ * @ingroup Parser_Internal
+ * 
+ * @brief Computes the First set of a given non-terminal.
+ * 
+ * @details 
+ * The First set of a non-terminal \(X\) is computed as follows:
+ * 1. If \( X \to Y_1Y_2 \dots Y_k \) is a production rule for some \( k \geq 1 \):
+ *      - If \( \alpha \neq \epsilon \in First(Y_1) \), then add \( \alpha \) to First(X).
+ *      - If \( \epsilon \in First(Y_1) \), continue checking \( Y_2, Y_3, \dots, Y_n \).
+ *      - Stop when a symbol \( Y_n \) is found where \( \epsilon \notin First(Y_n) \) or all \( Y_i \) are exhausted.
+ *      - If \( \epsilon \in First(Y_i) \) for all \( i \leq n \), add \( \epsilon \) to First(X).
+ * 2. If \( X \to \epsilon \) is a production, then \( \epsilon \) is added to First(X).
+ * 3. If a non-terminal has multiple production rules, the First set is the **union** of the First sets of all right-hand sides.
+ * 
+ * @param nt A pointer to the non-terminal whose First set is to be computed.
+ * 
+ * @returns void
+ * 
+ * @warning Modifies the global non-terminal structure by adding the First set and its size.
+ *          If \( \epsilon \) is present in First, this is also reflected in the structure.
+ */
+void compute_first_set(non_terminal* nt);
+
+/**
+ * @ingroup Parser_Internal
+ * 
+ * @brief Computes the Follow set of a given non-terminal.
+ * 
+ * @details 
+ * The Follow set of a non-terminal \(X\) is computed as follows:
+ * 1. If \( X \) is the start symbol (in the given grammar, `<program>`), then add `$` to Follow(X).
+ * 2. If there is a production rule \( A \to \alpha B \beta \):
+ *      - Add everything in `First(β) - {ε}` to `Follow(B)`.
+ *      - If \( \epsilon \in First(\beta) \), then add `Follow(A)` to `Follow(B)`.
+ * 3. If there is a production rule \( A \to \alpha B \), then add `Follow(A)` to `Follow(B)`.
+ * 
+ * @param nt A pointer to the non-terminal whose Follow set is to be computed.
+ * @param A A pointer to the parent non-terminal from which Follow was called (NULL for the start symbol).
+ * @param aToAlpha A pointer to the production rule in which `nt` appears.
+ * @param nt_pos The position of `nt` in the production rule.
+ * 
+ * @returns void
+ * 
+ * @warning Modifies the global non-terminal structure by adding the Follow set and its size.
+ */
+void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha, int nt_pos);
+
+/**
+ * @ingroup Parser_Internal
+ * 
+ * @brief Generates the parsing table for the given grammar using a hash map.
+ * 
+ * @details 
+ * The parsing table is constructed using the following rules:
+ * 1. For each production \( A \to \alpha \):
+ *      - For every terminal \( a \in First(\alpha) \), add \( A \to \alpha \) to \( M[A, a] \).
+ *      - If \( \epsilon \in First(\alpha) \), then for every terminal \( b \in Follow(A) \), add \( A \to \alpha \) to \( M[A, b] \).
+ * 
+ * @returns void
+ */
+void generate_parse_map();
+
+/**
+ * @ingroup Parser_Internal
+ * 
+ * @brief Generates a parse tree for the given source code.
+ * 
+ * @note Uses LL(1) parsing process
+ * 
+ * @todo update details --Ankur
+ * @details 
+ * The LL(1) parsing process follows these steps:
+ * 1. Push the start symbol of the grammar (`<program>`) onto an empty stack.
+ * 2. Set `tp` to the first symbol of `w`, the tokenized input string.
+ * 3. Use the parsing table `M` to decide parsing actions.
+ * 4. While (stack is not empty)
+ *      - If top of stack matches current token, pop stack and advance `tp`.
+ *      - If top of the stack is a terminal but does not match `a`, **report a syntax error**.
+ *      - If `M`'s entry corresponding to the stack top and current token is `NULL`, **handle error recovery** (panic-mode).
+ *      - If \( M[X, a] = X \to Y_1Y_2 \cdots Y_k \):
+ *          - Output the production \( X \to Y_1Y_2 \cdots Y_k \).
+ *          - Pop `X` from stack.
+ *          - Push \( Y_k, Y_{k-1}, \cdots, Y_1 \) onto the stack in that order.
+ * 4. Repeat until the stack is empty.
+ * 
+ * @param src_code A pointer to an opened file containing the source code.
+ * 
+ * @return A pointer to the root node of the parse tree.
+ * 
+ * @warning The caller must deallocate the parse tree after use.
+ */
+node* generate_parse_tree(FILE* src_code);
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                         HELPER INTERNAL FUNCTIONS                         *
+ *                                                                           *
+ *****************************************************************************/
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Adds a given token type to a set if it does not already exist.
+ * 
+ * @param set A pointer to a dynamically allocated array representing the set.
+ * @param size A pointer to the current size of the set.
+ * @param element The token type to be added.
+ * 
+ * @note If the given token type is not present in the set, the set is resized 
+ *       and the token is added. The size is updated accordingly.
+ */
+void add_to_set(token_type** set, int* size, const token_type element);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Adds a given token to the first set of a non-terminal.
+ * 
+ * @param nt A pointer to the non-terminal whose first set is to be updated.
+ * @param element The token type to be added to the first set.
+ */
+void add_to_first_set(non_terminal* nt, const token_type element);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Adds a given token to the follow set of a non-terminal.
+ * 
+ * @param nt A pointer to the non-terminal whose follow set is to be updated.
+ * @param element The token type to be added to the follow set.
+ */
+void add_to_follow_set(non_terminal* nt, const token_type element);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Computes the first set of a sequence of symbols (terminals and non-terminals).
+ * 
+ * @param sym_seq A pointer to an array of symbols representing the sequence.
+ * @param sym_seq_count The number of symbols in the sequence.
+ * @param result_size A pointer to an integer that will store the size of the resulting first set.
+ * 
+ * @returns A pointer to a dynamically allocated array containing the first set of the given sequence.
+ * 
+ * @warning The caller is responsible for freeing the returned array.
+ */
+token_type* compute_first_of_sequence(symbol** sym_seq, int sym_seq_count, int* result_size);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Checks whether the `TK_EPSILON` token is present in a given set.
+ * 
+ * @param set A pointer to an array of token types.
+ * @param size The number of elements in the set.
+ * 
+ * @returns `true` if the set contains `TK_EPSILON`, otherwise `false`.
+ */
+bool contains_EPS(token_type* set, int size);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Finds a non-terminal based on its name.
+ * 
+ * @param name A string representing the name of the non-terminal.
+ * @param end The number of characters to compare (if zero, the entire string is compared).
+ * 
+ * @returns A pointer to the non-terminal if found, otherwise `NULL`.
+ */
+non_terminal* find_non_terminal(const char* name, int end);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Creates a new parse tree node corresponding to a given non-terminal.
+ * 
+ * @param nt A pointer to the non-terminal.
+ * 
+ * @returns A pointer to the newly created tree node.
+ * 
+ * @warning The caller is responsible for freeing the allocated node.
+ */
 node* create_tree_node_nonterm(non_terminal* nt);
+
+/**
+ * @ingroup Parser_Internal_Helper
+ * 
+ * @brief Creates a new parse tree node corresponding to a given terminal.
+ * 
+ * @param tok_name The token type representing the terminal.
+ * 
+ * @returns A pointer to the newly created tree node.
+ * 
+ * @warning The caller is responsible for freeing the allocated node.
+ */
 node* create_tree_node_term(token_type tok_name);
 
-node* parse_code(char* grammar_file, FILE* src_code) {
-    atexit(first_and_follow_cleanup);
 
-    FILE* file = fopen(grammar_file, "r");
-    if (!file) {
-        perror("Error opening grammar file");
-        exit(EXIT_FAILURE);
-    }
+/*****************************************************************************
+ *                                                                           *
+ *               INTERNAL FUNCTIONS FOR PRINTING INTERMEDIATES               *
+ *                                                                           *
+ *****************************************************************************/
 
-    char line[MAX_LINE_LENGTH];
-    while (fgets(line, MAX_LINE_LENGTH, file)) {
+/**
+ * @ingroup Parser_Internal_Printing
+ * 
+ * @brief Prints the first and/or follow sets of all non-terminals.
+ * 
+ * @param print_first If `true`, prints the first sets of each non-terminal.
+ * @param print_follow If `true`, prints the follow sets of each non-terminal.
+ */
+void print_first_and_follow_sets(bool print_first, bool print_follow);
 
-        // Parse the production rule to remove the arrow
-        char* arrow = strstr(line, "===>");
-        if (!arrow) continue;
-        *arrow = '\0';
-        char* lhs = line;
+/**
+ * @ingroup Parser_Internal_Printing
+ * 
+ * @brief Prints the parse tree using pre-order traversal.
+ * 
+ * @param root A pointer to the root of the parse tree.
+ */
+void print_parse_tree(node* root);
 
-        // Parse the rule to remove leading and trailing spaces
-        while (isspace(*lhs)) 
-            lhs++;
-        char* end = lhs + strlen(lhs) - 1;
-        while (end > lhs && isspace(*end)) 
-            end--;
-        *(end + 1) = '\0';
+/**
+ * @ingroup Parser_Internal_Printing
+ * 
+ * @brief Prints the parsing table.
+ */
+void print_parse_map();
 
-        // Check the LHS for non-terminal
-        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
-            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
-            continue;
-        }
 
-        int str_len = strlen(lhs) - 2;
-        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
-        if (!nt) {
-            nt = (non_terminal*)malloc(sizeof(non_terminal));
-            nt->name = strndup(lhs + 1, str_len);
-            nt->prod_count = 0;
-            nt->first_size = 0;
-            nt->follow_size = 0;
-            nt->productions = NULL;
-            nt->first_set = NULL;
-            nt->follow_set = NULL;
-            nt->has_epsilon_in_first = false;
-            
-            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
-            non_terminals[non_terminal_count++] = nt;
-        }
+/*****************************************************************************
+ *                                                                           *
+ *                     CONSTRUCTORS AND DESTRUCTORS                          *
+ *                                                                           *
+ *****************************************************************************/
 
-        // Add start symbol if there is none
-        if (!start_symbol)
-            start_symbol = nt;
-    }
+/**
+ * @ingroup Parser_Internal_Cleanup
+ * 
+ * @brief Deallocates memory associated with all non-terminals, their first and follow sets, and the parsing table.
+ */
+void first_and_follow_cleanup(void);
 
-    rewind(file);
-    while (fgets(line, MAX_LINE_LENGTH, file)) {
-
-        // Parse the production rule to remove the arrow
-        char* arrow = strstr(line, "===>");
-        if (!arrow) continue;
-        *arrow = '\0';
-        char* lhs = line;
-        char* rhs = arrow + 4;
-
-        // Parse the rule to remove leading and trailing spaces
-        while (isspace(*lhs)) 
-            lhs++;
-        char* end = lhs + strlen(lhs) - 1;
-        while (end > lhs && isspace(*end)) 
-            end--;
-        *(end + 1) = '\0';
-
-        while (isspace(*rhs)) 
-            rhs++;
-        end = rhs + strlen(rhs) - 1;
-        while (end > rhs && isspace(*end)) 
-            end--;
-        *(end + 1) = '\0';
-
-        // Check the LHS for non-terminal
-        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
-            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
-            continue;
-        }
-
-        int str_len = strlen(lhs) - 2;
-        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
-
-        // Prase the RHS of the rule
-        char* save_rule;
-        char* alt = strtok_r(rhs, "|", &save_rule);
-        while (alt) {
-            production* prod = (production*)malloc(sizeof(production));
-            prod->symbols = NULL;
-            prod->count = 0;
-            
-            // Parse each rule for tokens, non-terminals and epsilon
-            char* save_token;
-            char* token = strtok_r(alt, " \t", &save_token);
-            while (token) {
-                int tok_str_len = strlen(token);
-                symbol* sym = (symbol*)malloc(sizeof(symbol));
-                if (strcmp(token, "EPS") == 0) {
-                    sym->type = SYM_EPSILON;
-                    sym->value.token_value = EPSILON;
-                } 
-                else if (token[0] == '<' && token[tok_str_len -1] == '>') {
-                    sym->type = SYM_NON_TERMINAL;
-                    sym->value.nt = find_non_terminal(token + 1, tok_str_len - 2);
-                } 
-                else if (strncmp(token, "TK_", 3) == 0) {
-                    sym->type = SYM_TERMINAL;
-                    sym->value.token_value = string_to_token(token);
-                } 
-                else {
-                    fprintf(stderr, "Invalid symbol: %s\n", token);
-                    free(sym);
-                    sym = NULL;
-                    token = strtok(NULL, " \t");
-                    continue;
-                }
-
-                prod->symbols = (symbol**)realloc(prod->symbols, (prod->count + 1) * sizeof(symbol*));
-                prod->symbols[prod->count++] = sym;
-
-                token = strtok_r(NULL, " \t", &save_token);
-            }
-
-            nt->productions = (production**)realloc(nt->productions, (nt->prod_count + 1)*sizeof(production*));
-            nt->productions[nt->prod_count++] = prod;
-
-            alt = strtok_r(NULL, "|", &save_rule);
-        }
-    }
-
-    fclose(file);
-    file = NULL;
-
-    for(int i = 0; i < non_terminal_count; i++)
-        compute_first_set(non_terminals[i]);
-    compute_follow_set(start_symbol, NULL, NULL, 0);
-    generate_parse_map();
-
-    node* root = generate_parse_tree(src_code);
-    return root;
-}
+#ifdef NO_HASHMAP
+void generate_parse_table();
+void print_parse_table();
+#endif
 
 non_terminal* find_non_terminal(const char* name, int end) {
     for (int i = 0; i < non_terminal_count; i++) {
@@ -686,6 +790,207 @@ node* generate_parse_tree(FILE* src_code){
     stack_cleanup(&parser_stack);
     return start;
 }
+
+void print_parse_tree(node* root){
+    if(!error_present){
+        if(root->stack_symbol->type == SYM_TERMINAL){
+            printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", token_to_string(root->token_value->name), root->token_value->lexeme);
+            return;
+        }
+        else if(root->stack_symbol->type == SYM_NON_TERMINAL){
+            printf("Parse Tree Node: %s, Number of Children: %d\n", root->stack_symbol->value.nt->name, root->children_count);
+            for(int i = 0; i < root->children_count; i++){
+                if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
+                    printf("%s \t", token_to_string(root->children[i]->token_value->name));
+                else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
+                    printf("%s \t", root->children[i]->stack_symbol->value.nt->name);
+                else
+                    printf("EPSILON \t");
+            }
+            printf("\n\n");
+
+            for(int i = 0; i < root->children_count; i++)
+                if(root->children[i]->stack_symbol->type != SYM_EPSILON)
+                    print_parse_tree(root->children[i]);
+        }
+    }
+    return;
+}
+
+/*****************************************************************************
+ *                                                                           *
+ *                  FUNCTIONS DEFINED IN THE HEADER FILE                     *
+ *                                                                           *
+ *****************************************************************************/
+
+ node* parse_code(char* grammar_file, FILE* src_code) {
+    atexit(first_and_follow_cleanup);
+
+    FILE* file = fopen(grammar_file, "r");
+    if (!file) {
+        perror("Error opening grammar file");
+        exit(EXIT_FAILURE);
+    }
+
+    char line[MAX_LINE_LENGTH];
+    while (fgets(line, MAX_LINE_LENGTH, file)) {
+
+        // Parse the production rule to remove the arrow
+        char* arrow = strstr(line, "===>");
+        if (!arrow) continue;
+        *arrow = '\0';
+        char* lhs = line;
+
+        // Parse the rule to remove leading and trailing spaces
+        while (isspace(*lhs)) 
+            lhs++;
+        char* end = lhs + strlen(lhs) - 1;
+        while (end > lhs && isspace(*end)) 
+            end--;
+        *(end + 1) = '\0';
+
+        // Check the LHS for non-terminal
+        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
+            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
+            continue;
+        }
+
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
+        if (!nt) {
+            nt = (non_terminal*)malloc(sizeof(non_terminal));
+            nt->name = strndup(lhs + 1, str_len);
+            nt->prod_count = 0;
+            nt->first_size = 0;
+            nt->follow_size = 0;
+            nt->productions = NULL;
+            nt->first_set = NULL;
+            nt->follow_set = NULL;
+            nt->has_epsilon_in_first = false;
+            
+            non_terminals = (non_terminal**)realloc(non_terminals, (non_terminal_count + 1)*sizeof(non_terminal*));
+            non_terminals[non_terminal_count++] = nt;
+        }
+
+        // Add start symbol if there is none
+        if (!start_symbol)
+            start_symbol = nt;
+    }
+
+    rewind(file);
+    while (fgets(line, MAX_LINE_LENGTH, file)) {
+
+        // Parse the production rule to remove the arrow
+        char* arrow = strstr(line, "===>");
+        if (!arrow) continue;
+        *arrow = '\0';
+        char* lhs = line;
+        char* rhs = arrow + 4;
+
+        // Parse the rule to remove leading and trailing spaces
+        while (isspace(*lhs)) 
+            lhs++;
+        char* end = lhs + strlen(lhs) - 1;
+        while (end > lhs && isspace(*end)) 
+            end--;
+        *(end + 1) = '\0';
+
+        while (isspace(*rhs)) 
+            rhs++;
+        end = rhs + strlen(rhs) - 1;
+        while (end > rhs && isspace(*end)) 
+            end--;
+        *(end + 1) = '\0';
+
+        // Check the LHS for non-terminal
+        if (*lhs != '<' || lhs[strlen(lhs)-1] != '>') {
+            fprintf(stderr, "Invalid non-terminal: %s\n", lhs);
+            continue;
+        }
+
+        int str_len = strlen(lhs) - 2;
+        non_terminal* nt = find_non_terminal(lhs + 1, str_len);
+
+        // Prase the RHS of the rule
+        char* save_rule;
+        char* alt = strtok_r(rhs, "|", &save_rule);
+        while (alt) {
+            production* prod = (production*)malloc(sizeof(production));
+            prod->symbols = NULL;
+            prod->count = 0;
+            
+            // Parse each rule for tokens, non-terminals and epsilon
+            char* save_token;
+            char* token = strtok_r(alt, " \t", &save_token);
+            while (token) {
+                int tok_str_len = strlen(token);
+                symbol* sym = (symbol*)malloc(sizeof(symbol));
+                if (strcmp(token, "EPS") == 0) {
+                    sym->type = SYM_EPSILON;
+                    sym->value.token_value = EPSILON;
+                } 
+                else if (token[0] == '<' && token[tok_str_len -1] == '>') {
+                    sym->type = SYM_NON_TERMINAL;
+                    sym->value.nt = find_non_terminal(token + 1, tok_str_len - 2);
+                } 
+                else if (strncmp(token, "TK_", 3) == 0) {
+                    sym->type = SYM_TERMINAL;
+                    sym->value.token_value = string_to_token(token);
+                } 
+                else {
+                    fprintf(stderr, "Invalid symbol: %s\n", token);
+                    free(sym);
+                    sym = NULL;
+                    token = strtok(NULL, " \t");
+                    continue;
+                }
+
+                prod->symbols = (symbol**)realloc(prod->symbols, (prod->count + 1) * sizeof(symbol*));
+                prod->symbols[prod->count++] = sym;
+
+                token = strtok_r(NULL, " \t", &save_token);
+            }
+
+            nt->productions = (production**)realloc(nt->productions, (nt->prod_count + 1)*sizeof(production*));
+            nt->productions[nt->prod_count++] = prod;
+
+            alt = strtok_r(NULL, "|", &save_rule);
+        }
+    }
+
+    fclose(file);
+    file = NULL;
+
+    for(int i = 0; i < non_terminal_count; i++)
+        compute_first_set(non_terminals[i]);
+    compute_follow_set(start_symbol, NULL, NULL, 0);
+    generate_parse_map();
+
+    node* root = generate_parse_tree(src_code);
+    return root;
+}
+
+void parse_tree_cleanup(node** root){
+    if(!root || !*root)
+        return;
+
+    for(int i = 0; i < (*root)->children_count; i++)
+        parse_tree_cleanup(&((*root)->children[i]));
+    
+    free((*root)->children);
+    free((*root)->stack_symbol);
+    free((*root)->token_value);
+
+    (*root)->children = NULL;
+    (*root)->stack_symbol = NULL;
+    (*root)->token_value = NULL;
+    (*root)->children_count = 0;
+
+    free(*root);
+    *root = NULL;
+    return;
+}
+
 void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
     if(!error_present){
         if(root -> stack_symbol -> type == SYM_TERMINAL){
@@ -772,52 +1077,5 @@ void print_parse_tree_inorder(node* root, node* parent, FILE* output_file){
                 parent->stack_symbol->value.nt->name);   
     }
     else printf("Errors Present. Empty Parse tree printed\n");
-    return;
-}
-
-void print_parse_tree(node* root){
-    if(!error_present){
-        if(root->stack_symbol->type == SYM_TERMINAL){
-            printf("Parse Tree Leaf: %s, Leaf lexeme: %s\n\n", token_to_string(root->token_value->name), root->token_value->lexeme);
-            return;
-        }
-        else if(root->stack_symbol->type == SYM_NON_TERMINAL){
-            printf("Parse Tree Node: %s, Number of Children: %d\n", root->stack_symbol->value.nt->name, root->children_count);
-            for(int i = 0; i < root->children_count; i++){
-                if(root->children[i]->stack_symbol->type == SYM_TERMINAL)
-                    printf("%s \t", token_to_string(root->children[i]->token_value->name));
-                else if(root->children[i]->stack_symbol->type == SYM_NON_TERMINAL)
-                    printf("%s \t", root->children[i]->stack_symbol->value.nt->name);
-                else
-                    printf("EPSILON \t");
-            }
-            printf("\n\n");
-
-            for(int i = 0; i < root->children_count; i++)
-                if(root->children[i]->stack_symbol->type != SYM_EPSILON)
-                    print_parse_tree(root->children[i]);
-        }
-    }
-    return;
-}
-
-void parse_tree_cleanup(node** root){
-    if(!root || !*root)
-        return;
-
-    for(int i = 0; i < (*root)->children_count; i++)
-        parse_tree_cleanup(&((*root)->children[i]));
-    
-    free((*root)->children);
-    free((*root)->stack_symbol);
-    free((*root)->token_value);
-
-    (*root)->children = NULL;
-    (*root)->stack_symbol = NULL;
-    (*root)->token_value = NULL;
-    (*root)->children_count = 0;
-
-    free(*root);
-    *root = NULL;
     return;
 }

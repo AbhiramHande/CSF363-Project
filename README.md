@@ -1,10 +1,10 @@
 # CSF363-Project
 This is a compiler built for a toy language as a part of the course **CS F363 - Compiler Construction**. The contributing members are
-1. Abhiram H (2021B4A71134P)
-2. Ankur Renduchintala (2021B5A71159P)
-3. Avyakth Kumar (2021B3A71111P)
-4. Suchit Chebolu (2021B1A72281P)
-5. Vikram Hariharan (2022A7PS0013P)
+1. (2021B4A71134P) Abhiram H 
+2. (2021B5A71159P) Ankur Renduchintala 
+3. (2021B3A71111P) Avyakth Kumar 
+4. (2021B1A72281P) Suchit Chebolu 
+5. (2022A7PS0013P) Vikram Hariharan 
 
 ## Table of Contents:
 - [CSF363-Project](#csf363-project)
