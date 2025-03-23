@@ -22,13 +22,13 @@ production** parse_table = NULL;
  * @brief Computes the First set of a given non-terminal.
  * 
  * @details 
- * The First set of a non-terminal \(X\) is computed as follows:
- * 1. If \( X \to Y_1Y_2 \dots Y_k \) is a production rule for some \( k \geq 1 \):
- *      - If \( \alpha \neq \epsilon \in First(Y_1) \), then add \( \alpha \) to First(X).
- *      - If \( \epsilon \in First(Y_1) \), continue checking \( Y_2, Y_3, \dots, Y_n \).
- *      - Stop when a symbol \( Y_n \) is found where \( \epsilon \notin First(Y_n) \) or all \( Y_i \) are exhausted.
- *      - If \( \epsilon \in First(Y_i) \) for all \( i \leq n \), add \( \epsilon \) to First(X).
- * 2. If \( X \to \epsilon \) is a production, then \( \epsilon \) is added to First(X).
+ * The First set of a non-terminal @f$ X @f$ is computed as follows:
+ * 1. If @f$ X \to Y_1Y_2 \dots Y_k @f$ is a production rule for some @f$ k \geq 1 @f$:
+ *      - If @f$ \alpha \neq \epsilon \in First(Y_1) @f$, then add @f$ \alpha @f$ to First(X).
+ *      - If @f$ \epsilon \in First(Y_1) @f$, continue checking @f$ Y_2, Y_3, \dots, Y_n @f$.
+ *      - Stop when a symbol @f$ Y_n @f$ is found where @f$ \epsilon \notin First(Y_n) @f$ or all @f$ Y_i @f$ are exhausted.
+ *      - If @f$ \epsilon \in First(Y_i) @f$ for all @f$ i \leq n @f$, add @f$ \epsilon @f$ to First(X).
+ * 2. If @f$ X \to \epsilon @f$ is a production, then @f$ \epsilon @f$ is added to First(X).
  * 3. If a non-terminal has multiple production rules, the First set is the **union** of the First sets of all right-hand sides.
  * 
  * @param nt A pointer to the non-terminal whose First set is to be computed.
@@ -36,7 +36,7 @@ production** parse_table = NULL;
  * @returns void
  * 
  * @warning Modifies the global non-terminal structure by adding the First set and its size.
- *          If \( \epsilon \) is present in First, this is also reflected in the structure.
+ *          If @f$ \epsilon @f$ is present in First, this is also reflected in the structure.
  */
 void compute_first_set(non_terminal* nt);
 
@@ -46,12 +46,12 @@ void compute_first_set(non_terminal* nt);
  * @brief Computes the Follow set of a given non-terminal.
  * 
  * @details 
- * The Follow set of a non-terminal \(X\) is computed as follows:
- * 1. If \( X \) is the start symbol (in the given grammar, `<program>`), then add `$` to Follow(X).
- * 2. If there is a production rule \( A \to \alpha B \beta \):
+ * The Follow set of a non-terminal @f$ X @f$ is computed as follows:
+ * 1. If @f$ X @f$ is the start symbol (in the given grammar, `<program>`), then add `$` to Follow(X).
+ * 2. If there is a production rule @f$ A \to \alpha B \beta @f$:
  *      - Add everything in `First(β) - {ε}` to `Follow(B)`.
- *      - If \( \epsilon \in First(\beta) \), then add `Follow(A)` to `Follow(B)`.
- * 3. If there is a production rule \( A \to \alpha B \), then add `Follow(A)` to `Follow(B)`.
+ *      - If @f$ \epsilon \in First(\beta) @f$, then add `Follow(A)` to `Follow(B)`.
+ * 3. If there is a production rule @f$ A \to \alpha B @f$, then add `Follow(A)` to `Follow(B)`.
  * 
  * @param nt A pointer to the non-terminal whose Follow set is to be computed.
  * @param A A pointer to the parent non-terminal from which Follow was called (NULL for the start symbol).
@@ -71,9 +71,9 @@ void compute_follow_set(non_terminal* nt, non_terminal* A, production* aToAlpha,
  * 
  * @details 
  * The parsing table is constructed using the following rules:
- * 1. For each production \( A \to \alpha \):
- *      - For every terminal \( a \in First(\alpha) \), add \( A \to \alpha \) to \( M[A, a] \).
- *      - If \( \epsilon \in First(\alpha) \), then for every terminal \( b \in Follow(A) \), add \( A \to \alpha \) to \( M[A, b] \).
+ * 1. For each production @f$ A \to \alpha @f$:
+ *      - For every terminal @f$ a \in First(\alpha) @f$, add @f$ A \to \alpha @f$ to @f$ M[A, a] @f$.
+ *      - If @f$ \epsilon \in First(\alpha) @f$, then for every terminal @f$ b \in Follow(A) @f$, add @f$ A \to \alpha @f$ to @f$ M[A, b] @f$.
  * 
  * @returns void
  */
@@ -96,10 +96,10 @@ void generate_parse_map();
  *      - If top of stack matches current token, pop stack and advance `tp`.
  *      - If top of the stack is a terminal but does not match `a`, **report a syntax error**.
  *      - If `M`'s entry corresponding to the stack top and current token is `NULL`, **handle error recovery** (panic-mode).
- *      - If \( M[X, a] = X \to Y_1Y_2 \cdots Y_k \):
- *          - Output the production \( X \to Y_1Y_2 \cdots Y_k \).
+ *      - If @f$ M[X, a] = X \to Y_1Y_2 \cdots Y_k @f$:
+ *          - Output the production @f$ X \to Y_1Y_2 \cdots Y_k @f$.
  *          - Pop `X` from stack.
- *          - Push \( Y_k, Y_{k-1}, \cdots, Y_1 \) onto the stack in that order.
+ *          - Push @f$ Y_k, Y_{k-1}, \cdots, Y_1 @f$ onto the stack in that order.
  * 4. Repeat until the stack is empty.
  * 
  * @param src_code A pointer to an opened file containing the source code.
