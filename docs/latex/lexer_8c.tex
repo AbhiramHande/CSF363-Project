@@ -1,0 +1,1985 @@
+\hypertarget{lexer_8c}{}\doxysection{src/main/lexer.c File Reference}
+\label{lexer_8c}\index{src/main/lexer.c@{src/main/lexer.c}}
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../../include/lexer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/symbol\+\_\+table.\+h\char`\"{}}\newline
+Include dependency graph for lexer.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ac80f56298756d54e0e7eb451df72176c}{START\+\_\+\+STATE}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\+\_\+\+START}}~0
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aeea179a11cef57d9e6c799268635c41c}{FINAL\+\_\+\+STATES}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1caa243df739c6e536f1cddcdb51d666}{STATE\+\_\+\+FIN\+\_\+\+NUM}}~1
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a75dbe53a71381919192f3148eb27544f}{STATE\+\_\+\+FIN\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP}}~2
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a8951f676414f7d52ce8cb200cdae7879}{STATE\+\_\+\+FIN\+\_\+\+RNUM\+\_\+\+EXP}}~3
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aaeae1cf33cf450e1b26b3211a4d576fa}{STATE\+\_\+\+FIN\+\_\+\+ID}}~4
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}{STATE\+\_\+\+FIN\+\_\+\+KEY\+\_\+\+OR\+\_\+\+FIELD}}~5
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a51dcebf8cb89d5bf3f82cd73b461303f}{STATE\+\_\+\+FIN\+\_\+\+FUNCTION}}~6
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1a95d348d3b06b6bce248b1d440a1467}{STATE\+\_\+\+FIN\+\_\+\+RUID}}~7
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a90be1afd8da8dc4d6755960b979b2991}{STATE\+\_\+\+FIN\+\_\+\+LE}}~8
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a31b197c0dbd101d0e53493b8d6acd1c9}{STATE\+\_\+\+FIN\+\_\+\+ASSIGNOP}}~9
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1e34b0f9ab72a30ac4c9f87fd19402d9}{STATE\+\_\+\+FIN\+\_\+\+LT\+\_\+\+MIUNS}}~10
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ae2bff07d59e077683113017b0cbe2030}{STATE\+\_\+\+FIN\+\_\+\+LT}}~11
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ae218ff959b35ec9076ccc5b53142d089}{STATE\+\_\+\+FIN\+\_\+\+GE}}~12
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a04911cc518850fc9cb18fdc535b08ea1}{STATE\+\_\+\+FIN\+\_\+\+GT}}~13
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a6386821cc89ddd26bc4aa0a235504ca7}{STATE\+\_\+\+FIN\+\_\+\+SQR\+\_\+\+OPEN}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\+\_\+\+SQL}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1c2552ce28c4021616f603c698032c9b}{STATE\+\_\+\+FIN\+\_\+\+SQR\+\_\+\+CLOSE}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\+\_\+\+SQR}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ab354cd423aea7b09ec8d851b0e784220}{STATE\+\_\+\+FIN\+\_\+\+COMMA}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\+\_\+\+COMMA}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ab739c1734babb555a1ba279009e5c749}{STATE\+\_\+\+FIN\+\_\+\+SEMI\+\_\+\+COLON}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\+\_\+\+SEM}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aa51d3e360aa06bb02f23cca08a36c54c}{STATE\+\_\+\+FIN\+\_\+\+COLON}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\+\_\+\+COLON}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a05fbb37a15e5c18851bb89e6b28c62aa}{STATE\+\_\+\+FIN\+\_\+\+DOT}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\+\_\+\+DOT}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a99279ccae98d8c98148d489ab14037f1}{STATE\+\_\+\+FIN\+\_\+\+PAREN\+\_\+\+OPEN}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\+\_\+\+OP}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_adb785600cea0d118ca9834a7c27633eb}{STATE\+\_\+\+FIN\+\_\+\+PAREN\+\_\+\+CLOSE}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\+\_\+\+CL}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ad905fc4bf2bc5eb4affa2bdb9a38efb9}{STATE\+\_\+\+FIN\+\_\+\+PLUS}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\+\_\+\+PLUS}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a419328d296e86c3e5d5a75e67eee3496}{STATE\+\_\+\+FIN\+\_\+\+MINUS}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\+\_\+\+MINUS}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a4d9d15151e7db420b71991602028557c}{STATE\+\_\+\+FIN\+\_\+\+MUL}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\+\_\+\+MUL}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a64fc4a4164feb743e3606c7f870c75e8}{STATE\+\_\+\+FIN\+\_\+\+DIV}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\+\_\+\+DIV}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a0da504b94d886eef0141e6146f5255f6}{STATE\+\_\+\+FIN\+\_\+\+AND}}~26
+\item 
+\#define \mbox{\hyperlink{lexer_8c_acea2a910ca2ecdd2817f878bbe06a35b}{STATE\+\_\+\+FIN\+\_\+\+OR}}~27
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a835ce35a3fee14add7f7be5001e46a2b}{STATE\+\_\+\+FIN\+\_\+\+NOT}}~28
+\item 
+\#define \mbox{\hyperlink{lexer_8c_acbef4647c6ac1693417113d0aedef6ff}{STATE\+\_\+\+FIN\+\_\+\+NOT\+\_\+\+EQUAL}}~29
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a10eee87fc1a01736bdfa061d6eb65693}{STATE\+\_\+\+FIN\+\_\+\+EQUAL}}~30
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aa83d3d632fa7b36ad89879ddb2e66659}{STATE\+\_\+\+FIN\+\_\+\+WHITESPACE}}~31
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}{STATE\+\_\+\+FIN\+\_\+\+NEWLINE}}~32
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a26b73e0f64a1d5d1d129c78b5d893dc5}{STATE\+\_\+\+FIN\+\_\+\+COMMENT}}~33
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a02e4d39bb3c017bbb5081b5648d43f70}{INTERMEDIATE\+\_\+\+STATES}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}{STATE\+\_\+\+INTR\+\_\+\+COMMENT}}~34
+\item 
+\#define \mbox{\hyperlink{lexer_8c_afc9e0e3a255eba73740445aac378a16a}{STATE\+\_\+\+INTR\+\_\+\+NUM}}~35
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a0a375b2363d3825313efc16416768196}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT}}~36
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1bf284933e455eaf407b65f640d615d1}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+ONE\+\_\+\+DIGIT}}~37
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a7f00fa28d54e2ada469453018fb91280}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+TWO\+\_\+\+DIGIT}}~38
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ad58697e8f859cc9519feec3433ddac42}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT}}~39
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+ONE\+\_\+\+DIGIT}}~40
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aa22ab5b70357ebbe13af5d71729b9433}{STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT\+\_\+\+SIGNED}}~41
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a71a784cd8590b4e1ef0ae3cc646437b7}{STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+ONE\+\_\+\+CHAR}}~42
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}{STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+MORE\+\_\+\+CHARS}}~43
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a6d7256fb1d0d9c76a9cb46e860895191}{STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+MORE\+\_\+\+DIGITS}}~44
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a767e9e89360d5368023aabc681ec049f}{STATE\+\_\+\+INTR\+\_\+\+KEY\+\_\+\+OR\+\_\+\+FIELD}}~45
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aaf77f1caeb72b85e50ad5ba888ba15e4}{STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+}}~46
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}{STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+\+CHARS}}~47
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a675a5bcb3eadc1a2a4a50082d8928d2f}{STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+\+DIGITS}}~48
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a921dce338c51dcaea15ae21e638c91b3}{STATE\+\_\+\+INTR\+\_\+\+RUID\+\_\+\+HASH}}~49
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a1234de85eb8d413982853441c7c4814c}{STATE\+\_\+\+INTR\+\_\+\+RUID\+\_\+\+CHARS}}~50
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a037d5c9ab438364f8c6b7da53d0af461}{STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+OPEN}}~51
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a365f8737dcf568a3a178ea197055bd8b}{STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+OPEN\+\_\+\+MINUS}}~52
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ab65f111bd6065d9036136f29413cd3be}{STATE\+\_\+\+INTR\+\_\+\+ALMOST\+\_\+\+ASSIGN}}~53
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a203f462dc1ffbc3b087b31cd9359f21c}{STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+CLOSE}}~54
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}{STATE\+\_\+\+INTR\+\_\+\+WHITESPACE}}~55
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ae6a1d6c6cccff4d7799d2c9b7972460e}{STATE\+\_\+\+INTR\+\_\+\+AND\+\_\+\+ONE}}~56
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a34dd4913ca43d109ffb39a257fc27aa3}{STATE\+\_\+\+INTR\+\_\+\+AND\+\_\+\+TWO}}~57
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a7bfbd4d72ffa42bc31711348634602df}{STATE\+\_\+\+INTR\+\_\+\+AT\+\_\+\+ONE}}~58
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a48d11522982d98e790744398f114d628}{STATE\+\_\+\+INTR\+\_\+\+AT\+\_\+\+TWO}}~59
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a3339da43d9df0b7fd110098c337de242}{STATE\+\_\+\+INTR\+\_\+\+BANG}}~60
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a6efabf34ae427466fee7bc34d7b42125}{STATE\+\_\+\+INTR\+\_\+\+EQUAL}}~61
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aa1287e05ec932f983aa29905830a24af}{TRAP\+\_\+\+STATES}}
+\item 
+\#define \mbox{\hyperlink{lexer_8c_aef4d9e68296967938a3b345318f2c5c4}{STATE\+\_\+\+TRAP\+\_\+\+SYMBOL\+\_\+\+START}}~62
+\item 
+\#define \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\+\_\+\+TRAP\+\_\+\+PATTERN}}~63
+\item 
+\#define \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\+\_\+\+TRAP\+\_\+\+SYMBOL\+\_\+\+INTR}}~65
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lexer_8c_a67dd8f227181df843e25a314e262a10c}{buffer\+\_\+cleanup}} (void)
+\begin{DoxyCompactList}\small\item\em Deallocates the twin buffer (automatically called at program termination). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lexer_8c_a6d0bc199864425dd309933a88f06bb51}{swap\+\_\+buffer}} (FILE $\ast$file\+\_\+ptr)
+\item 
+char $\ast$ \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\+\_\+and\+\_\+update}} (int no\+\_\+of\+\_\+times)
+\item 
+\mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}} $\ast$ \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\+\_\+token}} (char $\ast$lexeme, \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} type, int line)
+\item 
+\mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}} $\ast$ \mbox{\hyperlink{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}{get\+\_\+next\+\_\+token\+\_\+helper}} (FILE $\ast$file\+\_\+ptr)
+\item 
+void \mbox{\hyperlink{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5}{buffer\+\_\+init}} (FILE $\ast$file\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Initializes an internal twin buffer and loads the active buffer with the first chunk of the file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}} $\ast$ \mbox{\hyperlink{lexer_8c_a68b169dd0377b22e0729c7e7a9988262}{get\+\_\+next\+\_\+token}} (FILE $\ast$file\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em A wrapper function that fetches the next token from the file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} \mbox{\hyperlink{lexer_8c_ab45c7162c82bb8baec1ef2a248bcf120}{string\+\_\+to\+\_\+token}} (const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em Retrieves the token type based on the given string. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{lexer_8c_aee1807f4e95bea666b6c994915907414}{token\+\_\+to\+\_\+string}} (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}})
+\begin{DoxyCompactList}\small\item\em Retrieves a string representation of a token type (for printing purposes). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}{twin\+\_\+buffer}} $\ast$ \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} = NULL
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{lexer_8c_aeea179a11cef57d9e6c799268635c41c}\label{lexer_8c_aeea179a11cef57d9e6c799268635c41c}} 
+\index{lexer.c@{lexer.c}!FINAL\_STATES@{FINAL\_STATES}}
+\index{FINAL\_STATES@{FINAL\_STATES}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{FINAL\_STATES}{FINAL\_STATES}}
+{\footnotesize\ttfamily \#define FINAL\+\_\+\+STATES}
+
+
+
+Definition at line 9 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a02e4d39bb3c017bbb5081b5648d43f70}\label{lexer_8c_a02e4d39bb3c017bbb5081b5648d43f70}} 
+\index{lexer.c@{lexer.c}!INTERMEDIATE\_STATES@{INTERMEDIATE\_STATES}}
+\index{INTERMEDIATE\_STATES@{INTERMEDIATE\_STATES}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{INTERMEDIATE\_STATES}{INTERMEDIATE\_STATES}}
+{\footnotesize\ttfamily \#define INTERMEDIATE\+\_\+\+STATES}
+
+
+
+Definition at line 44 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ac80f56298756d54e0e7eb451df72176c}\label{lexer_8c_ac80f56298756d54e0e7eb451df72176c}} 
+\index{lexer.c@{lexer.c}!START\_STATE@{START\_STATE}}
+\index{START\_STATE@{START\_STATE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{START\_STATE}{START\_STATE}}
+{\footnotesize\ttfamily \#define START\+\_\+\+STATE}
+
+
+
+Definition at line 6 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a0da504b94d886eef0141e6146f5255f6}\label{lexer_8c_a0da504b94d886eef0141e6146f5255f6}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_AND@{STATE\_FIN\_AND}}
+\index{STATE\_FIN\_AND@{STATE\_FIN\_AND}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_AND}{STATE\_FIN\_AND}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+AND~26}
+
+
+
+Definition at line 35 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a31b197c0dbd101d0e53493b8d6acd1c9}\label{lexer_8c_a31b197c0dbd101d0e53493b8d6acd1c9}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_ASSIGNOP@{STATE\_FIN\_ASSIGNOP}}
+\index{STATE\_FIN\_ASSIGNOP@{STATE\_FIN\_ASSIGNOP}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_ASSIGNOP}{STATE\_FIN\_ASSIGNOP}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+ASSIGNOP~9}
+
+
+
+Definition at line 18 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aa51d3e360aa06bb02f23cca08a36c54c}\label{lexer_8c_aa51d3e360aa06bb02f23cca08a36c54c}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_COLON@{STATE\_FIN\_COLON}}
+\index{STATE\_FIN\_COLON@{STATE\_FIN\_COLON}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_COLON}{STATE\_FIN\_COLON}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+COLON~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\+\_\+\+COLON}}}
+
+
+
+Definition at line 27 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ab354cd423aea7b09ec8d851b0e784220}\label{lexer_8c_ab354cd423aea7b09ec8d851b0e784220}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_COMMA@{STATE\_FIN\_COMMA}}
+\index{STATE\_FIN\_COMMA@{STATE\_FIN\_COMMA}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_COMMA}{STATE\_FIN\_COMMA}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+COMMA~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\+\_\+\+COMMA}}}
+
+
+
+Definition at line 25 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a26b73e0f64a1d5d1d129c78b5d893dc5}\label{lexer_8c_a26b73e0f64a1d5d1d129c78b5d893dc5}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_COMMENT@{STATE\_FIN\_COMMENT}}
+\index{STATE\_FIN\_COMMENT@{STATE\_FIN\_COMMENT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_COMMENT}{STATE\_FIN\_COMMENT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+COMMENT~33}
+
+
+
+Definition at line 42 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a64fc4a4164feb743e3606c7f870c75e8}\label{lexer_8c_a64fc4a4164feb743e3606c7f870c75e8}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_DIV@{STATE\_FIN\_DIV}}
+\index{STATE\_FIN\_DIV@{STATE\_FIN\_DIV}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_DIV}{STATE\_FIN\_DIV}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+DIV~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\+\_\+\+DIV}}}
+
+
+
+Definition at line 34 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a05fbb37a15e5c18851bb89e6b28c62aa}\label{lexer_8c_a05fbb37a15e5c18851bb89e6b28c62aa}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_DOT@{STATE\_FIN\_DOT}}
+\index{STATE\_FIN\_DOT@{STATE\_FIN\_DOT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_DOT}{STATE\_FIN\_DOT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+DOT~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\+\_\+\+DOT}}}
+
+
+
+Definition at line 28 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a10eee87fc1a01736bdfa061d6eb65693}\label{lexer_8c_a10eee87fc1a01736bdfa061d6eb65693}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_EQUAL@{STATE\_FIN\_EQUAL}}
+\index{STATE\_FIN\_EQUAL@{STATE\_FIN\_EQUAL}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_EQUAL}{STATE\_FIN\_EQUAL}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+EQUAL~30}
+
+
+
+Definition at line 39 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a51dcebf8cb89d5bf3f82cd73b461303f}\label{lexer_8c_a51dcebf8cb89d5bf3f82cd73b461303f}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_FUNCTION@{STATE\_FIN\_FUNCTION}}
+\index{STATE\_FIN\_FUNCTION@{STATE\_FIN\_FUNCTION}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_FUNCTION}{STATE\_FIN\_FUNCTION}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+FUNCTION~6}
+
+
+
+Definition at line 15 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ae218ff959b35ec9076ccc5b53142d089}\label{lexer_8c_ae218ff959b35ec9076ccc5b53142d089}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_GE@{STATE\_FIN\_GE}}
+\index{STATE\_FIN\_GE@{STATE\_FIN\_GE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_GE}{STATE\_FIN\_GE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+GE~12}
+
+
+
+Definition at line 21 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a04911cc518850fc9cb18fdc535b08ea1}\label{lexer_8c_a04911cc518850fc9cb18fdc535b08ea1}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_GT@{STATE\_FIN\_GT}}
+\index{STATE\_FIN\_GT@{STATE\_FIN\_GT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_GT}{STATE\_FIN\_GT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+GT~13}
+
+
+
+Definition at line 22 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aaeae1cf33cf450e1b26b3211a4d576fa}\label{lexer_8c_aaeae1cf33cf450e1b26b3211a4d576fa}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_ID@{STATE\_FIN\_ID}}
+\index{STATE\_FIN\_ID@{STATE\_FIN\_ID}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_ID}{STATE\_FIN\_ID}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+ID~4}
+
+
+
+Definition at line 13 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}\label{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_KEY\_OR\_FIELD@{STATE\_FIN\_KEY\_OR\_FIELD}}
+\index{STATE\_FIN\_KEY\_OR\_FIELD@{STATE\_FIN\_KEY\_OR\_FIELD}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_KEY\_OR\_FIELD}{STATE\_FIN\_KEY\_OR\_FIELD}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+KEY\+\_\+\+OR\+\_\+\+FIELD~5}
+
+
+
+Definition at line 14 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a90be1afd8da8dc4d6755960b979b2991}\label{lexer_8c_a90be1afd8da8dc4d6755960b979b2991}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_LE@{STATE\_FIN\_LE}}
+\index{STATE\_FIN\_LE@{STATE\_FIN\_LE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_LE}{STATE\_FIN\_LE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+LE~8}
+
+
+
+Definition at line 17 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ae2bff07d59e077683113017b0cbe2030}\label{lexer_8c_ae2bff07d59e077683113017b0cbe2030}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_LT@{STATE\_FIN\_LT}}
+\index{STATE\_FIN\_LT@{STATE\_FIN\_LT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_LT}{STATE\_FIN\_LT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+LT~11}
+
+
+
+Definition at line 20 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1e34b0f9ab72a30ac4c9f87fd19402d9}\label{lexer_8c_a1e34b0f9ab72a30ac4c9f87fd19402d9}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_LT\_MIUNS@{STATE\_FIN\_LT\_MIUNS}}
+\index{STATE\_FIN\_LT\_MIUNS@{STATE\_FIN\_LT\_MIUNS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_LT\_MIUNS}{STATE\_FIN\_LT\_MIUNS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+LT\+\_\+\+MIUNS~10}
+
+
+
+Definition at line 19 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a419328d296e86c3e5d5a75e67eee3496}\label{lexer_8c_a419328d296e86c3e5d5a75e67eee3496}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_MINUS@{STATE\_FIN\_MINUS}}
+\index{STATE\_FIN\_MINUS@{STATE\_FIN\_MINUS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_MINUS}{STATE\_FIN\_MINUS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+MINUS~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\+\_\+\+MINUS}}}
+
+
+
+Definition at line 32 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a4d9d15151e7db420b71991602028557c}\label{lexer_8c_a4d9d15151e7db420b71991602028557c}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_MUL@{STATE\_FIN\_MUL}}
+\index{STATE\_FIN\_MUL@{STATE\_FIN\_MUL}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_MUL}{STATE\_FIN\_MUL}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+MUL~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\+\_\+\+MUL}}}
+
+
+
+Definition at line 33 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}\label{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_NEWLINE@{STATE\_FIN\_NEWLINE}}
+\index{STATE\_FIN\_NEWLINE@{STATE\_FIN\_NEWLINE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_NEWLINE}{STATE\_FIN\_NEWLINE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+NEWLINE~32}
+
+
+
+Definition at line 41 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a835ce35a3fee14add7f7be5001e46a2b}\label{lexer_8c_a835ce35a3fee14add7f7be5001e46a2b}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_NOT@{STATE\_FIN\_NOT}}
+\index{STATE\_FIN\_NOT@{STATE\_FIN\_NOT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_NOT}{STATE\_FIN\_NOT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+NOT~28}
+
+
+
+Definition at line 37 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_acbef4647c6ac1693417113d0aedef6ff}\label{lexer_8c_acbef4647c6ac1693417113d0aedef6ff}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_NOT\_EQUAL@{STATE\_FIN\_NOT\_EQUAL}}
+\index{STATE\_FIN\_NOT\_EQUAL@{STATE\_FIN\_NOT\_EQUAL}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_NOT\_EQUAL}{STATE\_FIN\_NOT\_EQUAL}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+NOT\+\_\+\+EQUAL~29}
+
+
+
+Definition at line 38 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1caa243df739c6e536f1cddcdb51d666}\label{lexer_8c_a1caa243df739c6e536f1cddcdb51d666}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_NUM@{STATE\_FIN\_NUM}}
+\index{STATE\_FIN\_NUM@{STATE\_FIN\_NUM}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_NUM}{STATE\_FIN\_NUM}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+NUM~1}
+
+
+
+Definition at line 10 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_acea2a910ca2ecdd2817f878bbe06a35b}\label{lexer_8c_acea2a910ca2ecdd2817f878bbe06a35b}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_OR@{STATE\_FIN\_OR}}
+\index{STATE\_FIN\_OR@{STATE\_FIN\_OR}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_OR}{STATE\_FIN\_OR}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+OR~27}
+
+
+
+Definition at line 36 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_adb785600cea0d118ca9834a7c27633eb}\label{lexer_8c_adb785600cea0d118ca9834a7c27633eb}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_PAREN\_CLOSE@{STATE\_FIN\_PAREN\_CLOSE}}
+\index{STATE\_FIN\_PAREN\_CLOSE@{STATE\_FIN\_PAREN\_CLOSE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_PAREN\_CLOSE}{STATE\_FIN\_PAREN\_CLOSE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+PAREN\+\_\+\+CLOSE~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\+\_\+\+CL}}}
+
+
+
+Definition at line 30 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a99279ccae98d8c98148d489ab14037f1}\label{lexer_8c_a99279ccae98d8c98148d489ab14037f1}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_PAREN\_OPEN@{STATE\_FIN\_PAREN\_OPEN}}
+\index{STATE\_FIN\_PAREN\_OPEN@{STATE\_FIN\_PAREN\_OPEN}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_PAREN\_OPEN}{STATE\_FIN\_PAREN\_OPEN}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+PAREN\+\_\+\+OPEN~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\+\_\+\+OP}}}
+
+
+
+Definition at line 29 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ad905fc4bf2bc5eb4affa2bdb9a38efb9}\label{lexer_8c_ad905fc4bf2bc5eb4affa2bdb9a38efb9}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_PLUS@{STATE\_FIN\_PLUS}}
+\index{STATE\_FIN\_PLUS@{STATE\_FIN\_PLUS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_PLUS}{STATE\_FIN\_PLUS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+PLUS~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\+\_\+\+PLUS}}}
+
+
+
+Definition at line 31 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a8951f676414f7d52ce8cb200cdae7879}\label{lexer_8c_a8951f676414f7d52ce8cb200cdae7879}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_RNUM\_EXP@{STATE\_FIN\_RNUM\_EXP}}
+\index{STATE\_FIN\_RNUM\_EXP@{STATE\_FIN\_RNUM\_EXP}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_RNUM\_EXP}{STATE\_FIN\_RNUM\_EXP}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+RNUM\+\_\+\+EXP~3}
+
+
+
+Definition at line 12 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a75dbe53a71381919192f3148eb27544f}\label{lexer_8c_a75dbe53a71381919192f3148eb27544f}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_RNUM\_NO\_EXP@{STATE\_FIN\_RNUM\_NO\_EXP}}
+\index{STATE\_FIN\_RNUM\_NO\_EXP@{STATE\_FIN\_RNUM\_NO\_EXP}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_RNUM\_NO\_EXP}{STATE\_FIN\_RNUM\_NO\_EXP}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP~2}
+
+
+
+Definition at line 11 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1a95d348d3b06b6bce248b1d440a1467}\label{lexer_8c_a1a95d348d3b06b6bce248b1d440a1467}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_RUID@{STATE\_FIN\_RUID}}
+\index{STATE\_FIN\_RUID@{STATE\_FIN\_RUID}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_RUID}{STATE\_FIN\_RUID}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+RUID~7}
+
+
+
+Definition at line 16 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ab739c1734babb555a1ba279009e5c749}\label{lexer_8c_ab739c1734babb555a1ba279009e5c749}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_SEMI\_COLON@{STATE\_FIN\_SEMI\_COLON}}
+\index{STATE\_FIN\_SEMI\_COLON@{STATE\_FIN\_SEMI\_COLON}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_SEMI\_COLON}{STATE\_FIN\_SEMI\_COLON}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+SEMI\+\_\+\+COLON~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\+\_\+\+SEM}}}
+
+
+
+Definition at line 26 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1c2552ce28c4021616f603c698032c9b}\label{lexer_8c_a1c2552ce28c4021616f603c698032c9b}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_SQR\_CLOSE@{STATE\_FIN\_SQR\_CLOSE}}
+\index{STATE\_FIN\_SQR\_CLOSE@{STATE\_FIN\_SQR\_CLOSE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_SQR\_CLOSE}{STATE\_FIN\_SQR\_CLOSE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+SQR\+\_\+\+CLOSE~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\+\_\+\+SQR}}}
+
+
+
+Definition at line 24 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a6386821cc89ddd26bc4aa0a235504ca7}\label{lexer_8c_a6386821cc89ddd26bc4aa0a235504ca7}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_SQR\_OPEN@{STATE\_FIN\_SQR\_OPEN}}
+\index{STATE\_FIN\_SQR\_OPEN@{STATE\_FIN\_SQR\_OPEN}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_SQR\_OPEN}{STATE\_FIN\_SQR\_OPEN}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+SQR\+\_\+\+OPEN~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\+\_\+\+SQL}}}
+
+
+
+Definition at line 23 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aa83d3d632fa7b36ad89879ddb2e66659}\label{lexer_8c_aa83d3d632fa7b36ad89879ddb2e66659}} 
+\index{lexer.c@{lexer.c}!STATE\_FIN\_WHITESPACE@{STATE\_FIN\_WHITESPACE}}
+\index{STATE\_FIN\_WHITESPACE@{STATE\_FIN\_WHITESPACE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_FIN\_WHITESPACE}{STATE\_FIN\_WHITESPACE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+FIN\+\_\+\+WHITESPACE~31}
+
+
+
+Definition at line 40 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ab65f111bd6065d9036136f29413cd3be}\label{lexer_8c_ab65f111bd6065d9036136f29413cd3be}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ALMOST\_ASSIGN@{STATE\_INTR\_ALMOST\_ASSIGN}}
+\index{STATE\_INTR\_ALMOST\_ASSIGN@{STATE\_INTR\_ALMOST\_ASSIGN}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ALMOST\_ASSIGN}{STATE\_INTR\_ALMOST\_ASSIGN}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ALMOST\+\_\+\+ASSIGN~53}
+
+
+
+Definition at line 64 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ae6a1d6c6cccff4d7799d2c9b7972460e}\label{lexer_8c_ae6a1d6c6cccff4d7799d2c9b7972460e}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_AND\_ONE@{STATE\_INTR\_AND\_ONE}}
+\index{STATE\_INTR\_AND\_ONE@{STATE\_INTR\_AND\_ONE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_AND\_ONE}{STATE\_INTR\_AND\_ONE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+AND\+\_\+\+ONE~56}
+
+
+
+Definition at line 67 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a34dd4913ca43d109ffb39a257fc27aa3}\label{lexer_8c_a34dd4913ca43d109ffb39a257fc27aa3}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_AND\_TWO@{STATE\_INTR\_AND\_TWO}}
+\index{STATE\_INTR\_AND\_TWO@{STATE\_INTR\_AND\_TWO}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_AND\_TWO}{STATE\_INTR\_AND\_TWO}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+AND\+\_\+\+TWO~57}
+
+
+
+Definition at line 68 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a203f462dc1ffbc3b087b31cd9359f21c}\label{lexer_8c_a203f462dc1ffbc3b087b31cd9359f21c}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ANGULAR\_CLOSE@{STATE\_INTR\_ANGULAR\_CLOSE}}
+\index{STATE\_INTR\_ANGULAR\_CLOSE@{STATE\_INTR\_ANGULAR\_CLOSE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ANGULAR\_CLOSE}{STATE\_INTR\_ANGULAR\_CLOSE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+CLOSE~54}
+
+
+
+Definition at line 65 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a037d5c9ab438364f8c6b7da53d0af461}\label{lexer_8c_a037d5c9ab438364f8c6b7da53d0af461}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ANGULAR\_OPEN@{STATE\_INTR\_ANGULAR\_OPEN}}
+\index{STATE\_INTR\_ANGULAR\_OPEN@{STATE\_INTR\_ANGULAR\_OPEN}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ANGULAR\_OPEN}{STATE\_INTR\_ANGULAR\_OPEN}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+OPEN~51}
+
+
+
+Definition at line 62 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a365f8737dcf568a3a178ea197055bd8b}\label{lexer_8c_a365f8737dcf568a3a178ea197055bd8b}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ANGULAR\_OPEN\_MINUS@{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}}
+\index{STATE\_INTR\_ANGULAR\_OPEN\_MINUS@{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ANGULAR\+\_\+\+OPEN\+\_\+\+MINUS~52}
+
+
+
+Definition at line 63 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a7bfbd4d72ffa42bc31711348634602df}\label{lexer_8c_a7bfbd4d72ffa42bc31711348634602df}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_AT\_ONE@{STATE\_INTR\_AT\_ONE}}
+\index{STATE\_INTR\_AT\_ONE@{STATE\_INTR\_AT\_ONE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_AT\_ONE}{STATE\_INTR\_AT\_ONE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+AT\+\_\+\+ONE~58}
+
+
+
+Definition at line 69 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a48d11522982d98e790744398f114d628}\label{lexer_8c_a48d11522982d98e790744398f114d628}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_AT\_TWO@{STATE\_INTR\_AT\_TWO}}
+\index{STATE\_INTR\_AT\_TWO@{STATE\_INTR\_AT\_TWO}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_AT\_TWO}{STATE\_INTR\_AT\_TWO}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+AT\+\_\+\+TWO~59}
+
+
+
+Definition at line 70 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a3339da43d9df0b7fd110098c337de242}\label{lexer_8c_a3339da43d9df0b7fd110098c337de242}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_BANG@{STATE\_INTR\_BANG}}
+\index{STATE\_INTR\_BANG@{STATE\_INTR\_BANG}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_BANG}{STATE\_INTR\_BANG}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+BANG~60}
+
+
+
+Definition at line 71 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}\label{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_COMMENT@{STATE\_INTR\_COMMENT}}
+\index{STATE\_INTR\_COMMENT@{STATE\_INTR\_COMMENT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_COMMENT}{STATE\_INTR\_COMMENT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+COMMENT~34}
+
+
+
+Definition at line 45 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a6efabf34ae427466fee7bc34d7b42125}\label{lexer_8c_a6efabf34ae427466fee7bc34d7b42125}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_EQUAL@{STATE\_INTR\_EQUAL}}
+\index{STATE\_INTR\_EQUAL@{STATE\_INTR\_EQUAL}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_EQUAL}{STATE\_INTR\_EQUAL}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+EQUAL~61}
+
+
+
+Definition at line 72 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aaf77f1caeb72b85e50ad5ba888ba15e4}\label{lexer_8c_aaf77f1caeb72b85e50ad5ba888ba15e4}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_FUNCTION\_@{STATE\_INTR\_FUNCTION\_}}
+\index{STATE\_INTR\_FUNCTION\_@{STATE\_INTR\_FUNCTION\_}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_FUNCTION\_}{STATE\_INTR\_FUNCTION\_}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+~46}
+
+
+
+Definition at line 57 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}\label{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_FUNCTION\_CHARS@{STATE\_INTR\_FUNCTION\_CHARS}}
+\index{STATE\_INTR\_FUNCTION\_CHARS@{STATE\_INTR\_FUNCTION\_CHARS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_FUNCTION\_CHARS}{STATE\_INTR\_FUNCTION\_CHARS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+\+CHARS~47}
+
+
+
+Definition at line 58 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a675a5bcb3eadc1a2a4a50082d8928d2f}\label{lexer_8c_a675a5bcb3eadc1a2a4a50082d8928d2f}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_FUNCTION\_DIGITS@{STATE\_INTR\_FUNCTION\_DIGITS}}
+\index{STATE\_INTR\_FUNCTION\_DIGITS@{STATE\_INTR\_FUNCTION\_DIGITS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_FUNCTION\_DIGITS}{STATE\_INTR\_FUNCTION\_DIGITS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+FUNCTION\+\_\+\+DIGITS~48}
+
+
+
+Definition at line 59 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}\label{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ID\_MORE\_CHARS@{STATE\_INTR\_ID\_MORE\_CHARS}}
+\index{STATE\_INTR\_ID\_MORE\_CHARS@{STATE\_INTR\_ID\_MORE\_CHARS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ID\_MORE\_CHARS}{STATE\_INTR\_ID\_MORE\_CHARS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+MORE\+\_\+\+CHARS~43}
+
+
+
+Definition at line 54 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a6d7256fb1d0d9c76a9cb46e860895191}\label{lexer_8c_a6d7256fb1d0d9c76a9cb46e860895191}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ID\_MORE\_DIGITS@{STATE\_INTR\_ID\_MORE\_DIGITS}}
+\index{STATE\_INTR\_ID\_MORE\_DIGITS@{STATE\_INTR\_ID\_MORE\_DIGITS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ID\_MORE\_DIGITS}{STATE\_INTR\_ID\_MORE\_DIGITS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+MORE\+\_\+\+DIGITS~44}
+
+
+
+Definition at line 55 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a71a784cd8590b4e1ef0ae3cc646437b7}\label{lexer_8c_a71a784cd8590b4e1ef0ae3cc646437b7}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_ID\_ONE\_CHAR@{STATE\_INTR\_ID\_ONE\_CHAR}}
+\index{STATE\_INTR\_ID\_ONE\_CHAR@{STATE\_INTR\_ID\_ONE\_CHAR}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_ID\_ONE\_CHAR}{STATE\_INTR\_ID\_ONE\_CHAR}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+ID\+\_\+\+ONE\+\_\+\+CHAR~42}
+
+
+
+Definition at line 53 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a767e9e89360d5368023aabc681ec049f}\label{lexer_8c_a767e9e89360d5368023aabc681ec049f}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_KEY\_OR\_FIELD@{STATE\_INTR\_KEY\_OR\_FIELD}}
+\index{STATE\_INTR\_KEY\_OR\_FIELD@{STATE\_INTR\_KEY\_OR\_FIELD}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_KEY\_OR\_FIELD}{STATE\_INTR\_KEY\_OR\_FIELD}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+KEY\+\_\+\+OR\+\_\+\+FIELD~45}
+
+
+
+Definition at line 56 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_afc9e0e3a255eba73740445aac378a16a}\label{lexer_8c_afc9e0e3a255eba73740445aac378a16a}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_NUM@{STATE\_INTR\_NUM}}
+\index{STATE\_INTR\_NUM@{STATE\_INTR\_NUM}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_NUM}{STATE\_INTR\_NUM}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+NUM~35}
+
+
+
+Definition at line 46 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ad58697e8f859cc9519feec3433ddac42}\label{lexer_8c_ad58697e8f859cc9519feec3433ddac42}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT@{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}}
+\index{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT@{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT~39}
+
+
+
+Definition at line 50 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aa22ab5b70357ebbe13af5d71729b9433}\label{lexer_8c_aa22ab5b70357ebbe13af5d71729b9433}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED@{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}}
+\index{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED@{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT\+\_\+\+SIGNED~41}
+
+
+
+Definition at line 52 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}\label{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT@{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}}
+\index{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT@{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+EXP\+\_\+\+ONE\+\_\+\+DIGIT~40}
+
+
+
+Definition at line 51 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a0a375b2363d3825313efc16416768196}\label{lexer_8c_a0a375b2363d3825313efc16416768196}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}}
+\index{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+NO\+\_\+\+DIGIT~36}
+
+
+
+Definition at line 47 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1bf284933e455eaf407b65f640d615d1}\label{lexer_8c_a1bf284933e455eaf407b65f640d615d1}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}}
+\index{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+ONE\+\_\+\+DIGIT~37}
+
+
+
+Definition at line 48 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a7f00fa28d54e2ada469453018fb91280}\label{lexer_8c_a7f00fa28d54e2ada469453018fb91280}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}}
+\index{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT@{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RNUM\+\_\+\+NO\+\_\+\+EXP\+\_\+\+TWO\+\_\+\+DIGIT~38}
+
+
+
+Definition at line 49 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a1234de85eb8d413982853441c7c4814c}\label{lexer_8c_a1234de85eb8d413982853441c7c4814c}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RUID\_CHARS@{STATE\_INTR\_RUID\_CHARS}}
+\index{STATE\_INTR\_RUID\_CHARS@{STATE\_INTR\_RUID\_CHARS}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RUID\_CHARS}{STATE\_INTR\_RUID\_CHARS}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RUID\+\_\+\+CHARS~50}
+
+
+
+Definition at line 61 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a921dce338c51dcaea15ae21e638c91b3}\label{lexer_8c_a921dce338c51dcaea15ae21e638c91b3}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_RUID\_HASH@{STATE\_INTR\_RUID\_HASH}}
+\index{STATE\_INTR\_RUID\_HASH@{STATE\_INTR\_RUID\_HASH}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_RUID\_HASH}{STATE\_INTR\_RUID\_HASH}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+RUID\+\_\+\+HASH~49}
+
+
+
+Definition at line 60 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}\label{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}} 
+\index{lexer.c@{lexer.c}!STATE\_INTR\_WHITESPACE@{STATE\_INTR\_WHITESPACE}}
+\index{STATE\_INTR\_WHITESPACE@{STATE\_INTR\_WHITESPACE}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_INTR\_WHITESPACE}{STATE\_INTR\_WHITESPACE}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+INTR\+\_\+\+WHITESPACE~55}
+
+
+
+Definition at line 66 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}\label{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}} 
+\index{lexer.c@{lexer.c}!STATE\_START@{STATE\_START}}
+\index{STATE\_START@{STATE\_START}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_START}{STATE\_START}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+START~0}
+
+
+
+Definition at line 7 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}\label{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}} 
+\index{lexer.c@{lexer.c}!STATE\_TRAP\_PATTERN@{STATE\_TRAP\_PATTERN}}
+\index{STATE\_TRAP\_PATTERN@{STATE\_TRAP\_PATTERN}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_TRAP\_PATTERN}{STATE\_TRAP\_PATTERN}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+TRAP\+\_\+\+PATTERN~63}
+
+
+
+Definition at line 76 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}\label{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}} 
+\index{lexer.c@{lexer.c}!STATE\_TRAP\_SYMBOL\_INTR@{STATE\_TRAP\_SYMBOL\_INTR}}
+\index{STATE\_TRAP\_SYMBOL\_INTR@{STATE\_TRAP\_SYMBOL\_INTR}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_TRAP\_SYMBOL\_INTR}{STATE\_TRAP\_SYMBOL\_INTR}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+TRAP\+\_\+\+SYMBOL\+\_\+\+INTR~65}
+
+
+
+Definition at line 77 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aef4d9e68296967938a3b345318f2c5c4}\label{lexer_8c_aef4d9e68296967938a3b345318f2c5c4}} 
+\index{lexer.c@{lexer.c}!STATE\_TRAP\_SYMBOL\_START@{STATE\_TRAP\_SYMBOL\_START}}
+\index{STATE\_TRAP\_SYMBOL\_START@{STATE\_TRAP\_SYMBOL\_START}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{STATE\_TRAP\_SYMBOL\_START}{STATE\_TRAP\_SYMBOL\_START}}
+{\footnotesize\ttfamily \#define STATE\+\_\+\+TRAP\+\_\+\+SYMBOL\+\_\+\+START~62}
+
+
+
+Definition at line 75 of file lexer.\+c.
+
+\mbox{\Hypertarget{lexer_8c_aa1287e05ec932f983aa29905830a24af}\label{lexer_8c_aa1287e05ec932f983aa29905830a24af}} 
+\index{lexer.c@{lexer.c}!TRAP\_STATES@{TRAP\_STATES}}
+\index{TRAP\_STATES@{TRAP\_STATES}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{TRAP\_STATES}{TRAP\_STATES}}
+{\footnotesize\ttfamily \#define TRAP\+\_\+\+STATES}
+
+
+
+Definition at line 74 of file lexer.\+c.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{lexer_8c_a67dd8f227181df843e25a314e262a10c}\label{lexer_8c_a67dd8f227181df843e25a314e262a10c}} 
+\index{lexer.c@{lexer.c}!buffer\_cleanup@{buffer\_cleanup}}
+\index{buffer\_cleanup@{buffer\_cleanup}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_cleanup()}{buffer\_cleanup()}}
+{\footnotesize\ttfamily void buffer\+\_\+cleanup (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Deallocates the twin buffer (automatically called at program termination). 
+
+\begin{DoxyPostcond}{Postcondition}
+{\ttfamily buffer} and all associated memory are freed and set to {\ttfamily NULL}. 
+\end{DoxyPostcond}
+
+
+Definition at line 94 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{161                          \{}
+\DoxyCodeLine{162     \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} == NULL)}
+\DoxyCodeLine{163         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{164     }
+\DoxyCodeLine{165     \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(-\/1);}
+\DoxyCodeLine{166     free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}});}
+\DoxyCodeLine{167     free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}});}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} = NULL;}
+\DoxyCodeLine{170     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} = NULL;}
+\DoxyCodeLine{171     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = 0;}
+\DoxyCodeLine{172     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = 0;}
+\DoxyCodeLine{173     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175     free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}});}
+\DoxyCodeLine{176     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} = NULL;}
+\DoxyCodeLine{177     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{178 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a67dd8f227181df843e25a314e262a10c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5}\label{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5}} 
+\index{lexer.c@{lexer.c}!buffer\_init@{buffer\_init}}
+\index{buffer\_init@{buffer\_init}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_init()}{buffer\_init()}}
+{\footnotesize\ttfamily void buffer\+\_\+init (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+Initializes an internal twin buffer and loads the active buffer with the first chunk of the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+ptr} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+Initializes the internal twin buffer, overwriting any existing contents. 
+\end{DoxyWarning}
+
+
+Definition at line 828 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{828                                  \{}
+\DoxyCodeLine{829     \mbox{\hyperlink{lexer_8c_a67dd8f227181df843e25a314e262a10c}{buffer\_cleanup}}();}
+\DoxyCodeLine{830     \mbox{\hyperlink{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}{get\_next\_token\_helper}}(NULL);}
+\DoxyCodeLine{831     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} = (\mbox{\hyperlink{structTwinBuffer}{twin\_buffer}}*)calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTwinBuffer}{twin\_buffer}}));}
+\DoxyCodeLine{832     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}})\{}
+\DoxyCodeLine{833         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Failed to initialize Twin buffer"{}});}
+\DoxyCodeLine{834         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{835     \}}
+\DoxyCodeLine{836     }
+\DoxyCodeLine{837     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} = (\textcolor{keywordtype}{char}*)calloc(\mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{838     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} = (\textcolor{keywordtype}{char}*)calloc(\mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{839     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} || !\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}})\{}
+\DoxyCodeLine{840         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Failed to initialize Twin buffer"{}});}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{842         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}});}
+\DoxyCodeLine{843         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}});}
+\DoxyCodeLine{844         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}});}
+\DoxyCodeLine{845 }
+\DoxyCodeLine{846         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{847     \}}
+\DoxyCodeLine{848 }
+\DoxyCodeLine{849     \textcolor{keywordtype}{size\_t} char\_read = fread(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}), \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1, file\_ptr);}
+\DoxyCodeLine{850     \textcolor{keywordflow}{if}(char\_read > 0)}
+\DoxyCodeLine{851         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}[char\_read] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{852 }
+\DoxyCodeLine{853     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = 0;}
+\DoxyCodeLine{854     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = 0;}
+\DoxyCodeLine{855     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false}; }
+\DoxyCodeLine{856 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}\label{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}} 
+\index{lexer.c@{lexer.c}!create\_token@{create\_token}}
+\index{create\_token@{create\_token}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{create\_token()}{create\_token()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}$\ast$ create\+\_\+token (\begin{DoxyParamCaption}\item[{char $\ast$}]{lexeme,  }\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{type,  }\item[{int}]{line }\end{DoxyParamCaption})}
+
+
+
+Definition at line 261 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{261                                                             \{}
+\DoxyCodeLine{262     \mbox{\hyperlink{structToken}{token}}* ret\_tok = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structToken}{token}}));}
+\DoxyCodeLine{263     \mbox{\hyperlink{structSymbolTableEntry}{entry}}* sym\_tab = \mbox{\hyperlink{symbol__table_8h_a838379e0d91707a08998e494fb420bf5}{symbol\_table\_insert}}(lexeme, type);}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265     ret\_tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} = sym\_tab-\/>\mbox{\hyperlink{structSymbolTableEntry_a333fe16173d1fa75f84427cab61be74b}{type}};}
+\DoxyCodeLine{266     ret\_tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}} = sym\_tab-\/>\mbox{\hyperlink{structSymbolTableEntry_a40c725688b0c89e4bbbefaf3818ceb99}{name}};}
+\DoxyCodeLine{267     ret\_tok-\/>\mbox{\hyperlink{structToken_a448126a329a5b7e3ac490ead4f6e5a02}{line\_num}} = line;}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269     \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{270 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_ab8b57ff9976f6622383db94b907a00f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_ab8b57ff9976f6622383db94b907a00f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_a68b169dd0377b22e0729c7e7a9988262}\label{lexer_8c_a68b169dd0377b22e0729c7e7a9988262}} 
+\index{lexer.c@{lexer.c}!get\_next\_token@{get\_next\_token}}
+\index{get\_next\_token@{get\_next\_token}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{get\_next\_token()}{get\_next\_token()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}$\ast$ get\+\_\+next\+\_\+token (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+A wrapper function that fetches the next token from the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+ptr} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the next token. Returns an End-\/of-\/\+File token if no more source code is available.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the memory allocated for the token. 
+\end{DoxyWarning}
+
+
+Definition at line 858 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{858                                       \{}
+\DoxyCodeLine{859     \textcolor{keywordflow}{if}(file\_ptr == NULL)}
+\DoxyCodeLine{860         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Invalid file passed.\(\backslash\)n"{}});}
+\DoxyCodeLine{861     \mbox{\hyperlink{structToken}{token}}* ret;}
+\DoxyCodeLine{862     \textcolor{keywordflow}{while}(!(ret = \mbox{\hyperlink{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}{get\_next\_token\_helper}}(file\_ptr)));}
+\DoxyCodeLine{863     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{864 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a68b169dd0377b22e0729c7e7a9988262_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a68b169dd0377b22e0729c7e7a9988262_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}\label{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}} 
+\index{lexer.c@{lexer.c}!get\_next\_token\_helper@{get\_next\_token\_helper}}
+\index{get\_next\_token\_helper@{get\_next\_token\_helper}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{get\_next\_token\_helper()}{get\_next\_token\_helper()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}$\ast$ get\+\_\+next\+\_\+token\+\_\+helper (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+Definition at line 272 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{272                                             \{}
+\DoxyCodeLine{273     \textcolor{keyword}{static} \textcolor{keywordtype}{int} state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{274     \textcolor{keyword}{static} \textcolor{keywordtype}{int} line\_number = 1;}
+\DoxyCodeLine{275     \textcolor{keyword}{static} \mbox{\hyperlink{structSymbolTableEntry}{entry}}* comment = NULL;}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277     \textcolor{keywordflow}{if}(file\_ptr == NULL)\{}
+\DoxyCodeLine{278         state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{279         line\_number = 1;}
+\DoxyCodeLine{280         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{281     \}}
+\DoxyCodeLine{282     \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} == NULL)}
+\DoxyCodeLine{283         \mbox{\hyperlink{lexer_8c_a78c9ef2940e04bc9cd18a764bdb9e0a5}{buffer\_init}}(file\_ptr);}
+\DoxyCodeLine{284     \textcolor{keywordflow}{if}(comment == NULL)}
+\DoxyCodeLine{285         comment = \mbox{\hyperlink{symbol__table_8h_a838379e0d91707a08998e494fb420bf5}{symbol\_table\_insert}}(\textcolor{stringliteral}{"{}\%"{}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}});}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287     \textcolor{keywordtype}{char} buffer\_char = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}[\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}}];}
+\DoxyCodeLine{288     \textcolor{keywordtype}{char}* lexeme = NULL;}
+\DoxyCodeLine{289     \mbox{\hyperlink{structToken}{token}}* ret\_tok = NULL;}
+\DoxyCodeLine{290     \mbox{\hyperlink{structSymbolTableEntry}{entry}}* sym\_tab = NULL; }
+\DoxyCodeLine{291     \textcolor{keyword}{static} \textcolor{keywordtype}{int} error\_retract = 1;      \textcolor{comment}{//TODO: might be depracated -\/-\/must remove}}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293     \textcolor{keywordflow}{if}(state == 0 \&\& buffer\_char == \textcolor{charliteral}{'\(\backslash\)0'} \&\& \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} != \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1)\{}
+\DoxyCodeLine{294         ret\_tok = calloc(1, \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} \mbox{\hyperlink{structToken}{Token}}));}
+\DoxyCodeLine{295         ret\_tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} = \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}};}
+\DoxyCodeLine{296         \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{297     \}}
+\DoxyCodeLine{298     }
+\DoxyCodeLine{299     \textcolor{keywordflow}{switch}(state) \{}
+\DoxyCodeLine{300         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}}:}
+\DoxyCodeLine{301             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{302                 state = \mbox{\hyperlink{lexer_8c_afc9e0e3a255eba73740445aac378a16a}{STATE\_INTR\_NUM}};}
+\DoxyCodeLine{303             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'b'} || buffer\_char == \textcolor{charliteral}{'c'} || buffer\_char == \textcolor{charliteral}{'d'})}
+\DoxyCodeLine{304                 state = \mbox{\hyperlink{lexer_8c_a71a784cd8590b4e1ef0ae3cc646437b7}{STATE\_INTR\_ID\_ONE\_CHAR}};}
+\DoxyCodeLine{305             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(islower(buffer\_char))}
+\DoxyCodeLine{306                 state = \mbox{\hyperlink{lexer_8c_a767e9e89360d5368023aabc681ec049f}{STATE\_INTR\_KEY\_OR\_FIELD}};}
+\DoxyCodeLine{307             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{308                 \textcolor{keywordflow}{switch} (buffer\_char) \{}
+\DoxyCodeLine{309                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\%'}:}
+\DoxyCodeLine{310                         state = \mbox{\hyperlink{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}{STATE\_INTR\_COMMENT}};}
+\DoxyCodeLine{311                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\_'}:}
+\DoxyCodeLine{314                         state = \mbox{\hyperlink{lexer_8c_aaf77f1caeb72b85e50ad5ba888ba15e4}{STATE\_INTR\_FUNCTION\_}};}
+\DoxyCodeLine{315                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{316                     }
+\DoxyCodeLine{317                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\#'}:}
+\DoxyCodeLine{318                         state = \mbox{\hyperlink{lexer_8c_a921dce338c51dcaea15ae21e638c91b3}{STATE\_INTR\_RUID\_HASH}};}
+\DoxyCodeLine{319                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{320                     }
+\DoxyCodeLine{321                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'<'}:}
+\DoxyCodeLine{322                         state = \mbox{\hyperlink{lexer_8c_a037d5c9ab438364f8c6b7da53d0af461}{STATE\_INTR\_ANGULAR\_OPEN}};}
+\DoxyCodeLine{323                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'>'}:}
+\DoxyCodeLine{326                         state = \mbox{\hyperlink{lexer_8c_a203f462dc1ffbc3b087b31cd9359f21c}{STATE\_INTR\_ANGULAR\_CLOSE}};}
+\DoxyCodeLine{327                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'['}:}
+\DoxyCodeLine{330                         state = \mbox{\hyperlink{lexer_8c_a6386821cc89ddd26bc4aa0a235504ca7}{STATE\_FIN\_SQR\_OPEN}};}
+\DoxyCodeLine{331                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333                     \textcolor{keywordflow}{case} \textcolor{charliteral}{']'}:}
+\DoxyCodeLine{334                         state = \mbox{\hyperlink{lexer_8c_a1c2552ce28c4021616f603c698032c9b}{STATE\_FIN\_SQR\_CLOSE}};}
+\DoxyCodeLine{335                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\(\backslash\)t'}:}
+\DoxyCodeLine{338                     \textcolor{keywordflow}{case} \textcolor{charliteral}{' '}:}
+\DoxyCodeLine{339                         state = \mbox{\hyperlink{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}{STATE\_INTR\_WHITESPACE}};}
+\DoxyCodeLine{340                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\(\backslash\)n'}:}
+\DoxyCodeLine{343                         state = \mbox{\hyperlink{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}{STATE\_FIN\_NEWLINE}};}
+\DoxyCodeLine{344                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346                     \textcolor{keywordflow}{case} \textcolor{charliteral}{','}:}
+\DoxyCodeLine{347                         state = \mbox{\hyperlink{lexer_8c_ab354cd423aea7b09ec8d851b0e784220}{STATE\_FIN\_COMMA}};}
+\DoxyCodeLine{348                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350                     \textcolor{keywordflow}{case} \textcolor{charliteral}{';'}:}
+\DoxyCodeLine{351                         state = \mbox{\hyperlink{lexer_8c_ab739c1734babb555a1ba279009e5c749}{STATE\_FIN\_SEMI\_COLON}};}
+\DoxyCodeLine{352                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354                     \textcolor{keywordflow}{case} \textcolor{charliteral}{':'}:}
+\DoxyCodeLine{355                         state = \mbox{\hyperlink{lexer_8c_aa51d3e360aa06bb02f23cca08a36c54c}{STATE\_FIN\_COLON}};}
+\DoxyCodeLine{356                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'.'}:}
+\DoxyCodeLine{359                         state = \mbox{\hyperlink{lexer_8c_a05fbb37a15e5c18851bb89e6b28c62aa}{STATE\_FIN\_DOT}};}
+\DoxyCodeLine{360                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'('}:}
+\DoxyCodeLine{363                         state = \mbox{\hyperlink{lexer_8c_a99279ccae98d8c98148d489ab14037f1}{STATE\_FIN\_PAREN\_OPEN}};}
+\DoxyCodeLine{364                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366                     \textcolor{keywordflow}{case} \textcolor{charliteral}{')'}:}
+\DoxyCodeLine{367                         state = \mbox{\hyperlink{lexer_8c_adb785600cea0d118ca9834a7c27633eb}{STATE\_FIN\_PAREN\_CLOSE}};}
+\DoxyCodeLine{368                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'+'}:}
+\DoxyCodeLine{371                         state = \mbox{\hyperlink{lexer_8c_ad905fc4bf2bc5eb4affa2bdb9a38efb9}{STATE\_FIN\_PLUS}};}
+\DoxyCodeLine{372                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'-\/'}:}
+\DoxyCodeLine{375                         state = \mbox{\hyperlink{lexer_8c_a419328d296e86c3e5d5a75e67eee3496}{STATE\_FIN\_MINUS}};}
+\DoxyCodeLine{376                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'*'}:}
+\DoxyCodeLine{379                         state = \mbox{\hyperlink{lexer_8c_a4d9d15151e7db420b71991602028557c}{STATE\_FIN\_MUL}};}
+\DoxyCodeLine{380                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{382                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'/'}:}
+\DoxyCodeLine{383                         state = \mbox{\hyperlink{lexer_8c_a64fc4a4164feb743e3606c7f870c75e8}{STATE\_FIN\_DIV}};}
+\DoxyCodeLine{384                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{385 }
+\DoxyCodeLine{386                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\&'}:}
+\DoxyCodeLine{387                         state = \mbox{\hyperlink{lexer_8c_ae6a1d6c6cccff4d7799d2c9b7972460e}{STATE\_INTR\_AND\_ONE}};}
+\DoxyCodeLine{388                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'@'}:}
+\DoxyCodeLine{391                         state = \mbox{\hyperlink{lexer_8c_a7bfbd4d72ffa42bc31711348634602df}{STATE\_INTR\_AT\_ONE}};}
+\DoxyCodeLine{392                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{393                     }
+\DoxyCodeLine{394                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'\string~'}:}
+\DoxyCodeLine{395                         state = \mbox{\hyperlink{lexer_8c_a835ce35a3fee14add7f7be5001e46a2b}{STATE\_FIN\_NOT}};}
+\DoxyCodeLine{396                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{397                     }
+\DoxyCodeLine{398                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'!'}:}
+\DoxyCodeLine{399                         state = \mbox{\hyperlink{lexer_8c_a3339da43d9df0b7fd110098c337de242}{STATE\_INTR\_BANG}};}
+\DoxyCodeLine{400                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{401 }
+\DoxyCodeLine{402                     \textcolor{keywordflow}{case} \textcolor{charliteral}{'='}:}
+\DoxyCodeLine{403                         state = \mbox{\hyperlink{lexer_8c_a6efabf34ae427466fee7bc34d7b42125}{STATE\_INTR\_EQUAL}};}
+\DoxyCodeLine{404                         \textcolor{keywordflow}{break};                        }
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406                     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{407                         state = \mbox{\hyperlink{lexer_8c_aef4d9e68296967938a3b345318f2c5c4}{STATE\_TRAP\_SYMBOL\_START}};}
+\DoxyCodeLine{408                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{409                 \}}
+\DoxyCodeLine{410             \}}
+\DoxyCodeLine{411             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{412         }
+\DoxyCodeLine{413         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1caa243df739c6e536f1cddcdb51d666}{STATE\_FIN\_NUM}}:}
+\DoxyCodeLine{414             \textcolor{keywordtype}{char}* lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{415             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}}, line\_number);}
+\DoxyCodeLine{416             ret\_tok-\/>\mbox{\hyperlink{structToken_aa8cbd23eb93e4c0f3f2627c3e5b5591d}{value}}.\mbox{\hyperlink{structToken_ab5929a80441be18a1821dd3b972761a8}{num}} = strtoll(ret\_tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, NULL, 10);}
+\DoxyCodeLine{417             ret\_tok-\/>\mbox{\hyperlink{structToken_a98b36b091b10f080b678d92162721341}{is\_value\_int}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{418             }
+\DoxyCodeLine{419             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{420             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{421             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{422         }
+\DoxyCodeLine{423         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a75dbe53a71381919192f3148eb27544f}{STATE\_FIN\_RNUM\_NO\_EXP}}: \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a8951f676414f7d52ce8cb200cdae7879}{STATE\_FIN\_RNUM\_EXP}}:}
+\DoxyCodeLine{424             lexeme = (state == 2 ? \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1) : \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0));}
+\DoxyCodeLine{425             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}}, line\_number);}
+\DoxyCodeLine{426             ret\_tok-\/>\mbox{\hyperlink{structToken_aa8cbd23eb93e4c0f3f2627c3e5b5591d}{value}}.\mbox{\hyperlink{structToken_a5e13d7b3d50e4d2fc73293babef51d79}{r\_num}} = strtold(ret\_tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, NULL);}
+\DoxyCodeLine{427             ret\_tok-\/>\mbox{\hyperlink{structToken_a98b36b091b10f080b678d92162721341}{is\_value\_int}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{428             }
+\DoxyCodeLine{429             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{430             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{431             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aaeae1cf33cf450e1b26b3211a4d576fa}{STATE\_FIN\_ID}}:}
+\DoxyCodeLine{434             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{435             \textcolor{keywordflow}{if}(strlen(lexeme) > 20)\{}
+\DoxyCodeLine{436                 fprintf(stderr, \textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Variable identifier is longer than the prescribed length of \(\backslash\)033[1m20\(\backslash\)033[0m characters.\(\backslash\)n"{}}, line\_number);}
+\DoxyCodeLine{437                 state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{438                 \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{439             \}}
+\DoxyCodeLine{440             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}}, line\_number);}
+\DoxyCodeLine{441             }
+\DoxyCodeLine{442             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{443             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{444             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}{STATE\_FIN\_KEY\_OR\_FIELD}}: }
+\DoxyCodeLine{447             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{448             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}}, line\_number);}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{451             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{452             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a51dcebf8cb89d5bf3f82cd73b461303f}{STATE\_FIN\_FUNCTION}}:}
+\DoxyCodeLine{455             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{456             \textcolor{keywordflow}{if}(strlen(lexeme) > 30)\{}
+\DoxyCodeLine{457                 fprintf(stderr, \textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Function identifier is longer than the prescribed length of \(\backslash\)033[1m30\(\backslash\)033[0m characters.\(\backslash\)n"{}}, line\_number);}
+\DoxyCodeLine{458                 state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{459                 \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{460             \}}
+\DoxyCodeLine{461             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}}, line\_number);}
+\DoxyCodeLine{462             }
+\DoxyCodeLine{463             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{464             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{465             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{466         }
+\DoxyCodeLine{467         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1a95d348d3b06b6bce248b1d440a1467}{STATE\_FIN\_RUID}}:}
+\DoxyCodeLine{468             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{469             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}}, line\_number);}
+\DoxyCodeLine{470 }
+\DoxyCodeLine{471             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{472             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{473             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{474         }
+\DoxyCodeLine{475         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a90be1afd8da8dc4d6755960b979b2991}{STATE\_FIN\_LE}}:}
+\DoxyCodeLine{476             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0);}
+\DoxyCodeLine{477             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}}, line\_number);}
+\DoxyCodeLine{478             }
+\DoxyCodeLine{479             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{480             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{481             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a31b197c0dbd101d0e53493b8d6acd1c9}{STATE\_FIN\_ASSIGNOP}}:}
+\DoxyCodeLine{484             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0);}
+\DoxyCodeLine{485             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}}, line\_number);}
+\DoxyCodeLine{486             }
+\DoxyCodeLine{487             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{488             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{489             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1e34b0f9ab72a30ac4c9f87fd19402d9}{STATE\_FIN\_LT\_MIUNS}}:}
+\DoxyCodeLine{492             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(2);}
+\DoxyCodeLine{493             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}}, line\_number);}
+\DoxyCodeLine{494             }
+\DoxyCodeLine{495             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{496             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{497             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{498         }
+\DoxyCodeLine{499         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ae2bff07d59e077683113017b0cbe2030}{STATE\_FIN\_LT}}:}
+\DoxyCodeLine{500             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{501             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}}, line\_number);}
+\DoxyCodeLine{502             }
+\DoxyCodeLine{503             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{504             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{505             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{506 }
+\DoxyCodeLine{507         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ae218ff959b35ec9076ccc5b53142d089}{STATE\_FIN\_GE}}:}
+\DoxyCodeLine{508             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0);}
+\DoxyCodeLine{509             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}}, line\_number);}
+\DoxyCodeLine{510             }
+\DoxyCodeLine{511             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{512             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{513             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{514 }
+\DoxyCodeLine{515         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a04911cc518850fc9cb18fdc535b08ea1}{STATE\_FIN\_GT}}:}
+\DoxyCodeLine{516             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{517             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}}, line\_number);}
+\DoxyCodeLine{518             }
+\DoxyCodeLine{519             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{520             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{521             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{522 }
+\DoxyCodeLine{523         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a6386821cc89ddd26bc4aa0a235504ca7}{STATE\_FIN\_SQR\_OPEN}}:}
+\DoxyCodeLine{524         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1c2552ce28c4021616f603c698032c9b}{STATE\_FIN\_SQR\_CLOSE}}:}
+\DoxyCodeLine{525         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ab354cd423aea7b09ec8d851b0e784220}{STATE\_FIN\_COMMA}}:}
+\DoxyCodeLine{526         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ab739c1734babb555a1ba279009e5c749}{STATE\_FIN\_SEMI\_COLON}}:}
+\DoxyCodeLine{527         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aa51d3e360aa06bb02f23cca08a36c54c}{STATE\_FIN\_COLON}}:}
+\DoxyCodeLine{528         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a05fbb37a15e5c18851bb89e6b28c62aa}{STATE\_FIN\_DOT}}:}
+\DoxyCodeLine{529         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a99279ccae98d8c98148d489ab14037f1}{STATE\_FIN\_PAREN\_OPEN}}:}
+\DoxyCodeLine{530         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_adb785600cea0d118ca9834a7c27633eb}{STATE\_FIN\_PAREN\_CLOSE}}:}
+\DoxyCodeLine{531         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ad905fc4bf2bc5eb4affa2bdb9a38efb9}{STATE\_FIN\_PLUS}}:}
+\DoxyCodeLine{532         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a419328d296e86c3e5d5a75e67eee3496}{STATE\_FIN\_MINUS}}:}
+\DoxyCodeLine{533         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a4d9d15151e7db420b71991602028557c}{STATE\_FIN\_MUL}}:}
+\DoxyCodeLine{534         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a64fc4a4164feb743e3606c7f870c75e8}{STATE\_FIN\_DIV}}:}
+\DoxyCodeLine{535         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a0da504b94d886eef0141e6146f5255f6}{STATE\_FIN\_AND}}:}
+\DoxyCodeLine{536         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_acea2a910ca2ecdd2817f878bbe06a35b}{STATE\_FIN\_OR}}:}
+\DoxyCodeLine{537         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a835ce35a3fee14add7f7be5001e46a2b}{STATE\_FIN\_NOT}}:}
+\DoxyCodeLine{538         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_acbef4647c6ac1693417113d0aedef6ff}{STATE\_FIN\_NOT\_EQUAL}}:}
+\DoxyCodeLine{539         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a10eee87fc1a01736bdfa061d6eb65693}{STATE\_FIN\_EQUAL}}:}
+\DoxyCodeLine{540             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0);}
+\DoxyCodeLine{541             ret\_tok = \mbox{\hyperlink{lexer_8c_ab8b57ff9976f6622383db94b907a00f3}{create\_token}}(lexeme, (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}})state, line\_number);}
+\DoxyCodeLine{542             }
+\DoxyCodeLine{543             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{544             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{545             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{546         }
+\DoxyCodeLine{547         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aa83d3d632fa7b36ad89879ddb2e66659}{STATE\_FIN\_WHITESPACE}}:}
+\DoxyCodeLine{548             \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} == 0)\{}
+\DoxyCodeLine{549                 \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1;}
+\DoxyCodeLine{550                 \mbox{\hyperlink{lexer_8c_a6d0bc199864425dd309933a88f06bb51}{swap\_buffer}}(file\_ptr);}
+\DoxyCodeLine{551             \}}
+\DoxyCodeLine{552             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{553                 \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}}-\/-\/;}
+\DoxyCodeLine{554             \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}};}
+\DoxyCodeLine{555             \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}})}
+\DoxyCodeLine{556                 \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{557 }
+\DoxyCodeLine{558             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{559             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{560             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{561         }
+\DoxyCodeLine{562         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}{STATE\_FIN\_NEWLINE}}:}
+\DoxyCodeLine{563             \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}};}
+\DoxyCodeLine{564             \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}})}
+\DoxyCodeLine{565                 \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{566             line\_number++;}
+\DoxyCodeLine{567 }
+\DoxyCodeLine{568             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{569             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{570             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{571 }
+\DoxyCodeLine{572         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a26b73e0f64a1d5d1d129c78b5d893dc5}{STATE\_FIN\_COMMENT}}:}
+\DoxyCodeLine{573             \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}};}
+\DoxyCodeLine{574             \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}})}
+\DoxyCodeLine{575                 \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{576             ret\_tok = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structToken}{token}}));}
+\DoxyCodeLine{577             ret\_tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}} = comment-\/>\mbox{\hyperlink{structSymbolTableEntry_a40c725688b0c89e4bbbefaf3818ceb99}{name}};}
+\DoxyCodeLine{578             ret\_tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} = \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}};}
+\DoxyCodeLine{579             ret\_tok-\/>\mbox{\hyperlink{structToken_a448126a329a5b7e3ac490ead4f6e5a02}{line\_num}} = line\_number++;}
+\DoxyCodeLine{580             }
+\DoxyCodeLine{581             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{582             \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{583             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}{STATE\_INTR\_COMMENT}}:}
+\DoxyCodeLine{586             \textcolor{keywordflow}{if}(buffer\_char != \textcolor{charliteral}{'\(\backslash\)n'})}
+\DoxyCodeLine{587                 state = \mbox{\hyperlink{lexer_8c_a5b28cb44df3cecc0d737a3980d8a3559}{STATE\_INTR\_COMMENT}};}
+\DoxyCodeLine{588             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{589                 state = \mbox{\hyperlink{lexer_8c_a26b73e0f64a1d5d1d129c78b5d893dc5}{STATE\_FIN\_COMMENT}};}
+\DoxyCodeLine{590             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{591             }
+\DoxyCodeLine{592         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_afc9e0e3a255eba73740445aac378a16a}{STATE\_INTR\_NUM}}:}
+\DoxyCodeLine{593             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'.'})}
+\DoxyCodeLine{594                 state = \mbox{\hyperlink{lexer_8c_a0a375b2363d3825313efc16416768196}{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}};}
+\DoxyCodeLine{595             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(!isdigit(buffer\_char))}
+\DoxyCodeLine{596                 state = \mbox{\hyperlink{lexer_8c_a1caa243df739c6e536f1cddcdb51d666}{STATE\_FIN\_NUM}};}
+\DoxyCodeLine{597             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{598         }
+\DoxyCodeLine{599         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a0a375b2363d3825313efc16416768196}{STATE\_INTR\_RNUM\_NO\_EXP\_NO\_DIGIT}}:}
+\DoxyCodeLine{600             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{601                 state = \mbox{\hyperlink{lexer_8c_a1bf284933e455eaf407b65f640d615d1}{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}};}
+\DoxyCodeLine{602             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{603                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}}; }
+\DoxyCodeLine{604             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{605         }
+\DoxyCodeLine{606         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1bf284933e455eaf407b65f640d615d1}{STATE\_INTR\_RNUM\_NO\_EXP\_ONE\_DIGIT}}:}
+\DoxyCodeLine{607             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{608                 state = \mbox{\hyperlink{lexer_8c_a7f00fa28d54e2ada469453018fb91280}{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}};}
+\DoxyCodeLine{609             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{610                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{611             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{612                 }
+\DoxyCodeLine{613         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a7f00fa28d54e2ada469453018fb91280}{STATE\_INTR\_RNUM\_NO\_EXP\_TWO\_DIGIT}}:}
+\DoxyCodeLine{614             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'E'})}
+\DoxyCodeLine{615                 state = \mbox{\hyperlink{lexer_8c_ad58697e8f859cc9519feec3433ddac42}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}};}
+\DoxyCodeLine{616             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{617                 state = \mbox{\hyperlink{lexer_8c_a75dbe53a71381919192f3148eb27544f}{STATE\_FIN\_RNUM\_NO\_EXP}};}
+\DoxyCodeLine{618             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{619         }
+\DoxyCodeLine{620         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ad58697e8f859cc9519feec3433ddac42}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT}}:}
+\DoxyCodeLine{621             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{622                 state = \mbox{\hyperlink{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}};}
+\DoxyCodeLine{623             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'+'} || buffer\_char == \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{624                 state = \mbox{\hyperlink{lexer_8c_aa22ab5b70357ebbe13af5d71729b9433}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}};}
+\DoxyCodeLine{625             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{626                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{627             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{628         }
+\DoxyCodeLine{629         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}}:}
+\DoxyCodeLine{630             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{631                 state = \mbox{\hyperlink{lexer_8c_a8951f676414f7d52ce8cb200cdae7879}{STATE\_FIN\_RNUM\_EXP}};}
+\DoxyCodeLine{632             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{633                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{634             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{635         }
+\DoxyCodeLine{636         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aa22ab5b70357ebbe13af5d71729b9433}{STATE\_INTR\_RNUM\_EXP\_NO\_DIGIT\_SIGNED}}:}
+\DoxyCodeLine{637             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{638                 state = \mbox{\hyperlink{lexer_8c_a3c0e0f225a6616c295f50e45c877b0b4}{STATE\_INTR\_RNUM\_EXP\_ONE\_DIGIT}};}
+\DoxyCodeLine{639             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{640                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{641             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{642         }
+\DoxyCodeLine{643         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a71a784cd8590b4e1ef0ae3cc646437b7}{STATE\_INTR\_ID\_ONE\_CHAR}}:}
+\DoxyCodeLine{644             \textcolor{keywordflow}{if}(islower(buffer\_char))}
+\DoxyCodeLine{645                 state = \mbox{\hyperlink{lexer_8c_a767e9e89360d5368023aabc681ec049f}{STATE\_INTR\_KEY\_OR\_FIELD}};}
+\DoxyCodeLine{646             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(buffer\_char >= \textcolor{charliteral}{'2'} \&\& buffer\_char <= \textcolor{charliteral}{'7'})}
+\DoxyCodeLine{647                 state = \mbox{\hyperlink{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}{STATE\_INTR\_ID\_MORE\_CHARS}};}
+\DoxyCodeLine{648             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{649                 state = \mbox{\hyperlink{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}{STATE\_FIN\_KEY\_OR\_FIELD}};}
+\DoxyCodeLine{650             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{651             }
+\DoxyCodeLine{652         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}{STATE\_INTR\_ID\_MORE\_CHARS}}:}
+\DoxyCodeLine{653             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'b'} || buffer\_char == \textcolor{charliteral}{'c'} || buffer\_char == \textcolor{charliteral}{'d'})\{}
+\DoxyCodeLine{654                 state = \mbox{\hyperlink{lexer_8c_a57d133f47fefbbcabc8c4e238dd15b04}{STATE\_INTR\_ID\_MORE\_CHARS}};}
+\DoxyCodeLine{655                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{656             \}}
+\DoxyCodeLine{657         }
+\DoxyCodeLine{658         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a6d7256fb1d0d9c76a9cb46e860895191}{STATE\_INTR\_ID\_MORE\_DIGITS}}:}
+\DoxyCodeLine{659             \textcolor{keywordflow}{if}(buffer\_char >= \textcolor{charliteral}{'2'} \&\& buffer\_char <= \textcolor{charliteral}{'7'})}
+\DoxyCodeLine{660                 state = \mbox{\hyperlink{lexer_8c_a6d7256fb1d0d9c76a9cb46e860895191}{STATE\_INTR\_ID\_MORE\_DIGITS}};}
+\DoxyCodeLine{661             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{662                 state = \mbox{\hyperlink{lexer_8c_aaeae1cf33cf450e1b26b3211a4d576fa}{STATE\_FIN\_ID}};}
+\DoxyCodeLine{663             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{664         }
+\DoxyCodeLine{665         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a767e9e89360d5368023aabc681ec049f}{STATE\_INTR\_KEY\_OR\_FIELD}}:}
+\DoxyCodeLine{666             \textcolor{keywordflow}{if}(islower(buffer\_char))}
+\DoxyCodeLine{667                 state = \mbox{\hyperlink{lexer_8c_a767e9e89360d5368023aabc681ec049f}{STATE\_INTR\_KEY\_OR\_FIELD}};}
+\DoxyCodeLine{668             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{669                 state = \mbox{\hyperlink{lexer_8c_a61320f302b543cdf1ca3a2b0310ef992}{STATE\_FIN\_KEY\_OR\_FIELD}};}
+\DoxyCodeLine{670             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{671 }
+\DoxyCodeLine{672         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aaf77f1caeb72b85e50ad5ba888ba15e4}{STATE\_INTR\_FUNCTION\_}}:}
+\DoxyCodeLine{673             \textcolor{keywordflow}{if}(isalpha(buffer\_char))}
+\DoxyCodeLine{674                 state = \mbox{\hyperlink{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}{STATE\_INTR\_FUNCTION\_CHARS}};}
+\DoxyCodeLine{675             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{676                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{677             }
+\DoxyCodeLine{678         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}{STATE\_INTR\_FUNCTION\_CHARS}}:}
+\DoxyCodeLine{679             \textcolor{keywordflow}{if}(isalpha(buffer\_char))\{}
+\DoxyCodeLine{680                 state = \mbox{\hyperlink{lexer_8c_a8fafce61d90e79e9d86bd3b9c847b9f1}{STATE\_INTR\_FUNCTION\_CHARS}};}
+\DoxyCodeLine{681                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{682             \}}
+\DoxyCodeLine{683 }
+\DoxyCodeLine{684         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a675a5bcb3eadc1a2a4a50082d8928d2f}{STATE\_INTR\_FUNCTION\_DIGITS}}:}
+\DoxyCodeLine{685             \textcolor{keywordflow}{if}(isdigit(buffer\_char))}
+\DoxyCodeLine{686                 state = \mbox{\hyperlink{lexer_8c_a675a5bcb3eadc1a2a4a50082d8928d2f}{STATE\_INTR\_FUNCTION\_DIGITS}};}
+\DoxyCodeLine{687             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{688                 state = \mbox{\hyperlink{lexer_8c_a51dcebf8cb89d5bf3f82cd73b461303f}{STATE\_FIN\_FUNCTION}};}
+\DoxyCodeLine{689             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{690         }
+\DoxyCodeLine{691         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a921dce338c51dcaea15ae21e638c91b3}{STATE\_INTR\_RUID\_HASH}}:}
+\DoxyCodeLine{692             \textcolor{keywordflow}{if}(islower(buffer\_char))}
+\DoxyCodeLine{693                 state = \mbox{\hyperlink{lexer_8c_a1234de85eb8d413982853441c7c4814c}{STATE\_INTR\_RUID\_CHARS}};}
+\DoxyCodeLine{694             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{695                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{696             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{697         }
+\DoxyCodeLine{698         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a1234de85eb8d413982853441c7c4814c}{STATE\_INTR\_RUID\_CHARS}}:}
+\DoxyCodeLine{699             \textcolor{keywordflow}{if}(islower(buffer\_char))}
+\DoxyCodeLine{700                 state = \mbox{\hyperlink{lexer_8c_a1234de85eb8d413982853441c7c4814c}{STATE\_INTR\_RUID\_CHARS}};}
+\DoxyCodeLine{701             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{702                 state = \mbox{\hyperlink{lexer_8c_a1a95d348d3b06b6bce248b1d440a1467}{STATE\_FIN\_RUID}};}
+\DoxyCodeLine{703             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{705         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a037d5c9ab438364f8c6b7da53d0af461}{STATE\_INTR\_ANGULAR\_OPEN}}:}
+\DoxyCodeLine{706             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'='})}
+\DoxyCodeLine{707                 state = \mbox{\hyperlink{lexer_8c_a90be1afd8da8dc4d6755960b979b2991}{STATE\_FIN\_LE}};}
+\DoxyCodeLine{708             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{709                 state = \mbox{\hyperlink{lexer_8c_a365f8737dcf568a3a178ea197055bd8b}{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}};}
+\DoxyCodeLine{710             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{711                 state = \mbox{\hyperlink{lexer_8c_ae2bff07d59e077683113017b0cbe2030}{STATE\_FIN\_LT}};}
+\DoxyCodeLine{712             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{713 }
+\DoxyCodeLine{714         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a365f8737dcf568a3a178ea197055bd8b}{STATE\_INTR\_ANGULAR\_OPEN\_MINUS}}:}
+\DoxyCodeLine{715             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{716                 state = \mbox{\hyperlink{lexer_8c_ab65f111bd6065d9036136f29413cd3be}{STATE\_INTR\_ALMOST\_ASSIGN}};}
+\DoxyCodeLine{717             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{718                 state = \mbox{\hyperlink{lexer_8c_a1e34b0f9ab72a30ac4c9f87fd19402d9}{STATE\_FIN\_LT\_MIUNS}};}
+\DoxyCodeLine{719             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{720 }
+\DoxyCodeLine{721         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ab65f111bd6065d9036136f29413cd3be}{STATE\_INTR\_ALMOST\_ASSIGN}}:}
+\DoxyCodeLine{722             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{723                 state = \mbox{\hyperlink{lexer_8c_a31b197c0dbd101d0e53493b8d6acd1c9}{STATE\_FIN\_ASSIGNOP}};}
+\DoxyCodeLine{724             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{725                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{726             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{727 }
+\DoxyCodeLine{728         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a203f462dc1ffbc3b087b31cd9359f21c}{STATE\_INTR\_ANGULAR\_CLOSE}}:}
+\DoxyCodeLine{729             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'='})}
+\DoxyCodeLine{730                 state = \mbox{\hyperlink{lexer_8c_ae218ff959b35ec9076ccc5b53142d089}{STATE\_FIN\_GE}};}
+\DoxyCodeLine{731             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{732                 state = \mbox{\hyperlink{lexer_8c_a04911cc518850fc9cb18fdc535b08ea1}{STATE\_FIN\_GT}};}
+\DoxyCodeLine{733             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{734 }
+\DoxyCodeLine{735         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}{STATE\_INTR\_WHITESPACE}}:}
+\DoxyCodeLine{736             \textcolor{keywordflow}{if}(!isspace(buffer\_char))}
+\DoxyCodeLine{737                 state = \mbox{\hyperlink{lexer_8c_aa83d3d632fa7b36ad89879ddb2e66659}{STATE\_FIN\_WHITESPACE}};}
+\DoxyCodeLine{738             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'\(\backslash\)n'})}
+\DoxyCodeLine{739                 state = \mbox{\hyperlink{lexer_8c_a9d8b68b096ac41809af692b8e2565b77}{STATE\_FIN\_NEWLINE}};}
+\DoxyCodeLine{740             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{741                 state = \mbox{\hyperlink{lexer_8c_a06278ac67cd20fe57f0c2a9d89d29734}{STATE\_INTR\_WHITESPACE}};}
+\DoxyCodeLine{742             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{743 }
+\DoxyCodeLine{744         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ae6a1d6c6cccff4d7799d2c9b7972460e}{STATE\_INTR\_AND\_ONE}}:}
+\DoxyCodeLine{745             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'\&'})}
+\DoxyCodeLine{746                 state = \mbox{\hyperlink{lexer_8c_a34dd4913ca43d109ffb39a257fc27aa3}{STATE\_INTR\_AND\_TWO}};}
+\DoxyCodeLine{747             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{748                 state = \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\_TRAP\_SYMBOL\_INTR}};}
+\DoxyCodeLine{749             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{750 }
+\DoxyCodeLine{751         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a34dd4913ca43d109ffb39a257fc27aa3}{STATE\_INTR\_AND\_TWO}}:}
+\DoxyCodeLine{752             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'\&'})}
+\DoxyCodeLine{753                 state = \mbox{\hyperlink{lexer_8c_a0da504b94d886eef0141e6146f5255f6}{STATE\_FIN\_AND}};}
+\DoxyCodeLine{754             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{755                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{756             \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{757 }
+\DoxyCodeLine{758         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a7bfbd4d72ffa42bc31711348634602df}{STATE\_INTR\_AT\_ONE}}:}
+\DoxyCodeLine{759             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'@'})}
+\DoxyCodeLine{760                 state = \mbox{\hyperlink{lexer_8c_a48d11522982d98e790744398f114d628}{STATE\_INTR\_AT\_TWO}};}
+\DoxyCodeLine{761             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{762                 state = \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\_TRAP\_SYMBOL\_INTR}};}
+\DoxyCodeLine{763             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{764 }
+\DoxyCodeLine{765         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a48d11522982d98e790744398f114d628}{STATE\_INTR\_AT\_TWO}}:}
+\DoxyCodeLine{766             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'@'})}
+\DoxyCodeLine{767                 state = \mbox{\hyperlink{lexer_8c_acea2a910ca2ecdd2817f878bbe06a35b}{STATE\_FIN\_OR}};}
+\DoxyCodeLine{768             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{769                 state = \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}};}
+\DoxyCodeLine{770             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{771 }
+\DoxyCodeLine{772         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a3339da43d9df0b7fd110098c337de242}{STATE\_INTR\_BANG}}: }
+\DoxyCodeLine{773             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'='})}
+\DoxyCodeLine{774                 state = \mbox{\hyperlink{lexer_8c_acbef4647c6ac1693417113d0aedef6ff}{STATE\_FIN\_NOT\_EQUAL}};}
+\DoxyCodeLine{775             \textcolor{keywordflow}{else}    }
+\DoxyCodeLine{776                 state = \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\_TRAP\_SYMBOL\_INTR}};}
+\DoxyCodeLine{777             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{778 }
+\DoxyCodeLine{779         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a6efabf34ae427466fee7bc34d7b42125}{STATE\_INTR\_EQUAL}}:}
+\DoxyCodeLine{780             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'='})}
+\DoxyCodeLine{781                 state = \mbox{\hyperlink{lexer_8c_a10eee87fc1a01736bdfa061d6eb65693}{STATE\_FIN\_EQUAL}};}
+\DoxyCodeLine{782             \textcolor{keywordflow}{else}    }
+\DoxyCodeLine{783                 state = \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\_TRAP\_SYMBOL\_INTR}};}
+\DoxyCodeLine{784             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{785             }
+\DoxyCodeLine{786         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_aef4d9e68296967938a3b345318f2c5c4}{STATE\_TRAP\_SYMBOL\_START}}:}
+\DoxyCodeLine{787             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(0);}
+\DoxyCodeLine{788             printf(\textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Unknown Symbol \(\backslash\)"{}\(\backslash\)033[1m\%s\(\backslash\)033[0m\(\backslash\)"{}\(\backslash\)n"{}}, line\_number, lexeme);}
+\DoxyCodeLine{789             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{790             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{791             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{792         }
+\DoxyCodeLine{793         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_a589c93fbfeedc51d79338c22fc4f587a}{STATE\_TRAP\_PATTERN}}:}
+\DoxyCodeLine{794             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(error\_retract);}
+\DoxyCodeLine{795             printf(\textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Unknown Pattern \(\backslash\)"{}\(\backslash\)033[1m\%s\(\backslash\)033[0m\(\backslash\)"{}\(\backslash\)n"{}}, line\_number, lexeme);}
+\DoxyCodeLine{796             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{797             error\_retract = 1;}
+\DoxyCodeLine{798             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{799             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{800 }
+\DoxyCodeLine{801         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexer_8c_ab62013c9afea0949fa28fcfed96ee3d3}{STATE\_TRAP\_SYMBOL\_INTR}}:}
+\DoxyCodeLine{802             lexeme = \mbox{\hyperlink{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}{retract\_and\_update}}(1);}
+\DoxyCodeLine{803             printf(\textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Unknown Symbol \(\backslash\)"{}\(\backslash\)033[1m\%s\(\backslash\)033[0m\(\backslash\)"{}\(\backslash\)n"{}}, line\_number, lexeme);}
+\DoxyCodeLine{804             state = \mbox{\hyperlink{lexer_8c_addcbd0eec71cda69580487f74a2c24c4}{STATE\_START}};}
+\DoxyCodeLine{805             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{806             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{807 }
+\DoxyCodeLine{808         \textcolor{keywordflow}{default}: }
+\DoxyCodeLine{809             \textcolor{keywordflow}{if}(buffer\_char == \textcolor{charliteral}{'\(\backslash\)0'})}
+\DoxyCodeLine{810                 exit(EXIT\_SUCCESS);}
+\DoxyCodeLine{811             exit(EXIT\_FAILURE);}
+\DoxyCodeLine{812             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{813     \}}
+\DoxyCodeLine{814     }
+\DoxyCodeLine{815     (\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}})++;}
+\DoxyCodeLine{816     \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} == \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1)}
+\DoxyCodeLine{817         \mbox{\hyperlink{lexer_8c_a6d0bc199864425dd309933a88f06bb51}{swap\_buffer}}(file\_ptr);}
+\DoxyCodeLine{818     }
+\DoxyCodeLine{819     \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{820 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}\label{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead}} 
+\index{lexer.c@{lexer.c}!retract\_and\_update@{retract\_and\_update}}
+\index{retract\_and\_update@{retract\_and\_update}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{retract\_and\_update()}{retract\_and\_update()}}
+{\footnotesize\ttfamily char$\ast$ retract\+\_\+and\+\_\+update (\begin{DoxyParamCaption}\item[{int}]{no\+\_\+of\+\_\+times }\end{DoxyParamCaption})}
+
+
+
+Definition at line 202 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{202                                           \{}
+\DoxyCodeLine{203     \textcolor{keyword}{static} \textcolor{keywordtype}{char}* ret\_tok = NULL;}
+\DoxyCodeLine{204     \textcolor{keyword}{static} \textcolor{keywordtype}{int} ret\_tok\_size = 0;}
+\DoxyCodeLine{205     \textcolor{keywordtype}{int} new\_pos = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} -\/ no\_of\_times;}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{keywordflow}{if}(no\_of\_times < 0)\{}
+\DoxyCodeLine{208         free(ret\_tok);}
+\DoxyCodeLine{209         ret\_tok = NULL;}
+\DoxyCodeLine{210         ret\_tok\_size = 0;}
+\DoxyCodeLine{211         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{212     \}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     \textcolor{keywordflow}{if}(new\_pos >= 0)\{}
+\DoxyCodeLine{215         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = new\_pos;}
+\DoxyCodeLine{216         \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} < 0)\{}
+\DoxyCodeLine{217             \textcolor{keywordtype}{int} begin\_len = -\/\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}};}
+\DoxyCodeLine{218             \textcolor{keywordtype}{int} str\_len = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} + begin\_len -\/ 1;}
+\DoxyCodeLine{219             \textcolor{keywordflow}{if}(ret\_tok\_size < str\_len + 1)\{}
+\DoxyCodeLine{220                 ret\_tok = realloc(ret\_tok, (str\_len + 1)*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{221                 ret\_tok\_size = str\_len + 1;}
+\DoxyCodeLine{222             \}}
+\DoxyCodeLine{223             strncpy(ret\_tok, \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} + \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} + \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}}, -\/(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} + 1));}
+\DoxyCodeLine{224             strncpy(ret\_tok -\/ (\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} + 1), \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}, \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}});}
+\DoxyCodeLine{225             ret\_tok[str\_len] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{226         \}}
+\DoxyCodeLine{227         \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{228             \textcolor{keywordtype}{int} str\_len = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} -\/ \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}};}
+\DoxyCodeLine{229             \textcolor{keywordflow}{if}(ret\_tok\_size < str\_len + 1)\{}
+\DoxyCodeLine{230                 ret\_tok = realloc(ret\_tok, (str\_len + 1)*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{231                 ret\_tok\_size = str\_len + 1;}
+\DoxyCodeLine{232             \}}
+\DoxyCodeLine{233             strncpy(ret\_tok, \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} + \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}}, str\_len);}
+\DoxyCodeLine{234             ret\_tok[str\_len] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{235         \}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = new\_pos;}
+\DoxyCodeLine{238         \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{239     \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241     \textcolor{keywordtype}{char}* temp = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}};}
+\DoxyCodeLine{242     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}};}
+\DoxyCodeLine{243     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} = temp;}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{246     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} + new\_pos -\/ 1; \textcolor{comment}{// May lead to an error MUST CHECK}}
+\DoxyCodeLine{247     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} += \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}};}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249     \textcolor{keywordtype}{int} str\_len = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} -\/ \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}};}
+\DoxyCodeLine{250     \textcolor{keywordflow}{if}(ret\_tok\_size < str\_len + 1)\{}
+\DoxyCodeLine{251         ret\_tok = realloc(ret\_tok, (str\_len + 1)*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{252         ret\_tok\_size = str\_len + 1;}
+\DoxyCodeLine{253     \}}
+\DoxyCodeLine{254     strncpy(ret\_tok, \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} + \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}}, str\_len);}
+\DoxyCodeLine{255     ret\_tok[str\_len] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}};}
+\DoxyCodeLine{258     \textcolor{keywordflow}{return} ret\_tok;}
+\DoxyCodeLine{259 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a960f17a4b92e6cce8b8edae91c728ead_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_ab45c7162c82bb8baec1ef2a248bcf120}\label{lexer_8c_ab45c7162c82bb8baec1ef2a248bcf120}} 
+\index{lexer.c@{lexer.c}!string\_to\_token@{string\_to\_token}}
+\index{string\_to\_token@{string\_to\_token}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{string\_to\_token()}{string\_to\_token()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} string\+\_\+to\+\_\+token (\begin{DoxyParamCaption}\item[{const char $\ast$}]{string }\end{DoxyParamCaption})}
+
+
+
+Retrieves the token type based on the given string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & A string representing the token name.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The corresponding token type. 
+\end{DoxyReturn}
+
+
+Definition at line 866 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{866                                                \{}
+\DoxyCodeLine{867     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ASSIGNOP"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}};}
+\DoxyCodeLine{868     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COMMENT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}};}
+\DoxyCodeLine{869     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_FIELDID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}};}
+\DoxyCodeLine{870     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}};}
+\DoxyCodeLine{871     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NUM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}};}
+\DoxyCodeLine{872     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RNUM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}};}
+\DoxyCodeLine{873     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_FUNID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}};}
+\DoxyCodeLine{874     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RUID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}};}
+\DoxyCodeLine{875     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WITH"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\_WITH}};}
+\DoxyCodeLine{876     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PARAMETERS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\_PARAMETERS}};}
+\DoxyCodeLine{877     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_END"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}};}
+\DoxyCodeLine{878     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WHILE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\_WHILE}};}
+\DoxyCodeLine{879     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_UNION"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\_UNION}};}
+\DoxyCodeLine{880     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDUNION"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}};}
+\DoxyCodeLine{881     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DEFINETYPE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\_DEFINETYPE}};}
+\DoxyCodeLine{882     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_AS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\_AS}};}
+\DoxyCodeLine{883     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_TYPE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\_TYPE}};}
+\DoxyCodeLine{884     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MAIN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\_MAIN}};}
+\DoxyCodeLine{885     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GLOBAL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\_GLOBAL}};}
+\DoxyCodeLine{886     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PARAMETER"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\_PARAMETER}};}
+\DoxyCodeLine{887     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LIST"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\_LIST}};}
+\DoxyCodeLine{888     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SQL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\_SQL}};}
+\DoxyCodeLine{889     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SQR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}};}
+\DoxyCodeLine{890     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_INPUT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\_INPUT}};}
+\DoxyCodeLine{891     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OUTPUT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\_OUTPUT}};}
+\DoxyCodeLine{892     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_INT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\_INT}};}
+\DoxyCodeLine{893     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_REAL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\_REAL}};}
+\DoxyCodeLine{894     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COMMA"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\_COMMA}};}
+\DoxyCodeLine{895     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SEM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}};}
+\DoxyCodeLine{896     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COLON"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\_COLON}};}
+\DoxyCodeLine{897     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DOT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\_DOT}};}
+\DoxyCodeLine{898     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDWHILE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}};}
+\DoxyCodeLine{899     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OP"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\_OP}};}
+\DoxyCodeLine{900     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_CL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}};}
+\DoxyCodeLine{901     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_IF"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\_IF}};}
+\DoxyCodeLine{902     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_THEN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\_THEN}};}
+\DoxyCodeLine{903     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDIF"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}};}
+\DoxyCodeLine{904     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_READ"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\_READ}};}
+\DoxyCodeLine{905     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WRITE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\_WRITE}};}
+\DoxyCodeLine{906     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RETURN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\_RETURN}};}
+\DoxyCodeLine{907     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PLUS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\_PLUS}};}
+\DoxyCodeLine{908     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MINUS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\_MINUS}};}
+\DoxyCodeLine{909     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MUL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\_MUL}};}
+\DoxyCodeLine{910     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DIV"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\_DIV}};}
+\DoxyCodeLine{911     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_CALL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\_CALL}};}
+\DoxyCodeLine{912     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RECORD"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\_RECORD}};}
+\DoxyCodeLine{913     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDRECORD"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}};}
+\DoxyCodeLine{914     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ELSE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}};}
+\DoxyCodeLine{915     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_AND"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\_AND}};}
+\DoxyCodeLine{916     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\_OR}};}
+\DoxyCodeLine{917     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NOT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\_NOT}};}
+\DoxyCodeLine{918     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}};}
+\DoxyCodeLine{919     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}};}
+\DoxyCodeLine{920     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_EQ"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\_EQ}};}
+\DoxyCodeLine{921     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}};}
+\DoxyCodeLine{922     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}};}
+\DoxyCodeLine{923     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\_NE}};}
+\DoxyCodeLine{924     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}EPS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}};}
+\DoxyCodeLine{925     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ERROR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}};}
+\DoxyCodeLine{926     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}\$"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}};}
+\DoxyCodeLine{927 }
+\DoxyCodeLine{928     \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}};}
+\DoxyCodeLine{929 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_ab45c7162c82bb8baec1ef2a248bcf120_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_a6d0bc199864425dd309933a88f06bb51}\label{lexer_8c_a6d0bc199864425dd309933a88f06bb51}} 
+\index{lexer.c@{lexer.c}!swap\_buffer@{swap\_buffer}}
+\index{swap\_buffer@{swap\_buffer}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{swap\_buffer()}{swap\_buffer()}}
+{\footnotesize\ttfamily void swap\+\_\+buffer (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+Definition at line 180 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{180                                 \{}
+\DoxyCodeLine{181     assert(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} == \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1);}
+\DoxyCodeLine{182     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}})\{}
+\DoxyCodeLine{183         \textcolor{keywordtype}{size\_t} char\_read = fread(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}), \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1, file\_ptr);}
+\DoxyCodeLine{184         \textcolor{keywordflow}{if}(char\_read > 0)}
+\DoxyCodeLine{185             \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}}[char\_read] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{186     \}}
+\DoxyCodeLine{187     }
+\DoxyCodeLine{188     \textcolor{keywordtype}{char}* temp = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}};}
+\DoxyCodeLine{189     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}};}
+\DoxyCodeLine{190     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} = temp;}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keywordflow}{if}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} == \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}})}
+\DoxyCodeLine{193         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = 0;}
+\DoxyCodeLine{194     \textcolor{keywordflow}{else} }
+\DoxyCodeLine{195         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} -\/= \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}};}
+\DoxyCodeLine{196     }
+\DoxyCodeLine{197     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = 0;}
+\DoxyCodeLine{198     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{199     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{200 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_a6d0bc199864425dd309933a88f06bb51_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8c_aee1807f4e95bea666b6c994915907414}\label{lexer_8c_aee1807f4e95bea666b6c994915907414}} 
+\index{lexer.c@{lexer.c}!token\_to\_string@{token\_to\_string}}
+\index{token\_to\_string@{token\_to\_string}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{token\_to\_string()}{token\_to\_string()}}
+{\footnotesize\ttfamily const char$\ast$ token\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{token }\end{DoxyParamCaption})}
+
+
+
+Retrieves a string representation of a token type (for printing purposes). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em token} & The token type.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A constant string representing the token type. 
+\end{DoxyReturn}
+
+
+Definition at line 931 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{931                                               \{}
+\DoxyCodeLine{932     \textcolor{keywordflow}{switch} (\mbox{\hyperlink{structToken}{token}}) \{}
+\DoxyCodeLine{933         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ASSIGNOP"{}};}
+\DoxyCodeLine{934         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COMMENT"{}};}
+\DoxyCodeLine{935         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_FIELDID"{}};}
+\DoxyCodeLine{936         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ID"{}};}
+\DoxyCodeLine{937         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NUM"{}};}
+\DoxyCodeLine{938         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RNUM"{}};}
+\DoxyCodeLine{939         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_FUNID"{}};}
+\DoxyCodeLine{940         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RUID"{}};}
+\DoxyCodeLine{941         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\_WITH}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WITH"{}};}
+\DoxyCodeLine{942         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\_PARAMETERS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PARAMETERS"{}};}
+\DoxyCodeLine{943         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_END"{}};}
+\DoxyCodeLine{944         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\_WHILE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WHILE"{}};}
+\DoxyCodeLine{945         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\_UNION}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_UNION"{}};}
+\DoxyCodeLine{946         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDUNION"{}};}
+\DoxyCodeLine{947         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\_DEFINETYPE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DEFINETYPE"{}};}
+\DoxyCodeLine{948         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\_AS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_AS"{}};}
+\DoxyCodeLine{949         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\_TYPE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_TYPE"{}};}
+\DoxyCodeLine{950         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\_MAIN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MAIN"{}};}
+\DoxyCodeLine{951         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\_GLOBAL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GLOBAL"{}};}
+\DoxyCodeLine{952         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\_PARAMETER}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PARAMETER"{}};}
+\DoxyCodeLine{953         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\_LIST}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LIST"{}};}
+\DoxyCodeLine{954         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\_SQL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SQL"{}};}
+\DoxyCodeLine{955         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SQR"{}};}
+\DoxyCodeLine{956         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\_INPUT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_INPUT"{}};}
+\DoxyCodeLine{957         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\_OUTPUT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OUTPUT"{}};}
+\DoxyCodeLine{958         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\_INT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_INT"{}};}
+\DoxyCodeLine{959         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\_REAL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_REAL"{}};}
+\DoxyCodeLine{960         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\_COMMA}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COMMA"{}};}
+\DoxyCodeLine{961         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SEM"{}};}
+\DoxyCodeLine{962         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\_COLON}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COLON"{}};}
+\DoxyCodeLine{963         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\_DOT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DOT"{}};}
+\DoxyCodeLine{964         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDWHILE"{}};}
+\DoxyCodeLine{965         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\_OP}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OP"{}};}
+\DoxyCodeLine{966         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_CL"{}};}
+\DoxyCodeLine{967         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\_IF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_IF"{}};}
+\DoxyCodeLine{968         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\_THEN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_THEN"{}};}
+\DoxyCodeLine{969         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDIF"{}};}
+\DoxyCodeLine{970         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\_READ}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_READ"{}};}
+\DoxyCodeLine{971         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\_WRITE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WRITE"{}};}
+\DoxyCodeLine{972         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\_RETURN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RETURN"{}};}
+\DoxyCodeLine{973         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\_PLUS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PLUS"{}};}
+\DoxyCodeLine{974         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\_MINUS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MINUS"{}};}
+\DoxyCodeLine{975         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\_MUL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MUL"{}};}
+\DoxyCodeLine{976         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\_DIV}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DIV"{}};}
+\DoxyCodeLine{977         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\_CALL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_CALL"{}};}
+\DoxyCodeLine{978         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\_RECORD}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RECORD"{}};}
+\DoxyCodeLine{979         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDRECORD"{}};}
+\DoxyCodeLine{980         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ELSE"{}};}
+\DoxyCodeLine{981         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\_AND}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_AND"{}};}
+\DoxyCodeLine{982         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\_OR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OR"{}};}
+\DoxyCodeLine{983         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\_NOT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NOT"{}};}
+\DoxyCodeLine{984         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LT"{}};}
+\DoxyCodeLine{985         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LE"{}};}
+\DoxyCodeLine{986         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\_EQ}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_EQ"{}};}
+\DoxyCodeLine{987         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GT"{}};}
+\DoxyCodeLine{988         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GE"{}};}
+\DoxyCodeLine{989         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\_NE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NE"{}};}
+\DoxyCodeLine{990         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}EPS"{}};}
+\DoxyCodeLine{991         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ERROR"{}};}
+\DoxyCodeLine{992         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}\$"{}};}
+\DoxyCodeLine{993         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}EOF"{}};}
+\DoxyCodeLine{994         \textcolor{keywordflow}{default}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ERROR"{}};}
+\DoxyCodeLine{995     \}}
+\DoxyCodeLine{996 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8c_aee1807f4e95bea666b6c994915907414_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}\label{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}} 
+\index{lexer.c@{lexer.c}!buffer@{buffer}}
+\index{buffer@{buffer}!lexer.c@{lexer.c}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}{twin\+\_\+buffer}}$\ast$ buffer = NULL\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 79 of file lexer.\+c.
+

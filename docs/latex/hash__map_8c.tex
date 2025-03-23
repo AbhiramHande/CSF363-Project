@@ -1,0 +1,393 @@
+\hypertarget{hash__map_8c}{}\doxysection{src/main/hash\+\_\+map.c File Reference}
+\label{hash__map_8c}\index{src/main/hash\_map.c@{src/main/hash\_map.c}}
+{\ttfamily \#include \char`\"{}../../include/hash\+\_\+map.\+h\char`\"{}}\newline
+Include dependency graph for hash\+\_\+map.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{hash__map_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structEntry}{Entry}}
+\item 
+struct \mbox{\hyperlink{structHashMap}{Hash\+Map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{hash__map_8c_a83624f437ca17f60900987017841e10d}{INITIAL\+\_\+\+TABLE\+\_\+\+SIZE}}~400
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structEntry}{Entry}} \mbox{\hyperlink{hash__map_8c_a2b1887b5760cfeb541e93bf4783204f0}{map\+\_\+entry}}
+\item 
+typedef struct \mbox{\hyperlink{structHashMap}{Hash\+Map}} \mbox{\hyperlink{hash__map_8c_a504d33cc8364471462f25739e51f781f}{hash\+\_\+map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{hash__map_8c_aa44ee6cfa71273d57c2713565e2b01ea}{map\+\_\+create}} (void)
+\begin{DoxyCompactList}\small\item\em Initializes the hash map (automatically called on startup). \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{hash__map_8c_aa29f6b8604796044e39772a51c0f2c63}{is\+\_\+prime}} (unsigned int n)
+\item 
+static int \mbox{\hyperlink{hash__map_8c_abd009617cc391aeb4c484a199286513e}{next\+\_\+prime}} (int n)
+\item 
+static void \mbox{\hyperlink{hash__map_8c_a94a6b60152ba5de1869e65047d34e72b}{map\+\_\+cleanup}} (void)
+\item 
+void \mbox{\hyperlink{hash__map_8c_a17fd9c089bb62d17bb6266babc287a82}{map\+\_\+insert}} (const unsigned int key, \mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$value)
+\begin{DoxyCompactList}\small\item\em Inserts a production rule into the internal hash table for the LL(1) parser. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$ \mbox{\hyperlink{hash__map_8c_aa4630dffff2a5ef840da3cfd9572b79f}{map\+\_\+fetch}} (const unsigned int key)
+\begin{DoxyCompactList}\small\item\em Retrieves the production rule associated with a given key from the internal hash table. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{hash__map_8c_ace1e626381c749513ff589ea45382892}{get\+\_\+collision\+\_\+count}} ()
+\begin{DoxyCompactList}\small\item\em Returns the total number of hash collisions encountered so far. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{hash__map_8c_ae90a68957fefd41710ce402f85b14671}{collision\+\_\+count}} = 0
+\item 
+static \mbox{\hyperlink{hash__map_8c_a504d33cc8364471462f25739e51f781f}{hash\+\_\+map}} $\ast$ \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\+\_\+table}} = NULL
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{hash__map_8c_a83624f437ca17f60900987017841e10d}\label{hash__map_8c_a83624f437ca17f60900987017841e10d}} 
+\index{hash\_map.c@{hash\_map.c}!INITIAL\_TABLE\_SIZE@{INITIAL\_TABLE\_SIZE}}
+\index{INITIAL\_TABLE\_SIZE@{INITIAL\_TABLE\_SIZE}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{INITIAL\_TABLE\_SIZE}{INITIAL\_TABLE\_SIZE}}
+{\footnotesize\ttfamily \#define INITIAL\+\_\+\+TABLE\+\_\+\+SIZE~400}
+
+
+
+Definition at line 3 of file hash\+\_\+map.\+c.
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{hash__map_8c_a504d33cc8364471462f25739e51f781f}\label{hash__map_8c_a504d33cc8364471462f25739e51f781f}} 
+\index{hash\_map.c@{hash\_map.c}!hash\_map@{hash\_map}}
+\index{hash\_map@{hash\_map}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{hash\_map}{hash\_map}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structHashMap}{Hash\+Map}} \mbox{\hyperlink{hash__map_8c_a504d33cc8364471462f25739e51f781f}{hash\+\_\+map}}}
+
+
+
+Definition at line 1 of file hash\+\_\+map.\+c.
+
+\mbox{\Hypertarget{hash__map_8c_a2b1887b5760cfeb541e93bf4783204f0}\label{hash__map_8c_a2b1887b5760cfeb541e93bf4783204f0}} 
+\index{hash\_map.c@{hash\_map.c}!map\_entry@{map\_entry}}
+\index{map\_entry@{map\_entry}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{map\_entry}{map\_entry}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structEntry}{Entry}} \mbox{\hyperlink{hash__map_8c_a2b1887b5760cfeb541e93bf4783204f0}{map\+\_\+entry}}}
+
+
+
+Definition at line 1 of file hash\+\_\+map.\+c.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{hash__map_8c_ace1e626381c749513ff589ea45382892}\label{hash__map_8c_ace1e626381c749513ff589ea45382892}} 
+\index{hash\_map.c@{hash\_map.c}!get\_collision\_count@{get\_collision\_count}}
+\index{get\_collision\_count@{get\_collision\_count}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{get\_collision\_count()}{get\_collision\_count()}}
+{\footnotesize\ttfamily int get\+\_\+collision\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the total number of hash collisions encountered so far. 
+
+\begin{DoxyReturn}{Returns}
+The total number of collisions that have occurred in the hash table. 
+\end{DoxyReturn}
+
+
+Definition at line 226 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{226                          \{}
+\DoxyCodeLine{227     \textcolor{keywordflow}{return} \mbox{\hyperlink{hash__map_8c_ae90a68957fefd41710ce402f85b14671}{collision\_count}};}
+\DoxyCodeLine{228 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{hash__map_8c_ace1e626381c749513ff589ea45382892_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{hash__map_8c_aa29f6b8604796044e39772a51c0f2c63}\label{hash__map_8c_aa29f6b8604796044e39772a51c0f2c63}} 
+\index{hash\_map.c@{hash\_map.c}!is\_prime@{is\_prime}}
+\index{is\_prime@{is\_prime}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{is\_prime()}{is\_prime()}}
+{\footnotesize\ttfamily static bool is\+\_\+prime (\begin{DoxyParamCaption}\item[{unsigned int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 114 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{114                                      \{}
+\DoxyCodeLine{115     \textcolor{keywordflow}{if} (n <= 1) }
+\DoxyCodeLine{116         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{117     \textcolor{keywordflow}{if} (n <= 3) }
+\DoxyCodeLine{118         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{119     \textcolor{keywordflow}{if} (n \% 2 == 0 || n \% 3 == 0) }
+\DoxyCodeLine{120         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{121     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 5; i * i <= n; i += 6)}
+\DoxyCodeLine{122         \textcolor{keywordflow}{if} (n \% i == 0 || n \% (i + 2) == 0) }
+\DoxyCodeLine{123             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{126 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{hash__map_8c_aa29f6b8604796044e39772a51c0f2c63_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{hash__map_8c_a94a6b60152ba5de1869e65047d34e72b}\label{hash__map_8c_a94a6b60152ba5de1869e65047d34e72b}} 
+\index{hash\_map.c@{hash\_map.c}!map\_cleanup@{map\_cleanup}}
+\index{map\_cleanup@{map\_cleanup}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{map\_cleanup()}{map\_cleanup()}}
+{\footnotesize\ttfamily static void map\+\_\+cleanup (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 156 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{156                               \{}
+\DoxyCodeLine{157     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     free(\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_aaaa6acc029a8805f43c2194673cb37b6}{entries}});}
+\DoxyCodeLine{160     \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_aaaa6acc029a8805f43c2194673cb37b6}{entries}} = NULL;}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162     free(\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}});}
+\DoxyCodeLine{163     \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}} = NULL;}
+\DoxyCodeLine{164 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{hash__map_8c_aa44ee6cfa71273d57c2713565e2b01ea}\label{hash__map_8c_aa44ee6cfa71273d57c2713565e2b01ea}} 
+\index{hash\_map.c@{hash\_map.c}!map\_create@{map\_create}}
+\index{map\_create@{map\_create}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{map\_create()}{map\_create()}}
+{\footnotesize\ttfamily static void map\+\_\+create (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Initializes the hash map (automatically called on startup). 
+
+\begin{DoxyPrecond}{Precondition}
+{\ttfamily \+\_\+table} should be uninitialized or {\ttfamily NULL}.
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+{\ttfamily \+\_\+table} is set to a newly created empty hash table. 
+
+{\ttfamily collision\+\_\+count} is reset to {\ttfamily 0}.
+\end{DoxyPostcond}
+\begin{DoxyWarning}{Warning}
+Modifies the global variables {\ttfamily \+\_\+table} and {\ttfamily collision\+\_\+count}. 
+\end{DoxyWarning}
+
+
+Definition at line 53 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{107                                                      \{}
+\DoxyCodeLine{108     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} hash;}
+\DoxyCodeLine{109     \textcolor{keywordflow}{for}(hash = 5381; key; key >>= 8)}
+\DoxyCodeLine{110         hash = ((hash << 5) + hash) \string^ key;}
+\DoxyCodeLine{111     \textcolor{keywordflow}{return} hash;}
+\DoxyCodeLine{112 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{hash__map_8c_aa4630dffff2a5ef840da3cfd9572b79f}\label{hash__map_8c_aa4630dffff2a5ef840da3cfd9572b79f}} 
+\index{hash\_map.c@{hash\_map.c}!map\_fetch@{map\_fetch}}
+\index{map\_fetch@{map\_fetch}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{map\_fetch()}{map\_fetch()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}}$\ast$ map\+\_\+fetch (\begin{DoxyParamCaption}\item[{const unsigned int}]{key }\end{DoxyParamCaption})}
+
+
+
+Retrieves the production rule associated with a given key from the internal hash table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & A unique index used to identify the corresponding production rule.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em NULL} & if no production rule is found for the given key. \\
+\hline
+{\em A} & pointer to the corresponding production rule if found.\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxyNote}{Note}
+The key must be uniquely derived from both the non-\/terminal producing the rule and the token determining its selection. 
+\end{DoxyNote}
+
+
+Definition at line 201 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{201                                               \{}
+\DoxyCodeLine{202     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}})\{}
+\DoxyCodeLine{203         perror(\textcolor{stringliteral}{"{}Invalid Read"{}});}
+\DoxyCodeLine{204         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{205     \}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} hash = hash\_function(key);}
+\DoxyCodeLine{208     \textcolor{keywordtype}{int} capacity = \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_a1930a904840423160885eb978d2a8f7b}{capacity}};}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < capacity; i++) \{}
+\DoxyCodeLine{211         \textcolor{keywordtype}{int} index = (hash + i) \% capacity;}
+\DoxyCodeLine{212         \mbox{\hyperlink{structEntry}{map\_entry}}* \_entry = \&\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_aaaa6acc029a8805f43c2194673cb37b6}{entries}}[index];}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214         \textcolor{keywordflow}{if} (\_entry-\/>\mbox{\hyperlink{structEntry_a0a37386f8ccf76f019bdedd394ec452f}{is\_occupied}})}
+\DoxyCodeLine{215             \textcolor{keywordflow}{if} (\_entry-\/>\mbox{\hyperlink{structEntry_a01194932477913318431445664674443}{key}} == key)}
+\DoxyCodeLine{216                 \textcolor{keywordflow}{return} \_entry-\/>\mbox{\hyperlink{structEntry_a808d398c26182b0abe51370c73276fab}{value}};}
+\DoxyCodeLine{217             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{218                 \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{219         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{220             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{221     \}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223     \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{224 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{hash__map_8c_aa4630dffff2a5ef840da3cfd9572b79f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{hash__map_8c_a17fd9c089bb62d17bb6266babc287a82}\label{hash__map_8c_a17fd9c089bb62d17bb6266babc287a82}} 
+\index{hash\_map.c@{hash\_map.c}!map\_insert@{map\_insert}}
+\index{map\_insert@{map\_insert}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{map\_insert()}{map\_insert()}}
+{\footnotesize\ttfamily void map\+\_\+insert (\begin{DoxyParamCaption}\item[{const unsigned int}]{key,  }\item[{\mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Inserts a production rule into the internal hash table for the LL(1) parser. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & A unique index generated using a combination of a non-\/terminal and the terminal token that selects the rule. \\
+\hline
+{\em value} & A pointer to the production rule to be stored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The key must be uniquely derived from both the non-\/terminal producing the rule and the token determining its selection.
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the memory allocated for the production rule. The hash table will {\bfseries{NOT}} free these values on exit. 
+\end{DoxyWarning}
+
+
+Definition at line 173 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{173                                                            \{}
+\DoxyCodeLine{174     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}) }
+\DoxyCodeLine{175         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} hash = hash\_function(key);}
+\DoxyCodeLine{178     \textcolor{keywordtype}{int} capacity = \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_a1930a904840423160885eb978d2a8f7b}{capacity}};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \textcolor{comment}{// Currently using linear probing -\/-\/> change to Double hashing}}
+\DoxyCodeLine{181     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < capacity; i++) \{}
+\DoxyCodeLine{182         \textcolor{keywordtype}{int} index = (hash + i) \% capacity;}
+\DoxyCodeLine{183         \mbox{\hyperlink{structEntry}{map\_entry}}* \_entry = \&\mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_aaaa6acc029a8805f43c2194673cb37b6}{entries}}[index];}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185         \textcolor{keywordflow}{if} (!\_entry-\/>\mbox{\hyperlink{structEntry_a0a37386f8ccf76f019bdedd394ec452f}{is\_occupied}}) \{}
+\DoxyCodeLine{186             \_entry-\/>\mbox{\hyperlink{structEntry_a01194932477913318431445664674443}{key}} = key;}
+\DoxyCodeLine{187             \_entry-\/>\mbox{\hyperlink{structEntry_a808d398c26182b0abe51370c73276fab}{value}} = value;}
+\DoxyCodeLine{188             \_entry-\/>\mbox{\hyperlink{structEntry_a0a37386f8ccf76f019bdedd394ec452f}{is\_occupied}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{189             \mbox{\hyperlink{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}{\_table}}-\/>\mbox{\hyperlink{structHashMap_a4e6ba458daac21868488406199921031}{size}}++;}
+\DoxyCodeLine{190             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{191         \} }
+\DoxyCodeLine{192         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\_entry-\/>\mbox{\hyperlink{structEntry_a01194932477913318431445664674443}{key}} == key) \{}
+\DoxyCodeLine{193             \_entry-\/>\mbox{\hyperlink{structEntry_a808d398c26182b0abe51370c73276fab}{value}} = value;}
+\DoxyCodeLine{194             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{195         \}}
+\DoxyCodeLine{196         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{197             \mbox{\hyperlink{hash__map_8c_ae90a68957fefd41710ce402f85b14671}{collision\_count}}++;}
+\DoxyCodeLine{198     \}}
+\DoxyCodeLine{199 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{hash__map_8c_a17fd9c089bb62d17bb6266babc287a82_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{hash__map_8c_abd009617cc391aeb4c484a199286513e}\label{hash__map_8c_abd009617cc391aeb4c484a199286513e}} 
+\index{hash\_map.c@{hash\_map.c}!next\_prime@{next\_prime}}
+\index{next\_prime@{next\_prime}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{next\_prime()}{next\_prime()}}
+{\footnotesize\ttfamily static int next\+\_\+prime (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 128 of file hash\+\_\+map.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{128                              \{}
+\DoxyCodeLine{129     \textcolor{keywordflow}{while} (!\mbox{\hyperlink{hash__map_8c_aa29f6b8604796044e39772a51c0f2c63}{is\_prime}}(n)) }
+\DoxyCodeLine{130         n++;}
+\DoxyCodeLine{131     \textcolor{keywordflow}{return} n;}
+\DoxyCodeLine{132 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{hash__map_8c_abd009617cc391aeb4c484a199286513e_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}\label{hash__map_8c_a3a61ffc1aa226849f3c85b0164238a23}} 
+\index{hash\_map.c@{hash\_map.c}!\_table@{\_table}}
+\index{\_table@{\_table}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{\_table}{\_table}}
+{\footnotesize\ttfamily \mbox{\hyperlink{hash__map_8c_a504d33cc8364471462f25739e51f781f}{hash\+\_\+map}}$\ast$ \+\_\+table = NULL\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 33 of file hash\+\_\+map.\+c.
+
+\mbox{\Hypertarget{hash__map_8c_ae90a68957fefd41710ce402f85b14671}\label{hash__map_8c_ae90a68957fefd41710ce402f85b14671}} 
+\index{hash\_map.c@{hash\_map.c}!collision\_count@{collision\_count}}
+\index{collision\_count@{collision\_count}!hash\_map.c@{hash\_map.c}}
+\doxysubsubsection{\texorpdfstring{collision\_count}{collision\_count}}
+{\footnotesize\ttfamily int collision\+\_\+count = 0\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 32 of file hash\+\_\+map.\+c.
+

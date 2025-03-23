@@ -1,0 +1,4 @@
+<map id="stack_pop" name="stack_pop">
+<area shape="rect" id="node1" title="Removes and returns the topmost node from the stack." alt="" coords="5,5,93,32"/>
+<area shape="rect" id="node2" href="$stack_8c.html#a4bf088087d46031158e6bdd2a93695f9" title="Determines if the stack is empty." alt="" coords="141,5,248,32"/>
+</map>

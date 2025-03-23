@@ -1,0 +1,10 @@
+<map id="token_to_string" name="token_to_string">
+<area shape="rect" id="node1" title="Retrieves a string representation of a token type (for printing purposes)." alt="" coords="581,132,704,159"/>
+<area shape="rect" id="node2" href="$parser_8c.html#a385276c7e31aeff5ad9c22370300ced6" title="Generates a parse tree for the given source code." alt="" coords="357,5,513,32"/>
+<area shape="rect" id="node4" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,56,60,83"/>
+<area shape="rect" id="node5" href="$parser_8c.html#a9f5ef3611435d73a8305d27de3927585" title="Prints the first and/or follow sets of all non&#45;terminals." alt="" coords="337,107,533,133"/>
+<area shape="rect" id="node6" href="$parser_8c.html#a08659a3e07cbbaa0a0b7234f35654876" title="Prints the parsing table." alt="" coords="370,157,501,184"/>
+<area shape="rect" id="node7" href="$parser_8c.html#aceedd6d6c4ad5ddbc27d6d2b6aa8100f" title="Prints the parse tree using pre&#45;order traversal." alt="" coords="371,208,499,235"/>
+<area shape="rect" id="node8" href="$parser_8h.html#a8c9a76dff4106d2e5eb33c33aa0c85f5" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="108,195,289,221"/>
+<area shape="rect" id="node3" href="$parser_8h.html#af8e858bd867bc61808a62e29963b3497" title="Parses the given code based on the specified grammar." alt="" coords="151,5,247,32"/>
+</map>

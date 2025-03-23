@@ -24,6 +24,3 @@ output/
 *.swo
 *.swp
 *.sh
-
-# Doxyfile for now ig
-Doxyfile

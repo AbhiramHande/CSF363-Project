@@ -1,0 +1,13 @@
+<map id="get_next_token_helper" name="get_next_token_helper">
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,176,108"/>
+<area shape="rect" id="node2" href="$lexer_8c.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="254,5,342,32"/>
+<area shape="rect" id="node4" href="$lexer_8c.html#ab8b57ff9976f6622383db94b907a00f3" title=" " alt="" coords="245,56,351,83"/>
+<area shape="rect" id="node5" href="$symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" title="Inserts a lexeme into the internal symbol table." alt="" coords="420,81,575,108"/>
+<area shape="rect" id="node10" href="$lexer_8c.html#a960f17a4b92e6cce8b8edae91c728ead" title=" " alt="" coords="224,157,372,184"/>
+<area shape="rect" id="node11" href="$lexer_8c.html#a6d0bc199864425dd309933a88f06bb51" title=" " alt="" coords="247,208,349,235"/>
+<area shape="rect" id="node3" href="$lexer_8c.html#a67dd8f227181df843e25a314e262a10c" title="Deallocates the twin buffer (automatically called at program termination)." alt="" coords="438,5,557,32"/>
+<area shape="rect" id="node6" href="$symbol__table_8c.html#af00e4a3f1778752600e745a5f825e3ac" title=" " alt="" coords="623,81,779,108"/>
+<area shape="rect" id="node7" href="$symbol__table_8c.html#abd009617cc391aeb4c484a199286513e" title=" " alt="" coords="856,52,952,79"/>
+<area shape="rect" id="node9" href="$symbol__table_8c.html#a86044a0a95c64d3b677f00cba38ae8e1" title=" " alt="" coords="827,103,981,145"/>
+<area shape="rect" id="node8" href="$symbol__table_8c.html#aa29f6b8604796044e39772a51c0f2c63" title=" " alt="" coords="1029,52,1108,79"/>
+</map>

@@ -1,0 +1,210 @@
+\hypertarget{symbol__table_8h}{}\doxysection{include/symbol\+\_\+table.h File Reference}
+\label{symbol__table_8h}\index{include/symbol\_table.h@{include/symbol\_table.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}lexer\+Def.\+h\char`\"{}}\newline
+Include dependency graph for symbol\+\_\+table.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{symbol__table_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{symbol__table_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structSymbolTableEntry}{Symbol\+Table\+Entry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structSymbolTableEntry}{Symbol\+Table\+Entry}} \mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}} $\ast$ \mbox{\hyperlink{symbol__table_8h_a838379e0d91707a08998e494fb420bf5}{symbol\+\_\+table\+\_\+insert}} (const char $\ast$lexeme, \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} value)
+\begin{DoxyCompactList}\small\item\em Inserts a lexeme into the internal symbol table. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}} $\ast$ \mbox{\hyperlink{symbol__table_8h_ace7e0310f1dd1482d4701cc805e18824}{symbol\+\_\+table\+\_\+fetch}} (const char $\ast$key)
+\begin{DoxyCompactList}\small\item\em Retrieves the symbol table entry for a given lexeme. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{symbol__table_8h_a464f8527b78f7f15048164f6840b162d}{sym\+\_\+get\+\_\+collision\+\_\+count}} ()
+\begin{DoxyCompactList}\small\item\em Returns the total number of hash collisions encountered so far. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}\label{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}} 
+\index{symbol\_table.h@{symbol\_table.h}!entry@{entry}}
+\index{entry@{entry}!symbol\_table.h@{symbol\_table.h}}
+\doxysubsubsection{\texorpdfstring{entry}{entry}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structSymbolTableEntry}{Symbol\+Table\+Entry}} \mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}}}
+
+
+
+Definition at line 1 of file symbol\+\_\+table.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{symbol__table_8h_a464f8527b78f7f15048164f6840b162d}\label{symbol__table_8h_a464f8527b78f7f15048164f6840b162d}} 
+\index{symbol\_table.h@{symbol\_table.h}!sym\_get\_collision\_count@{sym\_get\_collision\_count}}
+\index{sym\_get\_collision\_count@{sym\_get\_collision\_count}!symbol\_table.h@{symbol\_table.h}}
+\doxysubsubsection{\texorpdfstring{sym\_get\_collision\_count()}{sym\_get\_collision\_count()}}
+{\footnotesize\ttfamily int sym\+\_\+get\+\_\+collision\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the total number of hash collisions encountered so far. 
+
+\begin{DoxyReturn}{Returns}
+The total number of collisions that have occurred in the symbol table\textquotesingle{}s hash map. 
+\end{DoxyReturn}
+
+
+Definition at line 339 of file symbol\+\_\+table.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{339                              \{}
+\DoxyCodeLine{340     \textcolor{keywordflow}{return} \mbox{\hyperlink{symbol__table_8c_ae90a68957fefd41710ce402f85b14671}{collision\_count}};}
+\DoxyCodeLine{341 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{symbol__table_8h_ace7e0310f1dd1482d4701cc805e18824}\label{symbol__table_8h_ace7e0310f1dd1482d4701cc805e18824}} 
+\index{symbol\_table.h@{symbol\_table.h}!symbol\_table\_fetch@{symbol\_table\_fetch}}
+\index{symbol\_table\_fetch@{symbol\_table\_fetch}!symbol\_table.h@{symbol\_table.h}}
+\doxysubsubsection{\texorpdfstring{symbol\_table\_fetch()}{symbol\_table\_fetch()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}}$\ast$ symbol\+\_\+table\+\_\+fetch (\begin{DoxyParamCaption}\item[{const char $\ast$}]{key }\end{DoxyParamCaption})}
+
+
+
+Retrieves the symbol table entry for a given lexeme. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The lexeme string used as a key to retrieve the corresponding symbol table entry.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the entry in the symbol table, or {\ttfamily NULL} if the lexeme is not found.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller should {\bfseries{NOT}} free the returned pointer. The symbol table will free all entries upon program exit. 
+\end{DoxyWarning}
+
+
+Definition at line 314 of file symbol\+\_\+table.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{314                                            \{}
+\DoxyCodeLine{315     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}})\{}
+\DoxyCodeLine{316         perror(\textcolor{stringliteral}{"{}Invalid Read"{}});}
+\DoxyCodeLine{317         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{318     \}}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} hash = hash\_function(key);}
+\DoxyCodeLine{321     \textcolor{keywordtype}{int} capacity = \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a6f6f1596e111198efc1434eeab31f171}{capacity}};}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < capacity; i++) \{}
+\DoxyCodeLine{324         \textcolor{keywordtype}{int} index = (hash + i) \% capacity;}
+\DoxyCodeLine{325         \mbox{\hyperlink{structSymbolTableNode}{symbol\_table\_node}} \mbox{\hyperlink{structTreeNode}{node}} = \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9de38829bf678e4a27d965fa62a9fd0c}{entries}}[index];}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327         \textcolor{keywordflow}{if} (\mbox{\hyperlink{structTreeNode}{node}}.is\_occupied)}
+\DoxyCodeLine{328             \textcolor{keywordflow}{if} (strcmp(\mbox{\hyperlink{structTreeNode}{node}}.value-\/>name, key))}
+\DoxyCodeLine{329                 \textcolor{keywordflow}{return} \mbox{\hyperlink{structTreeNode}{node}}.value;}
+\DoxyCodeLine{330             \textcolor{keywordflow}{else} }
+\DoxyCodeLine{331                 \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{332         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{333             \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{334     \}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336     \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{337 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{symbol__table_8h_a838379e0d91707a08998e494fb420bf5}\label{symbol__table_8h_a838379e0d91707a08998e494fb420bf5}} 
+\index{symbol\_table.h@{symbol\_table.h}!symbol\_table\_insert@{symbol\_table\_insert}}
+\index{symbol\_table\_insert@{symbol\_table\_insert}!symbol\_table.h@{symbol\_table.h}}
+\doxysubsubsection{\texorpdfstring{symbol\_table\_insert()}{symbol\_table\_insert()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{symbol__table_8h_a12791510c3eaae0d14a83abe2190b34a}{entry}}$\ast$ symbol\+\_\+table\+\_\+insert (\begin{DoxyParamCaption}\item[{const char $\ast$}]{lexeme,  }\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Inserts a lexeme into the internal symbol table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lexeme} & A lexeme to be inserted into the symbol table (acts as the key). \\
+\hline
+{\em value} & The token type the lexer assumes it to be. If a conflict occurs, the existing entry is preserved, ensuring keywords remain correctly classified (e.\+g., the lexer may assume a keyword lexeme is a Field ID, but the symbol table corrects it).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the entry made in the symbol table.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller should {\bfseries{NOT}} free the returned pointer. The symbol table will free all entries upon program exit. 
+\end{DoxyWarning}
+
+
+Definition at line 282 of file symbol\+\_\+table.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{282                                                                 \{}
+\DoxyCodeLine{283     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}) }
+\DoxyCodeLine{284         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} hash = hash\_function(lexeme);}
+\DoxyCodeLine{287     \textcolor{keywordtype}{int} capacity = \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a6f6f1596e111198efc1434eeab31f171}{capacity}};}
+\DoxyCodeLine{288     \textcolor{keywordflow}{if}(capacity == \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9c9d17bc1498f254541d3a78e804701e}{occupancy}})\{}
+\DoxyCodeLine{289         \mbox{\hyperlink{symbol__table_8c_af00e4a3f1778752600e745a5f825e3ac}{symbol\_table\_resize}}();}
+\DoxyCodeLine{290         capacity = \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a6f6f1596e111198efc1434eeab31f171}{capacity}};}
+\DoxyCodeLine{291     \}}
+\DoxyCodeLine{292     }
+\DoxyCodeLine{293     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < capacity; i++) \{}
+\DoxyCodeLine{294         \textcolor{keywordtype}{int} index = (hash + i) \% capacity;}
+\DoxyCodeLine{295         \mbox{\hyperlink{structSymbolTableNode}{symbol\_table\_node}} \mbox{\hyperlink{structTreeNode}{node}} = \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9de38829bf678e4a27d965fa62a9fd0c}{entries}}[index];}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297         \textcolor{keywordflow}{if} (!\mbox{\hyperlink{structTreeNode}{node}}.is\_occupied) \{}
+\DoxyCodeLine{298             \mbox{\hyperlink{structSymbolTableEntry}{entry}}* \_entry = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structSymbolTableEntry}{entry}}));}
+\DoxyCodeLine{299             \_entry-\/>\mbox{\hyperlink{structSymbolTableEntry_a40c725688b0c89e4bbbefaf3818ceb99}{name}} = strdup(lexeme);}
+\DoxyCodeLine{300             \_entry-\/>\mbox{\hyperlink{structSymbolTableEntry_a333fe16173d1fa75f84427cab61be74b}{type}} = type;}
+\DoxyCodeLine{301             \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9de38829bf678e4a27d965fa62a9fd0c}{entries}}[index].\mbox{\hyperlink{structSymbolTableNode_a5cb72cd2b86c01e5c7448994b11692bd}{is\_occupied}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{302             \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9de38829bf678e4a27d965fa62a9fd0c}{entries}}[index].\mbox{\hyperlink{structSymbolTableNode_af88c19bcc4ab831ec2ee143d99f3d95b}{value}} = \_entry;}
+\DoxyCodeLine{303             \mbox{\hyperlink{symbol__table_8c_a5d637677bf3ffdbb336321f2c822b949}{table}}-\/>\mbox{\hyperlink{structSymbolTable_a9c9d17bc1498f254541d3a78e804701e}{occupancy}}++;}
+\DoxyCodeLine{304             \textcolor{keywordflow}{return} \_entry;}
+\DoxyCodeLine{305         \} }
+\DoxyCodeLine{306         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (strcmp(\mbox{\hyperlink{structTreeNode}{node}}.value-\/>name, lexeme) == 0) \{}
+\DoxyCodeLine{307             \textcolor{keywordflow}{return} \mbox{\hyperlink{structTreeNode}{node}}.value;}
+\DoxyCodeLine{308         \}}
+\DoxyCodeLine{309         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{310             \mbox{\hyperlink{symbol__table_8c_ae90a68957fefd41710ce402f85b14671}{collision\_count}}++;}
+\DoxyCodeLine{311     \}}
+\DoxyCodeLine{312 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{symbol__table_8h_a838379e0d91707a08998e494fb420bf5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{symbol__table_8h_a838379e0d91707a08998e494fb420bf5_icgraph}
+\end{center}
+\end{figure}

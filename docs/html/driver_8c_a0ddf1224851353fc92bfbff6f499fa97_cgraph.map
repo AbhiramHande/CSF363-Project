@@ -1,0 +1,45 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,540,60,567"/>
+<area shape="rect" id="node2" href="$lexer_8h.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="624,20,712,47"/>
+<area shape="rect" id="node14" href="$lexer_8h.html#a68b169dd0377b22e0729c7e7a9988262" title="A wrapper function that fetches the next token from the file." alt="" coords="607,71,729,98"/>
+<area shape="rect" id="node15" href="$parser_8h.html#af8e858bd867bc61808a62e29963b3497" title="Parses the given code based on the specified grammar." alt="" coords="151,679,247,706"/>
+<area shape="rect" id="node37" href="$lexer_8h.html#aee1807f4e95bea666b6c994915907414" title="Retrieves a string representation of a token type (for printing purposes)." alt="" coords="607,578,729,604"/>
+<area shape="rect" id="node39" href="$parser_8h.html#aad20e8a12c7bfb6d97191c3a26363f1a" title="Deallocates all memory associated with the parse tree." alt="" coords="124,730,273,756"/>
+<area shape="rect" id="node41" href="$parser_8h.html#a8c9a76dff4106d2e5eb33c33aa0c85f5" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="108,540,289,567"/>
+<area shape="rect" id="node43" href="$driver_8c.html#a1ade15436b308d5973cd74a8b631827d" title="This function removes all comments and prints the resulting comment&#45;free code on the terminal." alt="" coords="127,780,270,807"/>
+<area shape="rect" id="node3" href="$lexer_8c.html#a67dd8f227181df843e25a314e262a10c" title="Deallocates the twin buffer (automatically called at program termination)." alt="" coords="1249,8,1367,35"/>
+<area shape="rect" id="node4" href="$lexer_8c.html#a1ede1e9739c264c7e3af07630e5a68f3" title=" " alt="" coords="816,71,987,98"/>
+<area shape="rect" id="node5" href="$lexer_8c.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="1065,20,1153,47"/>
+<area shape="rect" id="node6" href="$lexer_8c.html#ab8b57ff9976f6622383db94b907a00f3" title=" " alt="" coords="1055,122,1162,148"/>
+<area shape="rect" id="node7" href="$symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" title="Inserts a lexeme into the internal symbol table." alt="" coords="1231,84,1385,111"/>
+<area shape="rect" id="node12" href="$lexer_8c.html#a960f17a4b92e6cce8b8edae91c728ead" title=" " alt="" coords="1035,172,1183,199"/>
+<area shape="rect" id="node13" href="$lexer_8c.html#a6d0bc199864425dd309933a88f06bb51" title=" " alt="" coords="1058,223,1159,250"/>
+<area shape="rect" id="node8" href="$symbol__table_8c.html#af00e4a3f1778752600e745a5f825e3ac" title=" " alt="" coords="1433,84,1589,111"/>
+<area shape="rect" id="node9" href="$symbol__table_8c.html#abd009617cc391aeb4c484a199286513e" title=" " alt="" coords="1667,55,1763,82"/>
+<area shape="rect" id="node11" href="$symbol__table_8c.html#a86044a0a95c64d3b677f00cba38ae8e1" title=" " alt="" coords="1637,106,1792,148"/>
+<area shape="rect" id="node10" href="$symbol__table_8c.html#aa29f6b8604796044e39772a51c0f2c63" title=" " alt="" coords="1840,55,1919,82"/>
+<area shape="rect" id="node16" href="$parser_8c.html#a38b7b58ee1b37118b65d39df4b90656a" title="Computes the First set of a given non&#45;terminal." alt="" coords="359,628,498,655"/>
+<area shape="rect" id="node18" href="$parser_8c.html#a1fe10306eb61573f8a6929b0987802d0" title="Computes the Follow set of a given non&#45;terminal." alt="" coords="352,679,505,706"/>
+<area shape="rect" id="node22" href="$parser_8c.html#ad3a905e9370709865b9e0a8b31653443" title="Finds a non&#45;terminal based on its name." alt="" coords="359,780,498,807"/>
+<area shape="rect" id="node23" href="$parser_8c.html#a24f97716740e58254357ada9b7921b5e" title="Deallocates memory associated with all non&#45;terminals, their first and follow sets,..." alt="" coords="337,831,520,858"/>
+<area shape="rect" id="node24" href="$parser_8c.html#a2ae8d13411ecb85d283dbcd2045c2bd6" title="Generates the parsing table for the given grammar using a hash map." alt="" coords="349,730,508,756"/>
+<area shape="rect" id="node26" href="$parser_8c.html#a385276c7e31aeff5ad9c22370300ced6" title="Generates a parse tree for the given source code." alt="" coords="351,350,507,376"/>
+<area shape="rect" id="node38" href="$lexer_8h.html#ab45c7162c82bb8baec1ef2a248bcf120" title="Retrieves the token type based on the given string." alt="" coords="367,882,490,908"/>
+<area shape="rect" id="node17" href="$parser_8c.html#a2953594e876de2e3e2ec7d6f9b5c3c40" title="Adds a given token to the first set of a non&#45;terminal." alt="" coords="605,628,731,655"/>
+<area shape="rect" id="node19" href="$parser_8c.html#ad57d45985f7e4a7acb09e809a7da75d8" title="Adds a given token to the follow set of a non&#45;terminal." alt="" coords="598,679,738,706"/>
+<area shape="rect" id="node20" href="$parser_8c.html#a66e98027ec5a1a7c880689156e4b664d" title="Computes the first set of a sequence of symbols (terminals and non&#45;terminals)." alt="" coords="568,730,768,756"/>
+<area shape="rect" id="node21" href="$parser_8c.html#a2fb545f0baa318bfb9bdbab0e882cd32" title="Adds a given token type to a set if it does not already exist." alt="" coords="855,730,948,756"/>
+<area shape="rect" id="node25" href="$hash__map_8h.html#a17fd9c089bb62d17bb6266babc287a82" title="Inserts a production rule into the internal hash table for the LL(1) parser." alt="" coords="621,780,715,807"/>
+<area shape="rect" id="node27" href="$parser_8c.html#ad327f860dea11c0c1e3338a030858e0d" title="Creates a new parse tree node corresponding to a given non&#45;terminal." alt="" coords="569,122,767,148"/>
+<area shape="rect" id="node28" href="$parser_8c.html#a3bdbe5934ffe1853ff744dfef15843d8" title="Creates a new parse tree node corresponding to a given terminal." alt="" coords="581,172,755,199"/>
+<area shape="rect" id="node29" href="$hash__map_8h.html#aa4630dffff2a5ef840da3cfd9572b79f" title="Retrieves the production rule associated with a given key from the internal hash table." alt="" coords="623,223,713,250"/>
+<area shape="rect" id="node30" href="$stack_8h.html#a0401a54893bb4a3c36be29b4f4d2a673" title="Deallocates all memory associated with the stack." alt="" coords="611,274,725,300"/>
+<area shape="rect" id="node31" href="$stack_8h.html#a12f8e38a7f5d0af1137cc4fff111ef3c" title="Initializes a stack." alt="" coords="615,324,721,351"/>
+<area shape="rect" id="node32" href="$stack_8h.html#a4bf088087d46031158e6bdd2a93695f9" title="Determines if the stack is empty." alt="" coords="615,375,721,402"/>
+<area shape="rect" id="node33" href="$stack_8h.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" title="Removes and returns the topmost node from the stack." alt="" coords="624,426,712,452"/>
+<area shape="rect" id="node35" href="$stack_8h.html#ac96c2f73b6cf10cdf5189330c7b02be8" title="Adds a node to the top of the stack." alt="" coords="621,527,715,554"/>
+<area shape="rect" id="node36" href="$stack_8h.html#af0faaa6f406636514cacd26f54be0a19" title="Returns the topmost node from the stack without removing it." alt="" coords="625,476,711,503"/>
+<area shape="rect" id="node34" href="$stack_8c.html#a4bf088087d46031158e6bdd2a93695f9" title="Determines if the stack is empty." alt="" coords="848,451,955,478"/>
+<area shape="rect" id="node40" href="$parser_8c.html#aad20e8a12c7bfb6d97191c3a26363f1a" title="Deallocates all memory associated with the parse tree." alt="" coords="354,956,503,983"/>
+<area shape="rect" id="node42" href="$parser_8c.html#a8c9a76dff4106d2e5eb33c33aa0c85f5" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="338,578,519,604"/>
+</map>

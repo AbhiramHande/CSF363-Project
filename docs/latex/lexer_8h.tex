@@ -1,0 +1,352 @@
+\hypertarget{lexer_8h}{}\doxysection{include/lexer.h File Reference}
+\label{lexer_8h}\index{include/lexer.h@{include/lexer.h}}
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}lexer\+Def.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}symbol\+\_\+table.\+h\char`\"{}}\newline
+Include dependency graph for lexer.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lexer_8h_a78c9ef2940e04bc9cd18a764bdb9e0a5}{buffer\+\_\+init}} (FILE $\ast$file\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Initializes an internal twin buffer and loads the active buffer with the first chunk of the file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}} $\ast$ \mbox{\hyperlink{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}{get\+\_\+next\+\_\+token}} (FILE $\ast$file\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em A wrapper function that fetches the next token from the file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} \mbox{\hyperlink{lexer_8h_ab45c7162c82bb8baec1ef2a248bcf120}{string\+\_\+to\+\_\+token}} (const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em Retrieves the token type based on the given string. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\+\_\+to\+\_\+string}} (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}})
+\begin{DoxyCompactList}\small\item\em Retrieves a string representation of a token type (for printing purposes). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{lexer_8h_a78c9ef2940e04bc9cd18a764bdb9e0a5}\label{lexer_8h_a78c9ef2940e04bc9cd18a764bdb9e0a5}} 
+\index{lexer.h@{lexer.h}!buffer\_init@{buffer\_init}}
+\index{buffer\_init@{buffer\_init}!lexer.h@{lexer.h}}
+\doxysubsubsection{\texorpdfstring{buffer\_init()}{buffer\_init()}}
+{\footnotesize\ttfamily void buffer\+\_\+init (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+Initializes an internal twin buffer and loads the active buffer with the first chunk of the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+ptr} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+Initializes the internal twin buffer, overwriting any existing contents. 
+\end{DoxyWarning}
+
+
+Definition at line 828 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{828                                  \{}
+\DoxyCodeLine{829     \mbox{\hyperlink{lexer_8c_a67dd8f227181df843e25a314e262a10c}{buffer\_cleanup}}();}
+\DoxyCodeLine{830     \mbox{\hyperlink{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}{get\_next\_token\_helper}}(NULL);}
+\DoxyCodeLine{831     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}} = (\mbox{\hyperlink{structTwinBuffer}{twin\_buffer}}*)calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTwinBuffer}{twin\_buffer}}));}
+\DoxyCodeLine{832     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}})\{}
+\DoxyCodeLine{833         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Failed to initialize Twin buffer"{}});}
+\DoxyCodeLine{834         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{835     \}}
+\DoxyCodeLine{836     }
+\DoxyCodeLine{837     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} = (\textcolor{keywordtype}{char}*)calloc(\mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{838     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}} = (\textcolor{keywordtype}{char}*)calloc(\mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{839     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}} || !\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}})\{}
+\DoxyCodeLine{840         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Failed to initialize Twin buffer"{}});}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{842         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}});}
+\DoxyCodeLine{843         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ae64c8566663c3c3423bae7248b21a814}{load\_buffer}});}
+\DoxyCodeLine{844         free(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}});}
+\DoxyCodeLine{845 }
+\DoxyCodeLine{846         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{847     \}}
+\DoxyCodeLine{848 }
+\DoxyCodeLine{849     \textcolor{keywordtype}{size\_t} char\_read = fread(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}), \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}} -\/ 1, file\_ptr);}
+\DoxyCodeLine{850     \textcolor{keywordflow}{if}(char\_read > 0)}
+\DoxyCodeLine{851         \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_ad8d09de5d9b804d611c245980bdfefc0}{active\_buffer}}[char\_read] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{852 }
+\DoxyCodeLine{853     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a0a30ade1519d16acce5853bcf4bf7628}{begin\_ptr}} = 0;}
+\DoxyCodeLine{854     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_aca89a7bb22449628213422cd92e81fb3}{forward\_ptr}} = 0;}
+\DoxyCodeLine{855     \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}-\/>\mbox{\hyperlink{structTwinBuffer_a7f031b9a96764fe6fe3c0638ca9193bd}{buffer\_loaded}} = \textcolor{keyword}{false}; }
+\DoxyCodeLine{856 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_a78c9ef2940e04bc9cd18a764bdb9e0a5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_a78c9ef2940e04bc9cd18a764bdb9e0a5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}\label{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}} 
+\index{lexer.h@{lexer.h}!get\_next\_token@{get\_next\_token}}
+\index{get\_next\_token@{get\_next\_token}!lexer.h@{lexer.h}}
+\doxysubsubsection{\texorpdfstring{get\_next\_token()}{get\_next\_token()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}$\ast$ get\+\_\+next\+\_\+token (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+A wrapper function that fetches the next token from the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+ptr} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the next token. Returns an End-\/of-\/\+File token if no more source code is available.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the memory allocated for the token. 
+\end{DoxyWarning}
+
+
+Definition at line 858 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{858                                       \{}
+\DoxyCodeLine{859     \textcolor{keywordflow}{if}(file\_ptr == NULL)}
+\DoxyCodeLine{860         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Invalid file passed.\(\backslash\)n"{}});}
+\DoxyCodeLine{861     \mbox{\hyperlink{structToken}{token}}* ret;}
+\DoxyCodeLine{862     \textcolor{keywordflow}{while}(!(ret = \mbox{\hyperlink{lexer_8c_a1ede1e9739c264c7e3af07630e5a68f3}{get\_next\_token\_helper}}(file\_ptr)));}
+\DoxyCodeLine{863     \textcolor{keywordflow}{return} ret;}
+\DoxyCodeLine{864 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_a68b169dd0377b22e0729c7e7a9988262_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_a68b169dd0377b22e0729c7e7a9988262_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8h_ab45c7162c82bb8baec1ef2a248bcf120}\label{lexer_8h_ab45c7162c82bb8baec1ef2a248bcf120}} 
+\index{lexer.h@{lexer.h}!string\_to\_token@{string\_to\_token}}
+\index{string\_to\_token@{string\_to\_token}!lexer.h@{lexer.h}}
+\doxysubsubsection{\texorpdfstring{string\_to\_token()}{string\_to\_token()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} string\+\_\+to\+\_\+token (\begin{DoxyParamCaption}\item[{const char $\ast$}]{string }\end{DoxyParamCaption})}
+
+
+
+Retrieves the token type based on the given string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & A string representing the token name.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The corresponding token type. 
+\end{DoxyReturn}
+
+
+Definition at line 866 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{866                                                \{}
+\DoxyCodeLine{867     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ASSIGNOP"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}};}
+\DoxyCodeLine{868     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COMMENT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}};}
+\DoxyCodeLine{869     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_FIELDID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}};}
+\DoxyCodeLine{870     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}};}
+\DoxyCodeLine{871     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NUM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}};}
+\DoxyCodeLine{872     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RNUM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}};}
+\DoxyCodeLine{873     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_FUNID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}};}
+\DoxyCodeLine{874     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RUID"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}};}
+\DoxyCodeLine{875     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WITH"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\_WITH}};}
+\DoxyCodeLine{876     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PARAMETERS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\_PARAMETERS}};}
+\DoxyCodeLine{877     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_END"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}};}
+\DoxyCodeLine{878     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WHILE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\_WHILE}};}
+\DoxyCodeLine{879     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_UNION"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\_UNION}};}
+\DoxyCodeLine{880     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDUNION"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}};}
+\DoxyCodeLine{881     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DEFINETYPE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\_DEFINETYPE}};}
+\DoxyCodeLine{882     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_AS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\_AS}};}
+\DoxyCodeLine{883     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_TYPE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\_TYPE}};}
+\DoxyCodeLine{884     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MAIN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\_MAIN}};}
+\DoxyCodeLine{885     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GLOBAL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\_GLOBAL}};}
+\DoxyCodeLine{886     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PARAMETER"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\_PARAMETER}};}
+\DoxyCodeLine{887     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LIST"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\_LIST}};}
+\DoxyCodeLine{888     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SQL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\_SQL}};}
+\DoxyCodeLine{889     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SQR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}};}
+\DoxyCodeLine{890     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_INPUT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\_INPUT}};}
+\DoxyCodeLine{891     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OUTPUT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\_OUTPUT}};}
+\DoxyCodeLine{892     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_INT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\_INT}};}
+\DoxyCodeLine{893     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_REAL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\_REAL}};}
+\DoxyCodeLine{894     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COMMA"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\_COMMA}};}
+\DoxyCodeLine{895     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_SEM"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}};}
+\DoxyCodeLine{896     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_COLON"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\_COLON}};}
+\DoxyCodeLine{897     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DOT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\_DOT}};}
+\DoxyCodeLine{898     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDWHILE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}};}
+\DoxyCodeLine{899     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OP"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\_OP}};}
+\DoxyCodeLine{900     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_CL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}};}
+\DoxyCodeLine{901     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_IF"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\_IF}};}
+\DoxyCodeLine{902     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_THEN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\_THEN}};}
+\DoxyCodeLine{903     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDIF"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}};}
+\DoxyCodeLine{904     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_READ"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\_READ}};}
+\DoxyCodeLine{905     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_WRITE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\_WRITE}};}
+\DoxyCodeLine{906     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RETURN"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\_RETURN}};}
+\DoxyCodeLine{907     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_PLUS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\_PLUS}};}
+\DoxyCodeLine{908     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MINUS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\_MINUS}};}
+\DoxyCodeLine{909     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_MUL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\_MUL}};}
+\DoxyCodeLine{910     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_DIV"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\_DIV}};}
+\DoxyCodeLine{911     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_CALL"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\_CALL}};}
+\DoxyCodeLine{912     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_RECORD"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\_RECORD}};}
+\DoxyCodeLine{913     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ENDRECORD"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}};}
+\DoxyCodeLine{914     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ELSE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}};}
+\DoxyCodeLine{915     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_AND"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\_AND}};}
+\DoxyCodeLine{916     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_OR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\_OR}};}
+\DoxyCodeLine{917     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NOT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\_NOT}};}
+\DoxyCodeLine{918     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}};}
+\DoxyCodeLine{919     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_LE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}};}
+\DoxyCodeLine{920     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_EQ"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\_EQ}};}
+\DoxyCodeLine{921     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GT"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}};}
+\DoxyCodeLine{922     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_GE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}};}
+\DoxyCodeLine{923     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_NE"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\_NE}};}
+\DoxyCodeLine{924     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}EPS"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}};}
+\DoxyCodeLine{925     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}TK\_ERROR"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}};}
+\DoxyCodeLine{926     \textcolor{keywordflow}{if} (strcmp(\textcolor{keywordtype}{string}, \textcolor{stringliteral}{"{}\$"{}}) == 0) \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}};}
+\DoxyCodeLine{927 }
+\DoxyCodeLine{928     \textcolor{keywordflow}{return} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}};}
+\DoxyCodeLine{929 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_ab45c7162c82bb8baec1ef2a248bcf120_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lexer_8h_aee1807f4e95bea666b6c994915907414}\label{lexer_8h_aee1807f4e95bea666b6c994915907414}} 
+\index{lexer.h@{lexer.h}!token\_to\_string@{token\_to\_string}}
+\index{token\_to\_string@{token\_to\_string}!lexer.h@{lexer.h}}
+\doxysubsubsection{\texorpdfstring{token\_to\_string()}{token\_to\_string()}}
+{\footnotesize\ttfamily const char$\ast$ token\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{token }\end{DoxyParamCaption})}
+
+
+
+Retrieves a string representation of a token type (for printing purposes). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em token} & The token type.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A constant string representing the token type. 
+\end{DoxyReturn}
+
+
+Definition at line 931 of file lexer.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{931                                               \{}
+\DoxyCodeLine{932     \textcolor{keywordflow}{switch} (\mbox{\hyperlink{structToken}{token}}) \{}
+\DoxyCodeLine{933         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ASSIGNOP"{}};}
+\DoxyCodeLine{934         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COMMENT"{}};}
+\DoxyCodeLine{935         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_FIELDID"{}};}
+\DoxyCodeLine{936         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ID"{}};}
+\DoxyCodeLine{937         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NUM"{}};}
+\DoxyCodeLine{938         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RNUM"{}};}
+\DoxyCodeLine{939         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_FUNID"{}};}
+\DoxyCodeLine{940         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RUID"{}};}
+\DoxyCodeLine{941         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\_WITH}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WITH"{}};}
+\DoxyCodeLine{942         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\_PARAMETERS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PARAMETERS"{}};}
+\DoxyCodeLine{943         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_END"{}};}
+\DoxyCodeLine{944         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\_WHILE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WHILE"{}};}
+\DoxyCodeLine{945         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\_UNION}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_UNION"{}};}
+\DoxyCodeLine{946         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDUNION"{}};}
+\DoxyCodeLine{947         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\_DEFINETYPE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DEFINETYPE"{}};}
+\DoxyCodeLine{948         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\_AS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_AS"{}};}
+\DoxyCodeLine{949         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\_TYPE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_TYPE"{}};}
+\DoxyCodeLine{950         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\_MAIN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MAIN"{}};}
+\DoxyCodeLine{951         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\_GLOBAL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GLOBAL"{}};}
+\DoxyCodeLine{952         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\_PARAMETER}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PARAMETER"{}};}
+\DoxyCodeLine{953         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\_LIST}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LIST"{}};}
+\DoxyCodeLine{954         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\_SQL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SQL"{}};}
+\DoxyCodeLine{955         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SQR"{}};}
+\DoxyCodeLine{956         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\_INPUT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_INPUT"{}};}
+\DoxyCodeLine{957         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\_OUTPUT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OUTPUT"{}};}
+\DoxyCodeLine{958         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\_INT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_INT"{}};}
+\DoxyCodeLine{959         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\_REAL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_REAL"{}};}
+\DoxyCodeLine{960         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\_COMMA}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COMMA"{}};}
+\DoxyCodeLine{961         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_SEM"{}};}
+\DoxyCodeLine{962         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\_COLON}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_COLON"{}};}
+\DoxyCodeLine{963         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\_DOT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DOT"{}};}
+\DoxyCodeLine{964         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDWHILE"{}};}
+\DoxyCodeLine{965         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\_OP}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OP"{}};}
+\DoxyCodeLine{966         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_CL"{}};}
+\DoxyCodeLine{967         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\_IF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_IF"{}};}
+\DoxyCodeLine{968         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\_THEN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_THEN"{}};}
+\DoxyCodeLine{969         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDIF"{}};}
+\DoxyCodeLine{970         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\_READ}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_READ"{}};}
+\DoxyCodeLine{971         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\_WRITE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_WRITE"{}};}
+\DoxyCodeLine{972         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\_RETURN}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RETURN"{}};}
+\DoxyCodeLine{973         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\_PLUS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_PLUS"{}};}
+\DoxyCodeLine{974         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\_MINUS}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MINUS"{}};}
+\DoxyCodeLine{975         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\_MUL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_MUL"{}};}
+\DoxyCodeLine{976         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\_DIV}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_DIV"{}};}
+\DoxyCodeLine{977         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\_CALL}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_CALL"{}};}
+\DoxyCodeLine{978         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\_RECORD}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_RECORD"{}};}
+\DoxyCodeLine{979         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ENDRECORD"{}};}
+\DoxyCodeLine{980         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ELSE"{}};}
+\DoxyCodeLine{981         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\_AND}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_AND"{}};}
+\DoxyCodeLine{982         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\_OR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_OR"{}};}
+\DoxyCodeLine{983         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\_NOT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NOT"{}};}
+\DoxyCodeLine{984         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LT"{}};}
+\DoxyCodeLine{985         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_LE"{}};}
+\DoxyCodeLine{986         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\_EQ}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_EQ"{}};}
+\DoxyCodeLine{987         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GT"{}};}
+\DoxyCodeLine{988         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_GE"{}};}
+\DoxyCodeLine{989         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\_NE}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_NE"{}};}
+\DoxyCodeLine{990         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}EPS"{}};}
+\DoxyCodeLine{991         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ERROR"{}};}
+\DoxyCodeLine{992         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}\$"{}};}
+\DoxyCodeLine{993         \textcolor{keywordflow}{case} \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}EOF"{}};}
+\DoxyCodeLine{994         \textcolor{keywordflow}{default}: \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}TK\_ERROR"{}};}
+\DoxyCodeLine{995     \}}
+\DoxyCodeLine{996 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexer_8h_aee1807f4e95bea666b6c994915907414_icgraph}
+\end{center}
+\end{figure}

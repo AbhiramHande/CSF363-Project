@@ -1,0 +1,377 @@
+\hypertarget{tester_8c}{}\doxysection{src/test/tester.c File Reference}
+\label{tester_8c}\index{src/test/tester.c@{src/test/tester.c}}
+{\ttfamily \#include $<$pty.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$termios.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+Include dependency graph for tester.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tester_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tester_8c_a3024ccd4a9af5109d24e6c57565d74a1}{\+\_\+\+POSIX\+\_\+\+C\+\_\+\+SOURCE}}~200809L
+\item 
+\#define \mbox{\hyperlink{tester_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}~1024
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{tester_8c_a9422e213aefbf84df867168ce1574145}{prompt\+\_\+user}} (const char $\ast$message)
+\item 
+void \mbox{\hyperlink{tester_8c_a699d524d6de9211aa976b3dfa2afdd80}{remove\+\_\+extra\+\_\+whitespace}} (char $\ast$str)
+\item 
+int \mbox{\hyperlink{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb}{process\+\_\+line}} (char $\ast$line, FILE $\ast$file\+\_\+ptr)
+\item 
+int \mbox{\hyperlink{tester_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tester_8c_a3024ccd4a9af5109d24e6c57565d74a1}\label{tester_8c_a3024ccd4a9af5109d24e6c57565d74a1}} 
+\index{tester.c@{tester.c}!\_POSIX\_C\_SOURCE@{\_POSIX\_C\_SOURCE}}
+\index{\_POSIX\_C\_SOURCE@{\_POSIX\_C\_SOURCE}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{\_POSIX\_C\_SOURCE}{\_POSIX\_C\_SOURCE}}
+{\footnotesize\ttfamily \#define \+\_\+\+POSIX\+\_\+\+C\+\_\+\+SOURCE~200809L}
+
+
+
+Definition at line 1 of file tester.\+c.
+
+\mbox{\Hypertarget{tester_8c_a6b20d41d6252e9871430c242cb1a56e7}\label{tester_8c_a6b20d41d6252e9871430c242cb1a56e7}} 
+\index{tester.c@{tester.c}!BUFFER\_SIZE@{BUFFER\_SIZE}}
+\index{BUFFER\_SIZE@{BUFFER\_SIZE}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{BUFFER\_SIZE}{BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define BUFFER\+\_\+\+SIZE~1024}
+
+
+
+Definition at line 2 of file tester.\+c.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tester_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{tester_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{tester.c@{tester.c}!main@{main}}
+\index{main@{main}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 89 of file tester.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{89                                  \{}
+\DoxyCodeLine{90     \textcolor{keywordflow}{if}(argc != 4)\{}
+\DoxyCodeLine{91         fprintf(stderr, \textcolor{stringliteral}{"{}Error: Usage: test\_exe <program> <test\_case>.txt <expected\_oputput>.txt\(\backslash\)n"{}});}
+\DoxyCodeLine{92         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{93     \}}
+\DoxyCodeLine{94     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{95 \textcolor{preprocessor}{        \#ifdef DEBUG}}
+\DoxyCodeLine{96             fprintf(stdout, \textcolor{stringliteral}{"{}Testing executable: \%s\(\backslash\)n"{}}, argv[1]);}
+\DoxyCodeLine{97             fprintf(stdout, \textcolor{stringliteral}{"{}Directory with testcases: \%s\(\backslash\)n"{}}, argv[2]);}
+\DoxyCodeLine{98             fprintf(stdout, \textcolor{stringliteral}{"{}Directory with expected outputs: \%s\(\backslash\)n"{}}, argv[3]);}
+\DoxyCodeLine{99 \textcolor{preprocessor}{        \#endif}}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     FILE* file\_ptr = fopen(argv[3], \textcolor{stringliteral}{"{}r"{}});}
+\DoxyCodeLine{103     \textcolor{keywordflow}{if}(file\_ptr == NULL)\{}
+\DoxyCodeLine{104         perror(\textcolor{stringliteral}{"{}Invalid file"{}});}
+\DoxyCodeLine{105         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{106     \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108     \textcolor{keywordtype}{int} master\_fd = posix\_openpt(O\_RDWR | O\_NOCTTY);}
+\DoxyCodeLine{109     \textcolor{keywordflow}{if} (master\_fd == -\/1) \{}
+\DoxyCodeLine{110         perror(\textcolor{stringliteral}{"{}posix\_openpt failed"{}});}
+\DoxyCodeLine{111         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{112     \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \textcolor{keywordflow}{if} (grantpt(master\_fd) == -\/1) \{}
+\DoxyCodeLine{115         perror(\textcolor{stringliteral}{"{}grantpt failed"{}});}
+\DoxyCodeLine{116         close(master\_fd);}
+\DoxyCodeLine{117         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{keywordflow}{if} (unlockpt(master\_fd) == -\/1) \{}
+\DoxyCodeLine{121         perror(\textcolor{stringliteral}{"{}unlockpt failed"{}});}
+\DoxyCodeLine{122         close(master\_fd);}
+\DoxyCodeLine{123         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{124     \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     \textcolor{keywordtype}{char} *slave\_name = ptsname(master\_fd);}
+\DoxyCodeLine{127     \textcolor{keywordflow}{if} (!slave\_name) \{}
+\DoxyCodeLine{128         perror(\textcolor{stringliteral}{"{}ptsname failed"{}});}
+\DoxyCodeLine{129         close(master\_fd);}
+\DoxyCodeLine{130         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133     \textcolor{keyword}{struct }termios ts;}
+\DoxyCodeLine{134     \textcolor{keywordflow}{if} (tcgetattr(master\_fd, \&ts) == -\/1) \{}
+\DoxyCodeLine{135         perror(\textcolor{stringliteral}{"{}tcgetattr"{}});}
+\DoxyCodeLine{136         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{137     \}}
+\DoxyCodeLine{138     ts.c\_oflag \&= \string~ONLCR;  \textcolor{comment}{// Disable newline conversion}}
+\DoxyCodeLine{139     \textcolor{keywordflow}{if} (tcsetattr(master\_fd, TCSANOW, \&ts) == -\/1) \{}
+\DoxyCodeLine{140         perror(\textcolor{stringliteral}{"{}tcsetattr"{}});}
+\DoxyCodeLine{141         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{142     \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144     pid\_t child\_pid = fork();}
+\DoxyCodeLine{145     \textcolor{keywordflow}{if} (child\_pid == -\/1) \{}
+\DoxyCodeLine{146         perror(\textcolor{stringliteral}{"{}fork failed"{}});}
+\DoxyCodeLine{147         close(master\_fd);}
+\DoxyCodeLine{148         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151     \textcolor{keywordflow}{if} (child\_pid == 0) \{}
+\DoxyCodeLine{152         close(master\_fd);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154         \textcolor{keywordflow}{if} (setsid() == -\/1) \{}
+\DoxyCodeLine{155             perror(\textcolor{stringliteral}{"{}setsid failed"{}});}
+\DoxyCodeLine{156             exit(EXIT\_FAILURE);}
+\DoxyCodeLine{157         \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159         \textcolor{keywordtype}{int} slave\_fd = open(slave\_name, O\_RDWR);}
+\DoxyCodeLine{160         \textcolor{keywordflow}{if} (slave\_fd == -\/1) \{}
+\DoxyCodeLine{161             perror(\textcolor{stringliteral}{"{}open slave pty failed"{}});}
+\DoxyCodeLine{162             exit(EXIT\_FAILURE);}
+\DoxyCodeLine{163         \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165         dup2(slave\_fd, STDOUT\_FILENO);}
+\DoxyCodeLine{166         dup2(slave\_fd, STDERR\_FILENO);}
+\DoxyCodeLine{167         close(slave\_fd);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169         \textcolor{keywordtype}{char}* child\_argv[] = \{argv[1], argv[2], NULL\};}
+\DoxyCodeLine{170         execvp(argv[1], child\_argv);}
+\DoxyCodeLine{171         perror(\textcolor{stringliteral}{"{}execvp failed"{}});}
+\DoxyCodeLine{172         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{173     \} }
+\DoxyCodeLine{174     \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{175         \textcolor{keywordtype}{char} \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}[\mbox{\hyperlink{tester_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}];}
+\DoxyCodeLine{176         \textcolor{keywordtype}{char} line\_buffer[\mbox{\hyperlink{tester_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\_SIZE}}];}
+\DoxyCodeLine{177         \textcolor{keywordtype}{size\_t} line\_pos = 0;}
+\DoxyCodeLine{178         \textcolor{keywordtype}{int} line\_number = 0;}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180         \textcolor{keywordflow}{while} (1) \{}
+\DoxyCodeLine{181             ssize\_t bytes\_read = read(master\_fd, \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}));}
+\DoxyCodeLine{182             \textcolor{keywordflow}{if} (bytes\_read == -\/1) \{}
+\DoxyCodeLine{183                 \textcolor{keywordflow}{if} (errno == EINTR) \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{184                 \textcolor{keywordflow}{if} (errno == EIO)\{}
+\DoxyCodeLine{185                     \textcolor{comment}{// Check if all expected lines were processed}}
+\DoxyCodeLine{186                     \textcolor{keywordtype}{char}* buf = NULL;}
+\DoxyCodeLine{187                     \textcolor{keywordtype}{size\_t} buf\_size = 0;}
+\DoxyCodeLine{188                     getline(\&buf, \&buf\_size, file\_ptr);}
+\DoxyCodeLine{189                     \textcolor{keywordflow}{if}(buf != NULL \&\& strlen(buf) != 0) \{}
+\DoxyCodeLine{190                         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[31m\(\backslash\)033[1mError:\(\backslash\)033[0m Missing expected output starting at line \%d.\(\backslash\)n"{}}, line\_number + 1);}
+\DoxyCodeLine{191                         kill(child\_pid, SIGKILL);}
+\DoxyCodeLine{192                         waitpid(child\_pid, NULL, 0);}
+\DoxyCodeLine{193                         close(master\_fd);}
+\DoxyCodeLine{194                         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{195                     \}}
+\DoxyCodeLine{196                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{197                 \}}
+\DoxyCodeLine{198                 perror(\textcolor{stringliteral}{"{}read failed"{}});}
+\DoxyCodeLine{199                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{200             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (bytes\_read == 0) \{ \textcolor{comment}{// EOF}}
+\DoxyCodeLine{201                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{202             \}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204             \textcolor{keywordflow}{for} (ssize\_t i = 0; i < bytes\_read; ++i) \{}
+\DoxyCodeLine{205                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}[i] == \textcolor{charliteral}{'\(\backslash\)n'}) \{}
+\DoxyCodeLine{206                     line\_buffer[line\_pos] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{207                     \textcolor{keywordflow}{if} (\mbox{\hyperlink{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb}{process\_line}}(line\_buffer, file\_ptr) != 0) \{}
+\DoxyCodeLine{208                         kill(child\_pid, SIGKILL);}
+\DoxyCodeLine{209                         waitpid(child\_pid, NULL, 0);}
+\DoxyCodeLine{210                         close(master\_fd);}
+\DoxyCodeLine{211                         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{212                     \}}
+\DoxyCodeLine{213                     line\_number++;}
+\DoxyCodeLine{214                     line\_pos = 0;}
+\DoxyCodeLine{215                 \} }
+\DoxyCodeLine{216                 \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{217                     \textcolor{keywordflow}{if} (line\_pos < \textcolor{keyword}{sizeof}(line\_buffer) -\/ 1)}
+\DoxyCodeLine{218                         line\_buffer[line\_pos++] = \mbox{\hyperlink{lexer_8c_ad04a21efcd5c7ccd5091e7131f94c676}{buffer}}[i];}
+\DoxyCodeLine{219                     \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{220                         line\_buffer[line\_pos] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{221                         fprintf(stderr, \textcolor{stringliteral}{"{}Line too long: \(\backslash\)"{}\%s\(\backslash\)"{}\(\backslash\)n"{}}, line\_buffer);}
+\DoxyCodeLine{222                         line\_pos = 0;}
+\DoxyCodeLine{223                     \}}
+\DoxyCodeLine{224                 \}}
+\DoxyCodeLine{225             \}}
+\DoxyCodeLine{226         \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228         \textcolor{comment}{// Wait for child to exit normally}}
+\DoxyCodeLine{229         \textcolor{keywordtype}{int} status;}
+\DoxyCodeLine{230         waitpid(child\_pid, \&status, 0);}
+\DoxyCodeLine{231         \textcolor{keywordflow}{if} (WIFEXITED(status)) \{}
+\DoxyCodeLine{232             printf(\textcolor{stringliteral}{"{}\(\backslash\)033[32mAll outputs matched.\(\backslash\)033[0m\(\backslash\)n"{}});}
+\DoxyCodeLine{233             printf(\textcolor{stringliteral}{"{}Program exited with status \%d\(\backslash\)n"{}}, WEXITSTATUS(status));}
+\DoxyCodeLine{234         \} }
+\DoxyCodeLine{235         \textcolor{keywordflow}{else} }
+\DoxyCodeLine{236             printf(\textcolor{stringliteral}{"{}\(\backslash\)033[31mProgram terminated abnormally\(\backslash\)033[0m\(\backslash\)n"{}});}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238         close(master\_fd);}
+\DoxyCodeLine{239     \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241     \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{242 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tester_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb}\label{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb}} 
+\index{tester.c@{tester.c}!process\_line@{process\_line}}
+\index{process\_line@{process\_line}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{process\_line()}{process\_line()}}
+{\footnotesize\ttfamily int process\+\_\+line (\begin{DoxyParamCaption}\item[{char $\ast$}]{line,  }\item[{FILE $\ast$}]{file\+\_\+ptr }\end{DoxyParamCaption})}
+
+
+
+Definition at line 58 of file tester.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{58                                              \{}
+\DoxyCodeLine{59     \textcolor{keywordtype}{char}* expected\_output = NULL;}
+\DoxyCodeLine{60     \textcolor{keywordtype}{size\_t} buf\_size = 0;}
+\DoxyCodeLine{61     \textcolor{keywordtype}{int} chars\_read = getline(\&expected\_output, \&buf\_size, file\_ptr);}
+\DoxyCodeLine{62     \textcolor{keywordflow}{if} (expected\_output == NULL) \{}
+\DoxyCodeLine{63         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[31mError: Unexpected line:\(\backslash\)033[0m \(\backslash\)"{}\%s\(\backslash\)"{}\(\backslash\)n"{}}, line);}
+\DoxyCodeLine{64         \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{65     \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keywordflow}{if}(expected\_output[chars\_read -\/ 1] == \textcolor{charliteral}{'\(\backslash\)n'})}
+\DoxyCodeLine{68         expected\_output[chars\_read -\/ 1] = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{69     \mbox{\hyperlink{tester_8c_a699d524d6de9211aa976b3dfa2afdd80}{remove\_extra\_whitespace}}(line);}
+\DoxyCodeLine{70     \mbox{\hyperlink{tester_8c_a699d524d6de9211aa976b3dfa2afdd80}{remove\_extra\_whitespace}}(expected\_output);}
+\DoxyCodeLine{71     }
+\DoxyCodeLine{72     \textcolor{keywordflow}{if} (strcmp(line, expected\_output)) \{}
+\DoxyCodeLine{73         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[32mExpected:\(\backslash\)033[0m \(\backslash\)"{}\%s\(\backslash\)"{}\(\backslash\)n"{}}, expected\_output);}
+\DoxyCodeLine{74         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[31mReceived:\(\backslash\)033[0m \(\backslash\)"{}\%s\(\backslash\)"{}\(\backslash\)n"{}}, line);    }
+\DoxyCodeLine{75         \textcolor{keywordflow}{if} (!\mbox{\hyperlink{tester_8c_a9422e213aefbf84df867168ce1574145}{prompt\_user}}(\textcolor{stringliteral}{"{}This is an error. Do you accept this mismatch?"{}})) \{}
+\DoxyCodeLine{76             \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{77         \} }
+\DoxyCodeLine{78         fflush(stderr);   }
+\DoxyCodeLine{79         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{80     \}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{    \#ifdef LTEST}}
+\DoxyCodeLine{82         printf(\textcolor{stringliteral}{"{}\(\backslash\)033[32m\(\backslash\)u2713 Received line match: \(\backslash\)"{}\%s\(\backslash\)"{}\(\backslash\)033[0m\(\backslash\)n"{}}, line);}
+\DoxyCodeLine{83 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{84     \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{85 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{tester_8c_a7bdcc8030c50dcf495aec53d5fb4b9bb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tester_8c_a9422e213aefbf84df867168ce1574145}\label{tester_8c_a9422e213aefbf84df867168ce1574145}} 
+\index{tester.c@{tester.c}!prompt\_user@{prompt\_user}}
+\index{prompt\_user@{prompt\_user}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{prompt\_user()}{prompt\_user()}}
+{\footnotesize\ttfamily int prompt\+\_\+user (\begin{DoxyParamCaption}\item[{const char $\ast$}]{message }\end{DoxyParamCaption})}
+
+
+
+Definition at line 19 of file tester.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{19                                      \{}
+\DoxyCodeLine{20     \textcolor{keywordtype}{char} response;}
+\DoxyCodeLine{21     printf(\textcolor{stringliteral}{"{}\%s [y/N]: "{}}, message);}
+\DoxyCodeLine{22     scanf(\textcolor{stringliteral}{"{} \%c"{}}, \&response);}
+\DoxyCodeLine{23     \textcolor{keywordflow}{if} (response == \textcolor{charliteral}{'y'} || response == \textcolor{charliteral}{'Y'}) \{}
+\DoxyCodeLine{24         \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{25     \}}
+\DoxyCodeLine{26     \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{27 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{tester_8c_a9422e213aefbf84df867168ce1574145_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tester_8c_a699d524d6de9211aa976b3dfa2afdd80}\label{tester_8c_a699d524d6de9211aa976b3dfa2afdd80}} 
+\index{tester.c@{tester.c}!remove\_extra\_whitespace@{remove\_extra\_whitespace}}
+\index{remove\_extra\_whitespace@{remove\_extra\_whitespace}!tester.c@{tester.c}}
+\doxysubsubsection{\texorpdfstring{remove\_extra\_whitespace()}{remove\_extra\_whitespace()}}
+{\footnotesize\ttfamily void remove\+\_\+extra\+\_\+whitespace (\begin{DoxyParamCaption}\item[{char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+Definition at line 29 of file tester.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{29                                         \{}
+\DoxyCodeLine{30     \textcolor{keywordtype}{int} i = 0, j = 0;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{int} len = strlen(str);}
+\DoxyCodeLine{32     \textcolor{keywordtype}{int} space\_needed = 0; }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keywordflow}{while} (i < len) \{}
+\DoxyCodeLine{35         \textcolor{comment}{// Skip leading whitespace}}
+\DoxyCodeLine{36         \textcolor{keywordflow}{while} (i < len \&\& isspace(str[i])) \{}
+\DoxyCodeLine{37             i++;}
+\DoxyCodeLine{38         \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40         \textcolor{keywordflow}{while} (i < len) \{}
+\DoxyCodeLine{41             \textcolor{keywordflow}{if} (isspace(str[i])) \{}
+\DoxyCodeLine{42                 space\_needed = 1;  \textcolor{comment}{// Mark that a space should be added later}}
+\DoxyCodeLine{43             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{44                 \textcolor{comment}{// Add space if needed before adding a non-\/space character}}
+\DoxyCodeLine{45                 \textcolor{keywordflow}{if} (space\_needed \&\& j > 0) \{}
+\DoxyCodeLine{46                     str[j++] = \textcolor{charliteral}{' '};}
+\DoxyCodeLine{47                 \}}
+\DoxyCodeLine{48                 str[j++] = str[i];}
+\DoxyCodeLine{49                 space\_needed = 0;  \textcolor{comment}{// Reset space flag}}
+\DoxyCodeLine{50             \}}
+\DoxyCodeLine{51             i++;}
+\DoxyCodeLine{52         \}}
+\DoxyCodeLine{53     \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     str[j] = \textcolor{charliteral}{'\(\backslash\)0'};  \textcolor{comment}{// Null-\/terminate the result string}}
+\DoxyCodeLine{56 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tester_8c_a699d524d6de9211aa976b3dfa2afdd80_icgraph}
+\end{center}
+\end{figure}

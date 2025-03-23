@@ -1,0 +1,1631 @@
+\hypertarget{parser_8c}{}\doxysection{src/main/parser.c File Reference}
+\label{parser_8c}\index{src/main/parser.c@{src/main/parser.c}}
+{\ttfamily \#include \char`\"{}../../include/parser.\+h\char`\"{}}\newline
+Include dependency graph for parser.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}{MAX\+\_\+\+LINE\+\_\+\+LENGTH}}~256
+\item 
+\#define \mbox{\hyperlink{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}{SUPER\+\_\+\+SYN\+\_\+\+SIZE}}~9
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{parser_8c_a38b7b58ee1b37118b65d39df4b90656a}{compute\+\_\+first\+\_\+set}} (\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$nt)
+\begin{DoxyCompactList}\small\item\em Computes the First set of a given non-\/terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a1fe10306eb61573f8a6929b0987802d0}{compute\+\_\+follow\+\_\+set}} (\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$nt, \mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$A, \mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$a\+To\+Alpha, int nt\+\_\+pos)
+\begin{DoxyCompactList}\small\item\em Computes the Follow set of a given non-\/terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6}{generate\+\_\+parse\+\_\+map}} ()
+\begin{DoxyCompactList}\small\item\em Generates the parsing table for the given grammar using a hash map. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{parser_8c_a385276c7e31aeff5ad9c22370300ced6}{generate\+\_\+parse\+\_\+tree}} (FILE $\ast$src\+\_\+code)
+\begin{DoxyCompactList}\small\item\em Generates a parse tree for the given source code. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}{add\+\_\+to\+\_\+set}} (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$$\ast$set, int $\ast$size, const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} element)
+\begin{DoxyCompactList}\small\item\em Adds a given token type to a set if it does not already exist. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}{add\+\_\+to\+\_\+first\+\_\+set}} (\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$nt, const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} element)
+\begin{DoxyCompactList}\small\item\em Adds a given token to the first set of a non-\/terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}{add\+\_\+to\+\_\+follow\+\_\+set}} (\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$nt, const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} element)
+\begin{DoxyCompactList}\small\item\em Adds a given token to the follow set of a non-\/terminal. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$ \mbox{\hyperlink{parser_8c_a66e98027ec5a1a7c880689156e4b664d}{compute\+\_\+first\+\_\+of\+\_\+sequence}} (\mbox{\hyperlink{parserDef_8h_ac09ebac4bcf522eaf70dad9129e277a3}{symbol}} $\ast$$\ast$sym\+\_\+seq, int sym\+\_\+seq\+\_\+count, int $\ast$result\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Computes the first set of a sequence of symbols (terminals and non-\/terminals). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{parser_8c_a4b305657626d151a42cb6ed367661ff7}{contains\+\_\+\+EPS}} (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$set, int size)
+\begin{DoxyCompactList}\small\item\em Checks whether the {\ttfamily TK\+\_\+\+EPSILON} token is present in a given set. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$ \mbox{\hyperlink{parser_8c_ad3a905e9370709865b9e0a8b31653443}{find\+\_\+non\+\_\+terminal}} (const char $\ast$name, int end)
+\begin{DoxyCompactList}\small\item\em Finds a non-\/terminal based on its name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{parser_8c_ad327f860dea11c0c1e3338a030858e0d}{create\+\_\+tree\+\_\+node\+\_\+nonterm}} (\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$nt)
+\begin{DoxyCompactList}\small\item\em Creates a new parse tree node corresponding to a given non-\/terminal. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8}{create\+\_\+tree\+\_\+node\+\_\+term}} (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} tok\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Creates a new parse tree node corresponding to a given terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a9f5ef3611435d73a8305d27de3927585}{print\+\_\+first\+\_\+and\+\_\+follow\+\_\+sets}} (bool print\+\_\+first, bool print\+\_\+follow)
+\begin{DoxyCompactList}\small\item\em Prints the first and/or follow sets of all non-\/terminals. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_aceedd6d6c4ad5ddbc27d6d2b6aa8100f}{print\+\_\+parse\+\_\+tree}} (\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Prints the parse tree using pre-\/order traversal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a08659a3e07cbbaa0a0b7234f35654876}{print\+\_\+parse\+\_\+map}} ()
+\begin{DoxyCompactList}\small\item\em Prints the parsing table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a24f97716740e58254357ada9b7921b5e}{first\+\_\+and\+\_\+follow\+\_\+cleanup}} (void)
+\begin{DoxyCompactList}\small\item\em Deallocates memory associated with all non-\/terminals, their first and follow sets, and the parsing table. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{parser_8c_a6c4b340ccd44133e7a3dabdd3015afac}{parse\+\_\+code}} (char $\ast$grammar\+\_\+file, FILE $\ast$src\+\_\+code)
+\begin{DoxyCompactList}\small\item\em Parses the given code based on the specified grammar. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a}{parse\+\_\+tree\+\_\+cleanup}} (\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$$\ast$root)
+\begin{DoxyCompactList}\small\item\em Deallocates all memory associated with the parse tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5}{print\+\_\+parse\+\_\+tree\+\_\+inorder}} (\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$root, \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$parent, FILE $\ast$output\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Prints the parse tree using in-\/order traversal in the specified file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\+\_\+present}} = false
+\item 
+\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$$\ast$ \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\+\_\+terminals}} = NULL
+\item 
+int \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\+\_\+terminal\+\_\+count}} = 0
+\item 
+\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$ \mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\+\_\+symbol}} = NULL
+\item 
+\mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$$\ast$ \mbox{\hyperlink{parser_8c_a7f8c302a05dbaa93714fb0483630a112}{parse\+\_\+table}} = NULL
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}\label{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}} 
+\index{parser.c@{parser.c}!MAX\_LINE\_LENGTH@{MAX\_LINE\_LENGTH}}
+\index{MAX\_LINE\_LENGTH@{MAX\_LINE\_LENGTH}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_LINE\_LENGTH}{MAX\_LINE\_LENGTH}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+LINE\+\_\+\+LENGTH~256}
+
+
+
+Definition at line 3 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}\label{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}} 
+\index{parser.c@{parser.c}!SUPER\_SYN\_SIZE@{SUPER\_SYN\_SIZE}}
+\index{SUPER\_SYN\_SIZE@{SUPER\_SYN\_SIZE}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{SUPER\_SYN\_SIZE}{SUPER\_SYN\_SIZE}}
+{\footnotesize\ttfamily \#define SUPER\+\_\+\+SYN\+\_\+\+SIZE~9}
+
+
+
+Definition at line 4 of file parser.\+c.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}\label{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}} 
+\index{parser.c@{parser.c}!add\_to\_first\_set@{add\_to\_first\_set}}
+\index{add\_to\_first\_set@{add\_to\_first\_set}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{add\_to\_first\_set()}{add\_to\_first\_set()}}
+{\footnotesize\ttfamily void add\+\_\+to\+\_\+first\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{element }\end{DoxyParamCaption})}
+
+
+
+Adds a given token to the first set of a non-\/terminal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & A pointer to the non-\/terminal whose first set is to be updated. \\
+\hline
+{\em element} & The token type to be added to the first set. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 285 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{285                                                                   \{}
+\DoxyCodeLine{286     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}}; i++)}
+\DoxyCodeLine{287         \textcolor{keywordflow}{if} (nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[i] == element)}
+\DoxyCodeLine{288             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290     nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}} = (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}*)realloc(nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}, (nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}} + 1)*\textcolor{keyword}{sizeof}(\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}));}
+\DoxyCodeLine{291     nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}}++] = element;}
+\DoxyCodeLine{292     \textcolor{keywordflow}{if} (element == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{293         nt-\/>\mbox{\hyperlink{structNonTerminal_a5278ab860fe07d060fb6a0e16a8ed1ce}{has\_epsilon\_in\_first}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{296 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}\label{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}} 
+\index{parser.c@{parser.c}!add\_to\_follow\_set@{add\_to\_follow\_set}}
+\index{add\_to\_follow\_set@{add\_to\_follow\_set}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{add\_to\_follow\_set()}{add\_to\_follow\_set()}}
+{\footnotesize\ttfamily void add\+\_\+to\+\_\+follow\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{element }\end{DoxyParamCaption})}
+
+
+
+Adds a given token to the follow set of a non-\/terminal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & A pointer to the non-\/terminal whose follow set is to be updated. \\
+\hline
+{\em element} & The token type to be added to the follow set. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 298 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{298                                                                    \{}
+\DoxyCodeLine{299     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}}; i++)}
+\DoxyCodeLine{300         \textcolor{keywordflow}{if} (nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}[i] == element)}
+\DoxyCodeLine{301             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303     nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}} = (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}*)realloc(nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}, (nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}} + 1)*\textcolor{keyword}{sizeof}(\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}));}
+\DoxyCodeLine{304     nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}[nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}}++] = element;}
+\DoxyCodeLine{305 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}\label{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}} 
+\index{parser.c@{parser.c}!add\_to\_set@{add\_to\_set}}
+\index{add\_to\_set@{add\_to\_set}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{add\_to\_set()}{add\_to\_set()}}
+{\footnotesize\ttfamily void add\+\_\+to\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$$\ast$}]{set,  }\item[{int $\ast$}]{size,  }\item[{const \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{element }\end{DoxyParamCaption})}
+
+
+
+Adds a given token type to a set if it does not already exist. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & A pointer to a dynamically allocated array representing the set. \\
+\hline
+{\em size} & A pointer to the current size of the set. \\
+\hline
+{\em element} & The token type to be added.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+If the given token type is not present in the set, the set is resized and the token is added. The size is updated accordingly. 
+\end{DoxyNote}
+
+
+Definition at line 470 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{470                                                                        \{}
+\DoxyCodeLine{471     \textcolor{keywordflow}{if}(element == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}})}
+\DoxyCodeLine{472         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{473 }
+\DoxyCodeLine{474     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < *size; i++)}
+\DoxyCodeLine{475         \textcolor{keywordflow}{if} ((*set)[i] == element)}
+\DoxyCodeLine{476             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478     *set = (\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}*)realloc(*set, (*size + 1)*\textcolor{keyword}{sizeof}(\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}));}
+\DoxyCodeLine{479     (*set)[(*size)++] = element;}
+\DoxyCodeLine{480 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a66e98027ec5a1a7c880689156e4b664d}\label{parser_8c_a66e98027ec5a1a7c880689156e4b664d}} 
+\index{parser.c@{parser.c}!compute\_first\_of\_sequence@{compute\_first\_of\_sequence}}
+\index{compute\_first\_of\_sequence@{compute\_first\_of\_sequence}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{compute\_first\_of\_sequence()}{compute\_first\_of\_sequence()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$ compute\+\_\+first\+\_\+of\+\_\+sequence (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_ac09ebac4bcf522eaf70dad9129e277a3}{symbol}} $\ast$$\ast$}]{sym\+\_\+seq,  }\item[{int}]{sym\+\_\+seq\+\_\+count,  }\item[{int $\ast$}]{result\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Computes the first set of a sequence of symbols (terminals and non-\/terminals). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sym\+\_\+seq} & A pointer to an array of symbols representing the sequence. \\
+\hline
+{\em sym\+\_\+seq\+\_\+count} & The number of symbols in the sequence. \\
+\hline
+{\em result\+\_\+size} & A pointer to an integer that will store the size of the resulting first set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to a dynamically allocated array containing the first set of the given sequence.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the returned array. 
+\end{DoxyWarning}
+
+
+Definition at line 482 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{482                                                                                              \{}
+\DoxyCodeLine{483     \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}* result = NULL;}
+\DoxyCodeLine{484     \textcolor{keywordtype}{int} size = *result\_size = 0;}
+\DoxyCodeLine{485     \textcolor{keywordtype}{bool} can\_derive\_epsilon = \textcolor{keyword}{true};}
+\DoxyCodeLine{486 }
+\DoxyCodeLine{487     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < sym\_seq\_count; i++) \{}
+\DoxyCodeLine{488         \mbox{\hyperlink{structSymbol}{symbol}}* sym = sym\_seq[i];}
+\DoxyCodeLine{489         \textcolor{keywordflow}{if} (sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}}) \{}
+\DoxyCodeLine{490             \mbox{\hyperlink{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}{add\_to\_set}}(\&result, \&size, sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}});}
+\DoxyCodeLine{491             can\_derive\_epsilon = \textcolor{keyword}{false};}
+\DoxyCodeLine{492             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{493         \} }
+\DoxyCodeLine{494         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}}) \{}
+\DoxyCodeLine{495             can\_derive\_epsilon = \textcolor{keyword}{true};}
+\DoxyCodeLine{496             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{497         \} }
+\DoxyCodeLine{498         \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{499             \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* sym\_nt = sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}};}
+\DoxyCodeLine{500             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < sym\_nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}}; j++)}
+\DoxyCodeLine{501                 \textcolor{keywordflow}{if} (sym\_nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[j] != \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{502                     \mbox{\hyperlink{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}{add\_to\_set}}(\&result, \&size, sym\_nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[j]);}
+\DoxyCodeLine{503 }
+\DoxyCodeLine{504             \textcolor{keywordflow}{if} (!sym\_nt-\/>\mbox{\hyperlink{structNonTerminal_a5278ab860fe07d060fb6a0e16a8ed1ce}{has\_epsilon\_in\_first}}) \{}
+\DoxyCodeLine{505                 can\_derive\_epsilon = \textcolor{keyword}{false};}
+\DoxyCodeLine{506                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{507             \}}
+\DoxyCodeLine{508         \}}
+\DoxyCodeLine{509     \}}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{511     \textcolor{keywordflow}{if} (can\_derive\_epsilon)}
+\DoxyCodeLine{512         \mbox{\hyperlink{parser_8c_a2fb545f0baa318bfb9bdbab0e882cd32}{add\_to\_set}}(\&result, \&size, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}});}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514     *result\_size = size;}
+\DoxyCodeLine{515     \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{516 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{parser_8c_a66e98027ec5a1a7c880689156e4b664d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a66e98027ec5a1a7c880689156e4b664d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a38b7b58ee1b37118b65d39df4b90656a}\label{parser_8c_a38b7b58ee1b37118b65d39df4b90656a}} 
+\index{parser.c@{parser.c}!compute\_first\_set@{compute\_first\_set}}
+\index{compute\_first\_set@{compute\_first\_set}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{compute\_first\_set()}{compute\_first\_set()}}
+{\footnotesize\ttfamily void compute\+\_\+first\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{nt }\end{DoxyParamCaption})}
+
+
+
+Computes the First set of a given non-\/terminal. 
+
+The First set of a non-\/terminal $ X $ is computed as follows\+:
+\begin{DoxyEnumerate}
+\item If $ X \to Y_1Y_2 \dots Y_k $ is a production rule for some $ k \geq 1 $\+:
+\begin{DoxyItemize}
+\item If $ \alpha \neq \epsilon \in First(Y_1) $, then add $ \alpha $ to First(\+X).
+\item If $ \epsilon \in First(Y_1) $, continue checking $ Y_2, Y_3, \dots, Y_n $.
+\item Stop when a symbol $ Y_n $ is found where $ \epsilon \notin First(Y_n) $ or all $ Y_i $ are exhausted.
+\item If $ \epsilon \in First(Y_i) $ for all $ i \leq n $, add $ \epsilon $ to First(\+X).
+\end{DoxyItemize}
+\item If $ X \to \epsilon $ is a production, then $ \epsilon $ is added to First(\+X).
+\item If a non-\/terminal has multiple production rules, the First set is the {\bfseries{union}} of the First sets of all right-\/hand sides.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & A pointer to the non-\/terminal whose First set is to be computed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+Modifies the global non-\/terminal structure by adding the First set and its size. If $ \epsilon $ is present in First, this is also reflected in the structure. 
+\end{DoxyWarning}
+
+
+Definition at line 307 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{307                                          \{}
+\DoxyCodeLine{308     \textcolor{keywordflow}{if}(nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}} != 0)}
+\DoxyCodeLine{309         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{310     }
+\DoxyCodeLine{311     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}}; i++)\{}
+\DoxyCodeLine{312         \mbox{\hyperlink{structProduction}{production}}* prod = nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}[i];}
+\DoxyCodeLine{313         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = 0; j < prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}}; j++)\{}
+\DoxyCodeLine{314             \mbox{\hyperlink{structSymbol}{symbol}}* sym = prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[j];}
+\DoxyCodeLine{315             \textcolor{keywordflow}{if}(sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})\{}
+\DoxyCodeLine{316                 \mbox{\hyperlink{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}{add\_to\_first\_set}}(nt, sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}});}
+\DoxyCodeLine{317                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{318             \}}
+\DoxyCodeLine{319             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}})\{}
+\DoxyCodeLine{320                 nt-\/>\mbox{\hyperlink{structNonTerminal_a5278ab860fe07d060fb6a0e16a8ed1ce}{has\_epsilon\_in\_first}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{321                 \mbox{\hyperlink{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}{add\_to\_first\_set}}(nt, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}});}
+\DoxyCodeLine{322                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{323             \}}
+\DoxyCodeLine{324             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{325                 \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* prod\_nt = sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}};}
+\DoxyCodeLine{326                 \mbox{\hyperlink{parser_8c_a38b7b58ee1b37118b65d39df4b90656a}{compute\_first\_set}}(prod\_nt);}
+\DoxyCodeLine{327                 \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} k = 0; k < prod\_nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}}; k++) \{}
+\DoxyCodeLine{328                     \textcolor{keywordflow}{if}(prod\_nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[k] != \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{329                         \mbox{\hyperlink{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}{add\_to\_first\_set}}(nt, prod\_nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[k]);}
+\DoxyCodeLine{330                 \}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332                 \textcolor{keywordflow}{if}(!prod\_nt-\/>\mbox{\hyperlink{structNonTerminal_a5278ab860fe07d060fb6a0e16a8ed1ce}{has\_epsilon\_in\_first}})}
+\DoxyCodeLine{333                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{334                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(j == prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} -\/ 1)}
+\DoxyCodeLine{335                     \mbox{\hyperlink{parser_8c_a2953594e876de2e3e2ec7d6f9b5c3c40}{add\_to\_first\_set}}(nt, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}});}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337             \}}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339         \}}
+\DoxyCodeLine{340     \}}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{343 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{parser_8c_a38b7b58ee1b37118b65d39df4b90656a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a38b7b58ee1b37118b65d39df4b90656a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a1fe10306eb61573f8a6929b0987802d0}\label{parser_8c_a1fe10306eb61573f8a6929b0987802d0}} 
+\index{parser.c@{parser.c}!compute\_follow\_set@{compute\_follow\_set}}
+\index{compute\_follow\_set@{compute\_follow\_set}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{compute\_follow\_set()}{compute\_follow\_set()}}
+{\footnotesize\ttfamily void compute\+\_\+follow\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{nt,  }\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{A,  }\item[{\mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}} $\ast$}]{a\+To\+Alpha,  }\item[{int}]{nt\+\_\+pos }\end{DoxyParamCaption})}
+
+
+
+Computes the Follow set of a given non-\/terminal. 
+
+The Follow set of a non-\/terminal $ X $ is computed as follows\+:
+\begin{DoxyEnumerate}
+\item If $ X $ is the start symbol (in the given grammar, {\ttfamily $<$program$>$}), then add {\ttfamily \$} to Follow(\+X).
+\item If there is a production rule $ A \to \alpha B \beta $\+:
+\begin{DoxyItemize}
+\item Add everything in {\ttfamily First(β) -\/ \{ε\}} to {\ttfamily Follow(\+B)}.
+\item If $ \epsilon \in First(\beta) $, then add {\ttfamily Follow(\+A)} to {\ttfamily Follow(\+B)}.
+\end{DoxyItemize}
+\item If there is a production rule $ A \to \alpha B $, then add {\ttfamily Follow(\+A)} to {\ttfamily Follow(\+B)}.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & A pointer to the non-\/terminal whose Follow set is to be computed. \\
+\hline
+{\em A} & A pointer to the parent non-\/terminal from which Follow was called (NULL for the start symbol). \\
+\hline
+{\em a\+To\+Alpha} & A pointer to the production rule in which {\ttfamily nt} appears. \\
+\hline
+{\em nt\+\_\+pos} & The position of {\ttfamily nt} in the production rule.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+Modifies the global non-\/terminal structure by adding the Follow set and its size. 
+\end{DoxyWarning}
+
+
+Definition at line 345 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{345                                                                                             \{}
+\DoxyCodeLine{346     \textcolor{keywordtype}{int} original\_size = nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}};}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348     \textcolor{keywordflow}{if}(nt == \mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}})}
+\DoxyCodeLine{349         \mbox{\hyperlink{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}{add\_to\_follow\_set}}(nt, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}});}
+\DoxyCodeLine{350     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{351         \textcolor{keywordtype}{bool} add\_follow\_A = \textcolor{keyword}{false};}
+\DoxyCodeLine{352         \textcolor{keywordflow}{if}(nt\_pos + 1 == aToAlpha-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}})}
+\DoxyCodeLine{353             add\_follow\_A = \textcolor{keyword}{true};}
+\DoxyCodeLine{354         \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{355             \mbox{\hyperlink{structSymbol}{symbol}}** syms = aToAlpha-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}} + nt\_pos + 1; \textcolor{comment}{//Potential error: overflow and access invalid memory}}
+\DoxyCodeLine{356             \textcolor{keywordtype}{int} syms\_size = aToAlpha-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} -\/ (nt\_pos + 1);}
+\DoxyCodeLine{357             \textcolor{keywordtype}{int} first\_seq\_size = 0;}
+\DoxyCodeLine{358             \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}* first\_seq = \mbox{\hyperlink{parser_8c_a66e98027ec5a1a7c880689156e4b664d}{compute\_first\_of\_sequence}}(syms, syms\_size, \&first\_seq\_size);}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360             }
+\DoxyCodeLine{361             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < first\_seq\_size; i++)\{}
+\DoxyCodeLine{362                 \textcolor{keywordflow}{if}(first\_seq[i] != \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{363                     \mbox{\hyperlink{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}{add\_to\_follow\_set}}(nt, first\_seq[i]);}
+\DoxyCodeLine{364                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{365                     add\_follow\_A = \textcolor{keyword}{true};}
+\DoxyCodeLine{366             \}}
+\DoxyCodeLine{367 }
+\DoxyCodeLine{368             free(first\_seq);}
+\DoxyCodeLine{369             first\_seq = NULL;}
+\DoxyCodeLine{370             first\_seq\_size = 0;}
+\DoxyCodeLine{371         \}}
+\DoxyCodeLine{372 }
+\DoxyCodeLine{373         \textcolor{keywordflow}{if}(add\_follow\_A)}
+\DoxyCodeLine{374             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < A-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}}; i++)}
+\DoxyCodeLine{375                 \mbox{\hyperlink{parser_8c_ad57d45985f7e4a7acb09e809a7da75d8}{add\_to\_follow\_set}}(nt, A-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}[i]);}
+\DoxyCodeLine{376     \}}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378     \textcolor{keywordflow}{if}(nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}} != original\_size)\{}
+\DoxyCodeLine{379         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < nt-\/> prod\_count; i++)\{}
+\DoxyCodeLine{380             \mbox{\hyperlink{structProduction}{production}}* prod = nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}[i];}
+\DoxyCodeLine{381             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} -\/ 1; j >= 0; j-\/-\/)\{}
+\DoxyCodeLine{382                 \mbox{\hyperlink{structSymbol}{symbol}}* sym = prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[j];}
+\DoxyCodeLine{383                 \textcolor{keywordflow}{if}(sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})}
+\DoxyCodeLine{384                     \mbox{\hyperlink{parser_8c_a1fe10306eb61573f8a6929b0987802d0}{compute\_follow\_set}}(sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}, nt, prod, j);}
+\DoxyCodeLine{385             \}}
+\DoxyCodeLine{386         \}}
+\DoxyCodeLine{387     \}}
+\DoxyCodeLine{388     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{389 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a1fe10306eb61573f8a6929b0987802d0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a1fe10306eb61573f8a6929b0987802d0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a4b305657626d151a42cb6ed367661ff7}\label{parser_8c_a4b305657626d151a42cb6ed367661ff7}} 
+\index{parser.c@{parser.c}!contains\_EPS@{contains\_EPS}}
+\index{contains\_EPS@{contains\_EPS}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{contains\_EPS()}{contains\_EPS()}}
+{\footnotesize\ttfamily bool contains\+\_\+\+EPS (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}} $\ast$}]{set,  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+Checks whether the {\ttfamily TK\+\_\+\+EPSILON} token is present in a given set. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & A pointer to an array of token types. \\
+\hline
+{\em size} & The number of elements in the set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the set contains {\ttfamily TK\+\_\+\+EPSILON}, otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+
+
+Definition at line 391 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{391                                              \{}
+\DoxyCodeLine{392     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < size; i++)}
+\DoxyCodeLine{393         \textcolor{keywordflow}{if} (set[i] == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{394             \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{397 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{parser_8c_ad327f860dea11c0c1e3338a030858e0d}\label{parser_8c_ad327f860dea11c0c1e3338a030858e0d}} 
+\index{parser.c@{parser.c}!create\_tree\_node\_nonterm@{create\_tree\_node\_nonterm}}
+\index{create\_tree\_node\_nonterm@{create\_tree\_node\_nonterm}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{create\_tree\_node\_nonterm()}{create\_tree\_node\_nonterm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ create\+\_\+tree\+\_\+node\+\_\+nonterm (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$}]{nt }\end{DoxyParamCaption})}
+
+
+
+Creates a new parse tree node corresponding to a given non-\/terminal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & A pointer to the non-\/terminal.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the newly created tree node.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the allocated node. 
+\end{DoxyWarning}
+
+
+Definition at line 634 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{634                                                 \{}
+\DoxyCodeLine{635     \mbox{\hyperlink{structTreeNode}{node}}* tree\_node = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTreeNode}{node}}));}
+\DoxyCodeLine{636     \textcolor{keywordflow}{if}(!tree\_node)}
+\DoxyCodeLine{637         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{638 }
+\DoxyCodeLine{639     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}} = NULL;}
+\DoxyCodeLine{640     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}} = NULL;}
+\DoxyCodeLine{641     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}} = 0;}
+\DoxyCodeLine{642 }
+\DoxyCodeLine{643     \mbox{\hyperlink{structSymbol}{symbol}}* sym = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structSymbol}{symbol}}));}
+\DoxyCodeLine{644     \textcolor{keywordflow}{if}(!sym)}
+\DoxyCodeLine{645         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{646 }
+\DoxyCodeLine{647     sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}};}
+\DoxyCodeLine{648     sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}} = nt;}
+\DoxyCodeLine{649     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}} = sym;}
+\DoxyCodeLine{650 }
+\DoxyCodeLine{651     \textcolor{keywordflow}{return} tree\_node;}
+\DoxyCodeLine{652 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_ad327f860dea11c0c1e3338a030858e0d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8}\label{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8}} 
+\index{parser.c@{parser.c}!create\_tree\_node\_term@{create\_tree\_node\_term}}
+\index{create\_tree\_node\_term@{create\_tree\_node\_term}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{create\_tree\_node\_term()}{create\_tree\_node\_term()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ create\+\_\+tree\+\_\+node\+\_\+term (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}]{tok\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Creates a new parse tree node corresponding to a given terminal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tok\+\_\+name} & The token type representing the terminal.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the newly created tree node.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller is responsible for freeing the allocated node. 
+\end{DoxyWarning}
+
+
+Definition at line 654 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{654                                                 \{}
+\DoxyCodeLine{655     \mbox{\hyperlink{structTreeNode}{node}}* tree\_node = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTreeNode}{node}}));}
+\DoxyCodeLine{656     \textcolor{keywordflow}{if}(!tree\_node)}
+\DoxyCodeLine{657         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{658 }
+\DoxyCodeLine{659     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}} = NULL;}
+\DoxyCodeLine{660     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}} = NULL;}
+\DoxyCodeLine{661     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}} = 0;}
+\DoxyCodeLine{662 }
+\DoxyCodeLine{663     \mbox{\hyperlink{structSymbol}{symbol}}* sym = calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structSymbol}{symbol}}));}
+\DoxyCodeLine{664     \textcolor{keywordflow}{if}(!sym)}
+\DoxyCodeLine{665         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{666 }
+\DoxyCodeLine{667     \textcolor{keywordflow}{if}(tok\_name == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})}
+\DoxyCodeLine{668         sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}};}
+\DoxyCodeLine{669     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{670         sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}};}
+\DoxyCodeLine{671     sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}} = tok\_name;}
+\DoxyCodeLine{672     tree\_node-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}} = sym;}
+\DoxyCodeLine{673 }
+\DoxyCodeLine{674     \textcolor{keywordflow}{return} tree\_node;}
+\DoxyCodeLine{675 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_ad3a905e9370709865b9e0a8b31653443}\label{parser_8c_ad3a905e9370709865b9e0a8b31653443}} 
+\index{parser.c@{parser.c}!find\_non\_terminal@{find\_non\_terminal}}
+\index{find\_non\_terminal@{find\_non\_terminal}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{find\_non\_terminal()}{find\_non\_terminal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}} $\ast$ find\+\_\+non\+\_\+terminal (\begin{DoxyParamCaption}\item[{const char $\ast$}]{name,  }\item[{int}]{end }\end{DoxyParamCaption})}
+
+
+
+Finds a non-\/terminal based on its name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & A string representing the name of the non-\/terminal. \\
+\hline
+{\em end} & The number of characters to compare (if zero, the entire string is compared).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the non-\/terminal if found, otherwise {\ttfamily NULL}. 
+\end{DoxyReturn}
+
+
+Definition at line 271 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{271                                                            \{}
+\DoxyCodeLine{272     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++) \{}
+\DoxyCodeLine{273         \textcolor{keywordflow}{if}(end == 0)\{}
+\DoxyCodeLine{274             \textcolor{keywordflow}{if} (strcmp(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]-\/>name, name) == 0)}
+\DoxyCodeLine{275                 \textcolor{keywordflow}{return} \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i];}
+\DoxyCodeLine{276         \}}
+\DoxyCodeLine{277         \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{278             \textcolor{keywordflow}{if}(strlen(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]-\/>name) == end \&\& strncmp(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]-\/>name, name, end) == 0)}
+\DoxyCodeLine{279                 \textcolor{keywordflow}{return} \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i];}
+\DoxyCodeLine{280         \}}
+\DoxyCodeLine{281     \}}
+\DoxyCodeLine{282     \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{283 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_ad3a905e9370709865b9e0a8b31653443_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a24f97716740e58254357ada9b7921b5e}\label{parser_8c_a24f97716740e58254357ada9b7921b5e}} 
+\index{parser.c@{parser.c}!first\_and\_follow\_cleanup@{first\_and\_follow\_cleanup}}
+\index{first\_and\_follow\_cleanup@{first\_and\_follow\_cleanup}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{first\_and\_follow\_cleanup()}{first\_and\_follow\_cleanup()}}
+{\footnotesize\ttfamily void first\+\_\+and\+\_\+follow\+\_\+cleanup (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Deallocates memory associated with all non-\/terminals, their first and follow sets, and the parsing table. 
+
+
+
+Definition at line 430 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{430                                    \{}
+\DoxyCodeLine{431     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++) \{}
+\DoxyCodeLine{432         \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* nt = \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i];}
+\DoxyCodeLine{433         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}}; j++) \{}
+\DoxyCodeLine{434             \mbox{\hyperlink{structProduction}{production}}* prod = nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}[j];}
+\DoxyCodeLine{435             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}}; k++) \{}
+\DoxyCodeLine{436                 free(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[k]);}
+\DoxyCodeLine{437                 prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[k] = NULL;}
+\DoxyCodeLine{438             \}}
+\DoxyCodeLine{439             free(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}});}
+\DoxyCodeLine{440             prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}} = NULL;}
+\DoxyCodeLine{441             free(prod);}
+\DoxyCodeLine{442             prod = NULL;}
+\DoxyCodeLine{443         \}}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445         free(nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}});}
+\DoxyCodeLine{446         free(nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}});}
+\DoxyCodeLine{447         free(nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}});}
+\DoxyCodeLine{448         free(nt-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450         nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}} = NULL;}
+\DoxyCodeLine{451         nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}} = NULL;        }
+\DoxyCodeLine{452         nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}} = NULL;}
+\DoxyCodeLine{453         nt-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}} = NULL;}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455         free(nt);}
+\DoxyCodeLine{456         nt = NULL;}
+\DoxyCodeLine{457     \}}
+\DoxyCodeLine{458     \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}} = 0;}
+\DoxyCodeLine{459 }
+\DoxyCodeLine{460     free(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}});}
+\DoxyCodeLine{461     free(\mbox{\hyperlink{parser_8c_a7f8c302a05dbaa93714fb0483630a112}{parse\_table}});}
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463     \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}} = NULL;}
+\DoxyCodeLine{464     \mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}} = NULL;}
+\DoxyCodeLine{465     \mbox{\hyperlink{parser_8c_a7f8c302a05dbaa93714fb0483630a112}{parse\_table}} = NULL;}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{468 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a24f97716740e58254357ada9b7921b5e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6}\label{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6}} 
+\index{parser.c@{parser.c}!generate\_parse\_map@{generate\_parse\_map}}
+\index{generate\_parse\_map@{generate\_parse\_map}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{generate\_parse\_map()}{generate\_parse\_map()}}
+{\footnotesize\ttfamily void generate\+\_\+parse\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generates the parsing table for the given grammar using a hash map. 
+
+The parsing table is constructed using the following rules\+:
+\begin{DoxyEnumerate}
+\item For each production $ A \to \alpha $\+:
+\begin{DoxyItemize}
+\item For every terminal $ a \in First(\alpha) $, add $ A \to \alpha $ to $ M[A, a] $.
+\item If $ \epsilon \in First(\alpha) $, then for every terminal $ b \in Follow(A) $, add $ A \to \alpha $ to $ M[A, b] $.
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 577 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{577                          \{}
+\DoxyCodeLine{578     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++)\{}
+\DoxyCodeLine{579         \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* nt = \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i];}
+\DoxyCodeLine{580         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = 0; j < nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}}; j++)\{}
+\DoxyCodeLine{581             \mbox{\hyperlink{structProduction}{production}}* prod = nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}[j];}
+\DoxyCodeLine{582             \textcolor{keywordtype}{int} first\_seq\_count = 0;}
+\DoxyCodeLine{583             \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}* tok\_set = \mbox{\hyperlink{parser_8c_a66e98027ec5a1a7c880689156e4b664d}{compute\_first\_of\_sequence}}(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}, prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}}, \&first\_seq\_count);}
+\DoxyCodeLine{584             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} k = 0; k < first\_seq\_count; k++)\{}
+\DoxyCodeLine{585                 \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}} tok = tok\_set[k];}
+\DoxyCodeLine{586                 \textcolor{keywordflow}{if}(tok == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}})\{}
+\DoxyCodeLine{587                     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} l = 0; l < nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}}; l++)\{}
+\DoxyCodeLine{588                         \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}} follow\_tok = nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}[l];}
+\DoxyCodeLine{589                         \mbox{\hyperlink{hash__map_8h_a17fd9c089bb62d17bb6266babc287a82}{map\_insert}}(\mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}} * i + follow\_tok, prod);}
+\DoxyCodeLine{590                     \}}
+\DoxyCodeLine{591                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{592                 \}}
+\DoxyCodeLine{593                 }
+\DoxyCodeLine{594                 \mbox{\hyperlink{hash__map_8h_a17fd9c089bb62d17bb6266babc287a82}{map\_insert}}(\mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}} * i + tok, prod);}
+\DoxyCodeLine{595             \}}
+\DoxyCodeLine{596 }
+\DoxyCodeLine{597             free(tok\_set);}
+\DoxyCodeLine{598             tok\_set = NULL;}
+\DoxyCodeLine{599             first\_seq\_count = 0;}
+\DoxyCodeLine{600         \}}
+\DoxyCodeLine{601     \}}
+\DoxyCodeLine{602 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a385276c7e31aeff5ad9c22370300ced6}\label{parser_8c_a385276c7e31aeff5ad9c22370300ced6}} 
+\index{parser.c@{parser.c}!generate\_parse\_tree@{generate\_parse\_tree}}
+\index{generate\_parse\_tree@{generate\_parse\_tree}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{generate\_parse\_tree()}{generate\_parse\_tree()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ generate\+\_\+parse\+\_\+tree (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{src\+\_\+code }\end{DoxyParamCaption})}
+
+
+
+Generates a parse tree for the given source code. 
+
+\begin{DoxyNote}{Note}
+Uses LL(1) parsing process
+\end{DoxyNote}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]update details --Ankur \end{DoxyRefDesc}
+
+
+The LL(1) parsing process follows these steps\+:
+\begin{DoxyEnumerate}
+\item Push the start symbol of the grammar ({\ttfamily $<$program$>$}) onto an empty stack.
+\item Set {\ttfamily tp} to the first symbol of {\ttfamily w}, the tokenized input string.
+\item Use the parsing table {\ttfamily M} to decide parsing actions.
+\item While (stack is not empty)
+\begin{DoxyItemize}
+\item If top of stack matches current token, pop stack and advance {\ttfamily tp}.
+\item If top of the stack is a terminal but does not match {\ttfamily a}, {\bfseries{report a syntax error}}.
+\item If {\ttfamily M}\textquotesingle{}s entry corresponding to the stack top and current token is {\ttfamily NULL}, {\bfseries{handle error recovery}} (panic-\/mode).
+\item If $ M[X, a] = X \to Y_1Y_2 \cdots Y_k $\+:
+\begin{DoxyItemize}
+\item Output the production $ X \to Y_1Y_2 \cdots Y_k $.
+\item Pop {\ttfamily X} from stack.
+\item Push $ Y_k, Y_{k-1}, \cdots, Y_1 $ onto the stack in that order.
+\end{DoxyItemize}
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item Repeat until the stack is empty.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em src\+\_\+code} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the root node of the parse tree.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller must deallocate the parse tree after use. 
+\end{DoxyWarning}
+
+
+Definition at line 677 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{677                                          \{}
+\DoxyCodeLine{678     \textcolor{comment}{// error\_present = false;}}
+\DoxyCodeLine{679     \textcolor{keywordtype}{int} times = 0;}
+\DoxyCodeLine{680     \textcolor{keywordtype}{int} terms\_so\_far = 0;}
+\DoxyCodeLine{681     \mbox{\hyperlink{structStack}{stack}}* parser\_stack = \mbox{\hyperlink{stack_8h_a12f8e38a7f5d0af1137cc4fff111ef3c}{stack\_create}}();}
+\DoxyCodeLine{682     \mbox{\hyperlink{structTreeNode}{node}}* start = \mbox{\hyperlink{parser_8c_ad327f860dea11c0c1e3338a030858e0d}{create\_tree\_node\_nonterm}}(\mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}});}
+\DoxyCodeLine{683     \mbox{\hyperlink{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8}{stack\_push}}(parser\_stack, start);}
+\DoxyCodeLine{684     setbuf(stdout, NULL);}
+\DoxyCodeLine{685     \mbox{\hyperlink{structToken}{token}}* tok = \mbox{\hyperlink{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}{get\_next\_token}}(src\_code);}
+\DoxyCodeLine{686     \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}} super\_syn[\mbox{\hyperlink{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}{SUPER\_SYN\_SIZE}}] = \{\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}}, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}}\};}
+\DoxyCodeLine{687     \textcolor{keywordflow}{while}(!\mbox{\hyperlink{stack_8h_a4bf088087d46031158e6bdd2a93695f9}{stack\_empty}}(parser\_stack))\{}
+\DoxyCodeLine{688         times++;}
+\DoxyCodeLine{689         \textcolor{keywordflow}{if}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}})\{}
+\DoxyCodeLine{690             fprintf(stderr, \textcolor{stringliteral}{"{}WTF?!\(\backslash\)n"{}});}
+\DoxyCodeLine{691             exit(EXIT\_FAILURE);}
+\DoxyCodeLine{692         \}}
+\DoxyCodeLine{693         \textcolor{keywordflow}{while}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}}) \{}
+\DoxyCodeLine{694             times++;}
+\DoxyCodeLine{695             free(tok);}
+\DoxyCodeLine{696             tok = \mbox{\hyperlink{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}{get\_next\_token}}(src\_code);}
+\DoxyCodeLine{697             \textcolor{keywordflow}{if}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}})\{}
+\DoxyCodeLine{698                 fprintf(stderr, \textcolor{stringliteral}{"{}WTF?!\(\backslash\)n"{}});}
+\DoxyCodeLine{699                 exit(EXIT\_FAILURE);}
+\DoxyCodeLine{700             \}}
+\DoxyCodeLine{701         \}}
+\DoxyCodeLine{702         \mbox{\hyperlink{structTreeNode}{node}}* parser\_stack\_top = \mbox{\hyperlink{stack_8h_af0faaa6f406636514cacd26f54be0a19}{stack\_top}}(parser\_stack);}
+\DoxyCodeLine{703 }
+\DoxyCodeLine{704         \textcolor{keywordflow}{if}(parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})\{}
+\DoxyCodeLine{705             terms\_so\_far++;}
+\DoxyCodeLine{706             \textcolor{keywordflow}{if}(parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}} == tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}})\{}
+\DoxyCodeLine{707                 \mbox{\hyperlink{structTreeNode}{node}}* term = \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\_pop}}(parser\_stack);}
+\DoxyCodeLine{708                 term-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}} = tok;}
+\DoxyCodeLine{709                 tok = \mbox{\hyperlink{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}{get\_next\_token}}(src\_code);}
+\DoxyCodeLine{710             \}}
+\DoxyCodeLine{711             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{712                 fprintf(stderr, \textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m The token \%-\/15s for lexeme \%s does not match with the expected token \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{713                     tok-\/>\mbox{\hyperlink{structToken_a448126a329a5b7e3ac490ead4f6e5a02}{line\_num}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}}));}
+\DoxyCodeLine{714                 }
+\DoxyCodeLine{715                 \mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\_present}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{716                 \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\_pop}}(parser\_stack);}
+\DoxyCodeLine{717                 \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{718             \}}
+\DoxyCodeLine{719         \}}
+\DoxyCodeLine{720         \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{721             \textcolor{comment}{//assert(parser\_stack\_top-\/>stack\_symbol-\/>type == SYM\_NON\_TERMINAL);}}
+\DoxyCodeLine{722             \textcolor{keywordtype}{int} non\_term\_pos = -\/1;}
+\DoxyCodeLine{723             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++)\{}
+\DoxyCodeLine{724                 \textcolor{keywordflow}{if}(parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}} == \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i])}
+\DoxyCodeLine{725                     non\_term\_pos = i;}
+\DoxyCodeLine{726             \}}
+\DoxyCodeLine{727             \textcolor{keywordflow}{if}(non\_term\_pos == -\/1)}
+\DoxyCodeLine{728                 fprintf(stderr, \textcolor{stringliteral}{"{}Nonterm not found"{}});}
+\DoxyCodeLine{729 }
+\DoxyCodeLine{730             \textcolor{keywordtype}{int} lookup\_key = \mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}} * non\_term\_pos + tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}; }
+\DoxyCodeLine{731             \mbox{\hyperlink{structProduction}{production}}* rule = \mbox{\hyperlink{hash__map_8h_aa4630dffff2a5ef840da3cfd9572b79f}{map\_fetch}}(lookup\_key);}
+\DoxyCodeLine{732             \textcolor{keywordflow}{if}(rule)\{}
+\DoxyCodeLine{733                 \mbox{\hyperlink{structTreeNode}{node}}* old\_top = \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\_pop}}(parser\_stack);}
+\DoxyCodeLine{734                 old\_top-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}} = rule-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}};}
+\DoxyCodeLine{735 }
+\DoxyCodeLine{736                 \textcolor{keywordflow}{if}(old\_top-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}} > 0)}
+\DoxyCodeLine{737                     old\_top-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}} = (\mbox{\hyperlink{structTreeNode}{node}}**)calloc(old\_top-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}}, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTreeNode}{node}}*));}
+\DoxyCodeLine{738 }
+\DoxyCodeLine{739                 \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = rule-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} -\/ 1; i >= 0; i-\/-\/)\{}
+\DoxyCodeLine{740                     \mbox{\hyperlink{structTreeNode}{node}}* new\_node;}
+\DoxyCodeLine{741 }
+\DoxyCodeLine{742                     \textcolor{keywordflow}{if}(rule-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[i]-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})}
+\DoxyCodeLine{743                         new\_node = \mbox{\hyperlink{parser_8c_ad327f860dea11c0c1e3338a030858e0d}{create\_tree\_node\_nonterm}}(rule-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[i]-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}});}
+\DoxyCodeLine{744                     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(rule-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[i]-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})}
+\DoxyCodeLine{745                         new\_node = \mbox{\hyperlink{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8}{create\_tree\_node\_term}}(rule-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[i]-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}});}
+\DoxyCodeLine{746                     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{747                         new\_node = \mbox{\hyperlink{parser_8c_a3bdbe5934ffe1853ff744dfef15843d8}{create\_tree\_node\_term}}(\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}});}
+\DoxyCodeLine{748                     }
+\DoxyCodeLine{749                     old\_top-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i] = new\_node;}
+\DoxyCodeLine{750 }
+\DoxyCodeLine{751                     \textcolor{keywordflow}{if}(new\_node-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} != \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}})}
+\DoxyCodeLine{752                         \textcolor{keywordflow}{if}(!\mbox{\hyperlink{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8}{stack\_push}}(parser\_stack, new\_node))}
+\DoxyCodeLine{753                             fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Stack overflow.\(\backslash\)n"{}});}
+\DoxyCodeLine{754                 \}}
+\DoxyCodeLine{755             \}}
+\DoxyCodeLine{756             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{757                 fprintf(stderr, \textcolor{stringliteral}{"{}Line no. \%-\/4d: \(\backslash\)033[1;31mError:\(\backslash\)033[0m Invalid token \%-\/15s encountered with value \%s stack top \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{758                     tok-\/>\mbox{\hyperlink{structToken_a448126a329a5b7e3ac490ead4f6e5a02}{line\_num}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), tok-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{759                 }
+\DoxyCodeLine{760                 \mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\_present}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{761                 \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\_type}}* syn = parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}};}
+\DoxyCodeLine{762                 \textcolor{keywordtype}{int} syn\_count = parser\_stack\_top-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}};}
+\DoxyCodeLine{763                 \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{764                 \textcolor{keywordflow}{for}(; i < syn\_count; i++)\{}
+\DoxyCodeLine{765                     \textcolor{keywordflow}{if}(syn[i] == tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}})\{}
+\DoxyCodeLine{766                         \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\_pop}}(parser\_stack);}
+\DoxyCodeLine{767                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{768                     \}}
+\DoxyCodeLine{769                 \}}
+\DoxyCodeLine{770                 \textcolor{keywordflow}{if} (i == syn\_count)\{}
+\DoxyCodeLine{771                     \textcolor{keywordtype}{int} j = 0;}
+\DoxyCodeLine{772                     \textcolor{keywordflow}{for}(; j < \mbox{\hyperlink{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}{SUPER\_SYN\_SIZE}}; j++)\{}
+\DoxyCodeLine{773                         \textcolor{keywordflow}{if}(super\_syn[j] == tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}})\{}
+\DoxyCodeLine{774                             \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\_pop}}(parser\_stack);}
+\DoxyCodeLine{775                             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{776                         \}}
+\DoxyCodeLine{777                     \}}
+\DoxyCodeLine{778                     \textcolor{keywordflow}{if}(j == \mbox{\hyperlink{parser_8c_a8ef22cfc3b9277029b8432baf9331d0d}{SUPER\_SYN\_SIZE}})}
+\DoxyCodeLine{779                         tok = \mbox{\hyperlink{lexer_8h_a68b169dd0377b22e0729c7e7a9988262}{get\_next\_token}}(src\_code);}
+\DoxyCodeLine{780                 \}}
+\DoxyCodeLine{781             \}}
+\DoxyCodeLine{782         \}}
+\DoxyCodeLine{783     \}}
+\DoxyCodeLine{784 }
+\DoxyCodeLine{785     \textcolor{keywordflow}{if}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}} != \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}})\{}
+\DoxyCodeLine{786         fprintf(stderr, \textcolor{stringliteral}{"{}\(\backslash\)033[1;31mError:\(\backslash\)033[0m Expected EOF but got \%s\(\backslash\)n"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(tok-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{787         \mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\_present}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{788     \}}
+\DoxyCodeLine{789     free(tok);}
+\DoxyCodeLine{790     \mbox{\hyperlink{stack_8h_a0401a54893bb4a3c36be29b4f4d2a673}{stack\_cleanup}}(\&parser\_stack);}
+\DoxyCodeLine{791     \textcolor{keywordflow}{return} start;}
+\DoxyCodeLine{792 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a385276c7e31aeff5ad9c22370300ced6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a385276c7e31aeff5ad9c22370300ced6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a6c4b340ccd44133e7a3dabdd3015afac}\label{parser_8c_a6c4b340ccd44133e7a3dabdd3015afac}} 
+\index{parser.c@{parser.c}!parse\_code@{parse\_code}}
+\index{parse\_code@{parse\_code}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{parse\_code()}{parse\_code()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}}$\ast$ parse\+\_\+code (\begin{DoxyParamCaption}\item[{char $\ast$}]{grammar\+\_\+file,  }\item[{FILE $\ast$}]{input\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Parses the given code based on the specified grammar. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grammar\+\_\+file} & A string containing the path to the grammar file. \\
+\hline
+{\em input\+\_\+file} & A pointer to an opened file containing the source code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the root node of the parse tree.
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+The caller must invoke {\ttfamily parse\+\_\+tree\+\_\+cleanup} to free all allocated memory. 
+\end{DoxyWarning}
+
+
+Definition at line 826 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{826                                                       \{}
+\DoxyCodeLine{827     atexit(\mbox{\hyperlink{parser_8c_a24f97716740e58254357ada9b7921b5e}{first\_and\_follow\_cleanup}});}
+\DoxyCodeLine{828 }
+\DoxyCodeLine{829     FILE* file = fopen(grammar\_file, \textcolor{stringliteral}{"{}r"{}});}
+\DoxyCodeLine{830     \textcolor{keywordflow}{if} (!file) \{}
+\DoxyCodeLine{831         perror(\textcolor{stringliteral}{"{}Error opening grammar file"{}});}
+\DoxyCodeLine{832         exit(EXIT\_FAILURE);}
+\DoxyCodeLine{833     \}}
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835     \textcolor{keywordtype}{char} line[\mbox{\hyperlink{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}{MAX\_LINE\_LENGTH}}];}
+\DoxyCodeLine{836     \textcolor{keywordflow}{while} (fgets(line, \mbox{\hyperlink{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}{MAX\_LINE\_LENGTH}}, file)) \{}
+\DoxyCodeLine{837 }
+\DoxyCodeLine{838         \textcolor{comment}{// Parse the production rule to remove the arrow}}
+\DoxyCodeLine{839         \textcolor{keywordtype}{char}* arrow = strstr(line, \textcolor{stringliteral}{"{}===>"{}});}
+\DoxyCodeLine{840         \textcolor{keywordflow}{if} (!arrow) \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{841         *arrow = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{842         \textcolor{keywordtype}{char}* lhs = line;}
+\DoxyCodeLine{843 }
+\DoxyCodeLine{844         \textcolor{comment}{// Parse the rule to remove leading and trailing spaces}}
+\DoxyCodeLine{845         \textcolor{keywordflow}{while} (isspace(*lhs)) }
+\DoxyCodeLine{846             lhs++;}
+\DoxyCodeLine{847         \textcolor{keywordtype}{char}* end = lhs + strlen(lhs) -\/ 1;}
+\DoxyCodeLine{848         \textcolor{keywordflow}{while} (end > lhs \&\& isspace(*end)) }
+\DoxyCodeLine{849             end-\/-\/;}
+\DoxyCodeLine{850         *(end + 1) = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{851 }
+\DoxyCodeLine{852         \textcolor{comment}{// Check the LHS for non-\/terminal}}
+\DoxyCodeLine{853         \textcolor{keywordflow}{if} (*lhs != \textcolor{charliteral}{'<'} || lhs[strlen(lhs)-\/1] != \textcolor{charliteral}{'>'}) \{}
+\DoxyCodeLine{854             fprintf(stderr, \textcolor{stringliteral}{"{}Invalid non-\/terminal: \%s\(\backslash\)n"{}}, lhs);}
+\DoxyCodeLine{855             \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{856         \}}
+\DoxyCodeLine{857 }
+\DoxyCodeLine{858         \textcolor{keywordtype}{int} str\_len = strlen(lhs) -\/ 2;}
+\DoxyCodeLine{859         \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* nt = \mbox{\hyperlink{parser_8c_ad3a905e9370709865b9e0a8b31653443}{find\_non\_terminal}}(lhs + 1, str\_len);}
+\DoxyCodeLine{860         \textcolor{keywordflow}{if} (!nt) \{}
+\DoxyCodeLine{861             nt = (\mbox{\hyperlink{structNonTerminal}{non\_terminal}}*)malloc(\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structNonTerminal}{non\_terminal}}));}
+\DoxyCodeLine{862             nt-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}} = strndup(lhs + 1, str\_len);}
+\DoxyCodeLine{863             nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}} = 0;}
+\DoxyCodeLine{864             nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}} = 0;}
+\DoxyCodeLine{865             nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}} = 0;}
+\DoxyCodeLine{866             nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}} = NULL;}
+\DoxyCodeLine{867             nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}} = NULL;}
+\DoxyCodeLine{868             nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}} = NULL;}
+\DoxyCodeLine{869             nt-\/>\mbox{\hyperlink{structNonTerminal_a5278ab860fe07d060fb6a0e16a8ed1ce}{has\_epsilon\_in\_first}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{870             }
+\DoxyCodeLine{871             \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}} = (\mbox{\hyperlink{structNonTerminal}{non\_terminal}}**)realloc(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}, (\mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}} + 1)*\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structNonTerminal}{non\_terminal}}*));}
+\DoxyCodeLine{872             \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[\mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}++] = nt;}
+\DoxyCodeLine{873         \}}
+\DoxyCodeLine{874 }
+\DoxyCodeLine{875         \textcolor{comment}{// Add start symbol if there is none}}
+\DoxyCodeLine{876         \textcolor{keywordflow}{if} (!\mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}})}
+\DoxyCodeLine{877             \mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}} = nt;}
+\DoxyCodeLine{878     \}}
+\DoxyCodeLine{879 }
+\DoxyCodeLine{880     rewind(file);}
+\DoxyCodeLine{881     \textcolor{keywordflow}{while} (fgets(line, \mbox{\hyperlink{parser_8c_af0f2173e3b202ddf5756531b4471dcb2}{MAX\_LINE\_LENGTH}}, file)) \{}
+\DoxyCodeLine{882 }
+\DoxyCodeLine{883         \textcolor{comment}{// Parse the production rule to remove the arrow}}
+\DoxyCodeLine{884         \textcolor{keywordtype}{char}* arrow = strstr(line, \textcolor{stringliteral}{"{}===>"{}});}
+\DoxyCodeLine{885         \textcolor{keywordflow}{if} (!arrow) \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{886         *arrow = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{887         \textcolor{keywordtype}{char}* lhs = line;}
+\DoxyCodeLine{888         \textcolor{keywordtype}{char}* rhs = arrow + 4;}
+\DoxyCodeLine{889 }
+\DoxyCodeLine{890         \textcolor{comment}{// Parse the rule to remove leading and trailing spaces}}
+\DoxyCodeLine{891         \textcolor{keywordflow}{while} (isspace(*lhs)) }
+\DoxyCodeLine{892             lhs++;}
+\DoxyCodeLine{893         \textcolor{keywordtype}{char}* end = lhs + strlen(lhs) -\/ 1;}
+\DoxyCodeLine{894         \textcolor{keywordflow}{while} (end > lhs \&\& isspace(*end)) }
+\DoxyCodeLine{895             end-\/-\/;}
+\DoxyCodeLine{896         *(end + 1) = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{897 }
+\DoxyCodeLine{898         \textcolor{keywordflow}{while} (isspace(*rhs)) }
+\DoxyCodeLine{899             rhs++;}
+\DoxyCodeLine{900         end = rhs + strlen(rhs) -\/ 1;}
+\DoxyCodeLine{901         \textcolor{keywordflow}{while} (end > rhs \&\& isspace(*end)) }
+\DoxyCodeLine{902             end-\/-\/;}
+\DoxyCodeLine{903         *(end + 1) = \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{904 }
+\DoxyCodeLine{905         \textcolor{comment}{// Check the LHS for non-\/terminal}}
+\DoxyCodeLine{906         \textcolor{keywordflow}{if} (*lhs != \textcolor{charliteral}{'<'} || lhs[strlen(lhs)-\/1] != \textcolor{charliteral}{'>'}) \{}
+\DoxyCodeLine{907             fprintf(stderr, \textcolor{stringliteral}{"{}Invalid non-\/terminal: \%s\(\backslash\)n"{}}, lhs);}
+\DoxyCodeLine{908             \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{909         \}}
+\DoxyCodeLine{910 }
+\DoxyCodeLine{911         \textcolor{keywordtype}{int} str\_len = strlen(lhs) -\/ 2;}
+\DoxyCodeLine{912         \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* nt = \mbox{\hyperlink{parser_8c_ad3a905e9370709865b9e0a8b31653443}{find\_non\_terminal}}(lhs + 1, str\_len);}
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914         \textcolor{comment}{// Prase the RHS of the rule}}
+\DoxyCodeLine{915         \textcolor{keywordtype}{char}* save\_rule;}
+\DoxyCodeLine{916         \textcolor{keywordtype}{char}* alt = strtok\_r(rhs, \textcolor{stringliteral}{"{}|"{}}, \&save\_rule);}
+\DoxyCodeLine{917         \textcolor{keywordflow}{while} (alt) \{}
+\DoxyCodeLine{918             \mbox{\hyperlink{structProduction}{production}}* prod = (\mbox{\hyperlink{structProduction}{production}}*)malloc(\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structProduction}{production}}));}
+\DoxyCodeLine{919             prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}} = NULL;}
+\DoxyCodeLine{920             prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} = 0;}
+\DoxyCodeLine{921             }
+\DoxyCodeLine{922             \textcolor{comment}{// Parse each rule for tokens, non-\/terminals and epsilon}}
+\DoxyCodeLine{923             \textcolor{keywordtype}{char}* save\_token;}
+\DoxyCodeLine{924             \textcolor{keywordtype}{char}* \mbox{\hyperlink{structToken}{token}} = strtok\_r(alt, \textcolor{stringliteral}{"{} \(\backslash\)t"{}}, \&save\_token);}
+\DoxyCodeLine{925             \textcolor{keywordflow}{while} (\mbox{\hyperlink{structToken}{token}}) \{}
+\DoxyCodeLine{926                 \textcolor{keywordtype}{int} tok\_str\_len = strlen(\mbox{\hyperlink{structToken}{token}});}
+\DoxyCodeLine{927                 \mbox{\hyperlink{structSymbol}{symbol}}* sym = (\mbox{\hyperlink{structSymbol}{symbol}}*)malloc(\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structSymbol}{symbol}}));}
+\DoxyCodeLine{928                 \textcolor{keywordflow}{if} (strcmp(\mbox{\hyperlink{structToken}{token}}, \textcolor{stringliteral}{"{}EPS"{}}) == 0) \{}
+\DoxyCodeLine{929                     sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}};}
+\DoxyCodeLine{930                     sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}} = \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}};}
+\DoxyCodeLine{931                 \} }
+\DoxyCodeLine{932                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\mbox{\hyperlink{structToken}{token}}[0] == \textcolor{charliteral}{'<'} \&\& \mbox{\hyperlink{structToken}{token}}[tok\_str\_len -\/1] == \textcolor{charliteral}{'>'}) \{}
+\DoxyCodeLine{933                     sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}};}
+\DoxyCodeLine{934                     sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}} = \mbox{\hyperlink{parser_8c_ad3a905e9370709865b9e0a8b31653443}{find\_non\_terminal}}(\mbox{\hyperlink{structToken}{token}} + 1, tok\_str\_len -\/ 2);}
+\DoxyCodeLine{935                 \} }
+\DoxyCodeLine{936                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (strncmp(\mbox{\hyperlink{structToken}{token}}, \textcolor{stringliteral}{"{}TK\_"{}}, 3) == 0) \{}
+\DoxyCodeLine{937                     sym-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} = \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}};}
+\DoxyCodeLine{938                     sym-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}} = \mbox{\hyperlink{lexer_8h_ab45c7162c82bb8baec1ef2a248bcf120}{string\_to\_token}}(\mbox{\hyperlink{structToken}{token}});}
+\DoxyCodeLine{939                 \} }
+\DoxyCodeLine{940                 \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{941                     fprintf(stderr, \textcolor{stringliteral}{"{}Invalid symbol: \%s\(\backslash\)n"{}}, \mbox{\hyperlink{structToken}{token}});}
+\DoxyCodeLine{942                     free(sym);}
+\DoxyCodeLine{943                     sym = NULL;}
+\DoxyCodeLine{944                     \mbox{\hyperlink{structToken}{token}} = strtok(NULL, \textcolor{stringliteral}{"{} \(\backslash\)t"{}});}
+\DoxyCodeLine{945                     \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{946                 \}}
+\DoxyCodeLine{947 }
+\DoxyCodeLine{948                 prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}} = (\mbox{\hyperlink{structSymbol}{symbol}}**)realloc(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}, (prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}} + 1) * \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structSymbol}{symbol}}*));}
+\DoxyCodeLine{949                 prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}}++] = sym;}
+\DoxyCodeLine{950 }
+\DoxyCodeLine{951                 \mbox{\hyperlink{structToken}{token}} = strtok\_r(NULL, \textcolor{stringliteral}{"{} \(\backslash\)t"{}}, \&save\_token);}
+\DoxyCodeLine{952             \}}
+\DoxyCodeLine{953 }
+\DoxyCodeLine{954             nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}} = (\mbox{\hyperlink{structProduction}{production}}**)realloc(nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}, (nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}} + 1)*\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structProduction}{production}}*));}
+\DoxyCodeLine{955             nt-\/>\mbox{\hyperlink{structNonTerminal_a0d8811529e54c0b497bd7ab7e74e049c}{productions}}[nt-\/>\mbox{\hyperlink{structNonTerminal_ae16dda93a07e6918d19faa8b4c459986}{prod\_count}}++] = prod;}
+\DoxyCodeLine{956 }
+\DoxyCodeLine{957             alt = strtok\_r(NULL, \textcolor{stringliteral}{"{}|"{}}, \&save\_rule);}
+\DoxyCodeLine{958         \}}
+\DoxyCodeLine{959     \}}
+\DoxyCodeLine{960 }
+\DoxyCodeLine{961     fclose(file);}
+\DoxyCodeLine{962     file = NULL;}
+\DoxyCodeLine{963 }
+\DoxyCodeLine{964     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++)}
+\DoxyCodeLine{965         \mbox{\hyperlink{parser_8c_a38b7b58ee1b37118b65d39df4b90656a}{compute\_first\_set}}(\mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]);}
+\DoxyCodeLine{966     \mbox{\hyperlink{parser_8c_a1fe10306eb61573f8a6929b0987802d0}{compute\_follow\_set}}(\mbox{\hyperlink{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}{start\_symbol}}, NULL, NULL, 0);}
+\DoxyCodeLine{967     \mbox{\hyperlink{parser_8c_a2ae8d13411ecb85d283dbcd2045c2bd6}{generate\_parse\_map}}();}
+\DoxyCodeLine{968 }
+\DoxyCodeLine{969     \mbox{\hyperlink{structTreeNode}{node}}* root = \mbox{\hyperlink{parser_8c_a385276c7e31aeff5ad9c22370300ced6}{generate\_parse\_tree}}(src\_code);}
+\DoxyCodeLine{970     \textcolor{keywordflow}{return} root;}
+\DoxyCodeLine{971 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a6c4b340ccd44133e7a3dabdd3015afac_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{parser_8c_a6c4b340ccd44133e7a3dabdd3015afac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a}\label{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a}} 
+\index{parser.c@{parser.c}!parse\_tree\_cleanup@{parse\_tree\_cleanup}}
+\index{parse\_tree\_cleanup@{parse\_tree\_cleanup}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{parse\_tree\_cleanup()}{parse\_tree\_cleanup()}}
+{\footnotesize\ttfamily void parse\+\_\+tree\+\_\+cleanup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$$\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Deallocates all memory associated with the parse tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & A pointer to the pointer of the root node.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+After execution, {\ttfamily $\ast$root} will be set to {\ttfamily NULL}. 
+\end{DoxyPostcond}
+
+
+Definition at line 973 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{973                                     \{}
+\DoxyCodeLine{974     \textcolor{keywordflow}{if}(!root || !*root)}
+\DoxyCodeLine{975         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{976 }
+\DoxyCodeLine{977     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < (*root)-\/>children\_count; i++)}
+\DoxyCodeLine{978         \mbox{\hyperlink{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a}{parse\_tree\_cleanup}}(\&((*root)-\/>children[i]));}
+\DoxyCodeLine{979     }
+\DoxyCodeLine{980     free((*root)-\/>children);}
+\DoxyCodeLine{981     free((*root)-\/>stack\_symbol);}
+\DoxyCodeLine{982     free((*root)-\/>token\_value);}
+\DoxyCodeLine{983 }
+\DoxyCodeLine{984     (*root)-\/>children = NULL;}
+\DoxyCodeLine{985     (*root)-\/>stack\_symbol = NULL;}
+\DoxyCodeLine{986     (*root)-\/>token\_value = NULL;}
+\DoxyCodeLine{987     (*root)-\/>children\_count = 0;}
+\DoxyCodeLine{988 }
+\DoxyCodeLine{989     free(*root);}
+\DoxyCodeLine{990     *root = NULL;}
+\DoxyCodeLine{991     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{992 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_aad20e8a12c7bfb6d97191c3a26363f1a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a9f5ef3611435d73a8305d27de3927585}\label{parser_8c_a9f5ef3611435d73a8305d27de3927585}} 
+\index{parser.c@{parser.c}!print\_first\_and\_follow\_sets@{print\_first\_and\_follow\_sets}}
+\index{print\_first\_and\_follow\_sets@{print\_first\_and\_follow\_sets}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{print\_first\_and\_follow\_sets()}{print\_first\_and\_follow\_sets()}}
+{\footnotesize\ttfamily void print\+\_\+first\+\_\+and\+\_\+follow\+\_\+sets (\begin{DoxyParamCaption}\item[{bool}]{print\+\_\+first,  }\item[{bool}]{print\+\_\+follow }\end{DoxyParamCaption})}
+
+
+
+Prints the first and/or follow sets of all non-\/terminals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em print\+\_\+first} & If {\ttfamily true}, prints the first sets of each non-\/terminal. \\
+\hline
+{\em print\+\_\+follow} & If {\ttfamily true}, prints the follow sets of each non-\/terminal. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 399 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{399                                                                      \{}
+\DoxyCodeLine{400     \textcolor{keywordflow}{if}(!print\_first \&\& !print\_follow)}
+\DoxyCodeLine{401         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++) \{}
+\DoxyCodeLine{404         \mbox{\hyperlink{structNonTerminal}{non\_terminal}}* nt = \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i];}
+\DoxyCodeLine{405         \textcolor{keywordflow}{if}(print\_first)\{}
+\DoxyCodeLine{406             printf(\textcolor{stringliteral}{"{}First(\%s): \{"{}}, nt-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{407             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < nt-\/>\mbox{\hyperlink{structNonTerminal_afb57a76a34868d6e51c0eb69aab37057}{first\_size}}; j++) \{}
+\DoxyCodeLine{408                 printf(\textcolor{stringliteral}{"{} \%s"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(nt-\/>\mbox{\hyperlink{structNonTerminal_a4609e95f7f4b1c0ee2ccab377e4f7b9b}{first\_set}}[j]));}
+\DoxyCodeLine{409                 \textcolor{keywordflow}{if} (j < nt-\/>first\_size -\/ 1) }
+\DoxyCodeLine{410                     printf(\textcolor{stringliteral}{"{},"{}});}
+\DoxyCodeLine{411             \}}
+\DoxyCodeLine{412             printf(\textcolor{stringliteral}{"{} \}\(\backslash\)n"{}});}
+\DoxyCodeLine{413         \}}
+\DoxyCodeLine{414         }
+\DoxyCodeLine{415         \textcolor{keywordflow}{if}(print\_follow)\{}
+\DoxyCodeLine{416             printf(\textcolor{stringliteral}{"{}Follow(\%s): \{"{}}, nt-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{417             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < nt-\/>\mbox{\hyperlink{structNonTerminal_a1d4e23718979bfd51826e767315e45ae}{follow\_size}}; j++) \{}
+\DoxyCodeLine{418                 printf(\textcolor{stringliteral}{"{} \%s"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(nt-\/>\mbox{\hyperlink{structNonTerminal_ae21549867ee8d25b5684dc547139ce76}{follow\_set}}[j]));}
+\DoxyCodeLine{419                 \textcolor{keywordflow}{if} (j < nt-\/>follow\_size -\/ 1) }
+\DoxyCodeLine{420                     printf(\textcolor{stringliteral}{"{},"{}});}
+\DoxyCodeLine{421             \}}
+\DoxyCodeLine{422             printf(\textcolor{stringliteral}{"{} \}\(\backslash\)n"{}});}
+\DoxyCodeLine{423         \}}
+\DoxyCodeLine{424         }
+\DoxyCodeLine{425         \textcolor{keywordflow}{if}(print\_first \&\& print\_follow)}
+\DoxyCodeLine{426             printf(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{427     \}}
+\DoxyCodeLine{428 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a9f5ef3611435d73a8305d27de3927585_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a08659a3e07cbbaa0a0b7234f35654876}\label{parser_8c_a08659a3e07cbbaa0a0b7234f35654876}} 
+\index{parser.c@{parser.c}!print\_parse\_map@{print\_parse\_map}}
+\index{print\_parse\_map@{print\_parse\_map}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{print\_parse\_map()}{print\_parse\_map()}}
+{\footnotesize\ttfamily void print\+\_\+parse\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prints the parsing table. 
+
+
+
+Definition at line 604 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{604                       \{}
+\DoxyCodeLine{605     \textcolor{keywordtype}{int} count = 0;}
+\DoxyCodeLine{606 }
+\DoxyCodeLine{607     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}{non\_terminal\_count}}; i++) \{}
+\DoxyCodeLine{608         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = 0; j < \mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}}; j++) \{}
+\DoxyCodeLine{609             \textcolor{keywordflow}{if}(\mbox{\hyperlink{hash__map_8h_aa4630dffff2a5ef840da3cfd9572b79f}{map\_fetch}}(\mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}} * i + j) == NULL)}
+\DoxyCodeLine{610                 \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{611             }
+\DoxyCodeLine{612             \mbox{\hyperlink{structProduction}{production}}* prod = \mbox{\hyperlink{hash__map_8h_aa4630dffff2a5ef840da3cfd9572b79f}{map\_fetch}}(\mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\_COUNT}} * i + j);}
+\DoxyCodeLine{613             printf(\textcolor{stringliteral}{"{}Stack symbol: \%s, "{}}, \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]-\/>name);}
+\DoxyCodeLine{614             printf(\textcolor{stringliteral}{"{}Next token: \%s\(\backslash\)n"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(j));}
+\DoxyCodeLine{615             printf(\textcolor{stringliteral}{"{}Production Rule: \%s ===>"{}}, \mbox{\hyperlink{parser_8c_a712dffe7b6cf41ab990d3572df77d658}{non\_terminals}}[i]-\/>name);}
+\DoxyCodeLine{616             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} k = 0; k < prod-\/>\mbox{\hyperlink{structProduction_aa33e4f1990559a841c88bc2590fcc204}{count}}; k++)\{}
+\DoxyCodeLine{617                 \textcolor{keywordflow}{if}(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[k]-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})}
+\DoxyCodeLine{618                     printf(\textcolor{stringliteral}{"{} \%s"{}}, prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[k]-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{619                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{620                     printf(\textcolor{stringliteral}{"{} \%s"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(prod-\/>\mbox{\hyperlink{structProduction_a597eb70575008ec36816970ce54491af}{symbols}}[k]-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_ab16d128d811c1b3ef2e6e43b7b6aa7c6}{token\_value}}));}
+\DoxyCodeLine{621             \}}
+\DoxyCodeLine{622             printf(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{623             count++;}
+\DoxyCodeLine{624         \}}
+\DoxyCodeLine{625 }
+\DoxyCodeLine{626         printf(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{627     \}}
+\DoxyCodeLine{628 }
+\DoxyCodeLine{629     printf(\textcolor{stringliteral}{"{}Total number of entries: \%d\(\backslash\)n"{}}, count);}
+\DoxyCodeLine{630     printf(\textcolor{stringliteral}{"{}Total number of collisions: \%d\(\backslash\)n"{}}, \mbox{\hyperlink{hash__map_8h_ace1e626381c749513ff589ea45382892}{get\_collision\_count}}());}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{parser_8c_a08659a3e07cbbaa0a0b7234f35654876_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_aceedd6d6c4ad5ddbc27d6d2b6aa8100f}\label{parser_8c_aceedd6d6c4ad5ddbc27d6d2b6aa8100f}} 
+\index{parser.c@{parser.c}!print\_parse\_tree@{print\_parse\_tree}}
+\index{print\_parse\_tree@{print\_parse\_tree}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{print\_parse\_tree()}{print\_parse\_tree()}}
+{\footnotesize\ttfamily void print\+\_\+parse\+\_\+tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Prints the parse tree using pre-\/order traversal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & A pointer to the root of the parse tree. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 794 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{794                                  \{}
+\DoxyCodeLine{795     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\_present}})\{}
+\DoxyCodeLine{796         \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})\{}
+\DoxyCodeLine{797             printf(\textcolor{stringliteral}{"{}Parse Tree Leaf: \%s, Leaf lexeme: \%s\(\backslash\)n\(\backslash\)n"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}});}
+\DoxyCodeLine{798             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{799         \}}
+\DoxyCodeLine{800         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})\{}
+\DoxyCodeLine{801             printf(\textcolor{stringliteral}{"{}Parse Tree Node: \%s, Number of Children: \%d\(\backslash\)n"{}}, root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, root-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}});}
+\DoxyCodeLine{802             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < root-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}}; i++)\{}
+\DoxyCodeLine{803                 \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})}
+\DoxyCodeLine{804                     printf(\textcolor{stringliteral}{"{}\%s \(\backslash\)t"{}}, \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{805                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})}
+\DoxyCodeLine{806                     printf(\textcolor{stringliteral}{"{}\%s \(\backslash\)t"{}}, root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{807                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{808                     printf(\textcolor{stringliteral}{"{}EPSILON \(\backslash\)t"{}});}
+\DoxyCodeLine{809             \}}
+\DoxyCodeLine{810             printf(\textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)n"{}});}
+\DoxyCodeLine{811 }
+\DoxyCodeLine{812             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < root-\/>\mbox{\hyperlink{structTreeNode_a601add736dc629475ad32a4bf8c02f50}{children\_count}}; i++)}
+\DoxyCodeLine{813                 \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} != \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}})}
+\DoxyCodeLine{814                     \mbox{\hyperlink{parser_8c_aceedd6d6c4ad5ddbc27d6d2b6aa8100f}{print\_parse\_tree}}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]);}
+\DoxyCodeLine{815         \}}
+\DoxyCodeLine{816     \}}
+\DoxyCodeLine{817     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{818 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{parser_8c_aceedd6d6c4ad5ddbc27d6d2b6aa8100f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5}\label{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5}} 
+\index{parser.c@{parser.c}!print\_parse\_tree\_inorder@{print\_parse\_tree\_inorder}}
+\index{print\_parse\_tree\_inorder@{print\_parse\_tree\_inorder}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{print\_parse\_tree\_inorder()}{print\_parse\_tree\_inorder()}}
+{\footnotesize\ttfamily void print\+\_\+parse\+\_\+tree\+\_\+inorder (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$}]{root,  }\item[{\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$}]{parent,  }\item[{FILE $\ast$}]{output\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Prints the parse tree using in-\/order traversal in the specified file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & A pointer to the current node. \\
+\hline
+{\em parent} & A pointer to the parent of the current node, NULL for the root. \\
+\hline
+{\em output\+\_\+file} & A pointer to an opened file where the tree will be printed. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 994 of file parser.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{994                                                                           \{}
+\DoxyCodeLine{995     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{parser_8c_a54f5e74b698860cdd1526b218f48d71e}{error\_present}})\{}
+\DoxyCodeLine{996         \textcolor{keywordflow}{if}(root -\/> stack\_symbol -\/> type == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231a7be9f526798b0a2f5bba39671755971d}{SYM\_TERMINAL}})\{}
+\DoxyCodeLine{997             }
+\DoxyCodeLine{998             \textcolor{keywordflow}{if}(parent != NULL)\{}
+\DoxyCodeLine{999                 \textcolor{keywordflow}{if}(root -\/> token\_value -\/> name == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}}) }
+\DoxyCodeLine{1000                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | \%-\/11lld  | \%-\/25s  | yes          | \%-\/25s |\(\backslash\)n"{}}, }
+\DoxyCodeLine{1001                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1002                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1003                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1004                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1005                         root -\/> token\_value -\/>value.num, }
+\DoxyCodeLine{1006                         parent-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1007                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1008                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(root -\/> token\_value -\/> name == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}}) }
+\DoxyCodeLine{1009                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | \%-\/11Lf  | \%-\/25s  | yes          | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1010                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1011                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1012                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1013                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1014                         root -\/> token\_value -\/>value.r\_num, }
+\DoxyCodeLine{1015                         parent-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1016                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1017                 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{1018                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | Not a number | \%-\/25s  | yes          | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1019                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1020                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1021                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1022                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1023                         parent-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1024                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1025                 }
+\DoxyCodeLine{1026             \}}
+\DoxyCodeLine{1027             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{1028                 \textcolor{keywordflow}{if}(root -\/> token\_value -\/> name == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}}) }
+\DoxyCodeLine{1029                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | \%-\/11lld  | NULL                       | yes          | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1030                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1031                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1032                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1033                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1034                         root -\/> token\_value -\/>value.num, }
+\DoxyCodeLine{1035                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1036                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(root -\/> token\_value -\/> name == \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}}) }
+\DoxyCodeLine{1037                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | \%-\/11Lf  | NULL                       | yes          | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1038                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1039                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1040                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1041                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1042                         root -\/> token\_value -\/>value.r\_num, }
+\DoxyCodeLine{1043                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1044                 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{1045                     fprintf(output\_file, \textcolor{stringliteral}{"{}| \%-\/30s  | \%-\/25s  | \%-\/8d  | \%-\/25s  | Not a number | NULL                       | yes          | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1046                         root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5359a15731f99e3edd4ed3f005919f56}{lexeme}}, }
+\DoxyCodeLine{1047                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1048                         root -\/> token\_value -\/> line\_num , }
+\DoxyCodeLine{1049                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}), }
+\DoxyCodeLine{1050                         \mbox{\hyperlink{lexer_8h_aee1807f4e95bea666b6c994915907414}{token\_to\_string}}(root-\/>\mbox{\hyperlink{structTreeNode_a2c0f506d9bfffb98d720e06406d1bf08}{token\_value}}-\/>\mbox{\hyperlink{structToken_a5a92d775c2159bd2d2ddc7647ebe2046}{name}}));}
+\DoxyCodeLine{1051             \}}
+\DoxyCodeLine{1052             \textcolor{keywordflow}{return};  }
+\DoxyCodeLine{1053         \}}
+\DoxyCodeLine{1054         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(root -\/> stack\_symbol -\/> type == \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231af2f9f8ce564648d1fd4005774f628921}{SYM\_NON\_TERMINAL}})\{}
+\DoxyCodeLine{1055             \textcolor{comment}{// Go Left}}
+\DoxyCodeLine{1056             \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[0]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} != \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}}) \mbox{\hyperlink{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5}{print\_parse\_tree\_inorder}}(root -\/> children[0], root, output\_file);}
+\DoxyCodeLine{1057             }
+\DoxyCodeLine{1058             \textcolor{comment}{// Print}}
+\DoxyCodeLine{1059             \textcolor{keywordflow}{if}(parent != NULL)\{}
+\DoxyCodeLine{1060                 fprintf(output\_file, \textcolor{stringliteral}{"{}|            -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/           | \%-\/25s  | Not Def.  |          -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/        | Not a number | \%-\/25s  | no           | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1061                     root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1062                     parent-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1063                     root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{1064             \}}
+\DoxyCodeLine{1065             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{1066                 fprintf(output\_file, \textcolor{stringliteral}{"{}|            -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/           | \%-\/25s  | Not Def.  |          -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/        | Not a number | NULL                       | no           | \%-\/25s |\(\backslash\)n"{}},}
+\DoxyCodeLine{1067                     root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}}, }
+\DoxyCodeLine{1068                     root-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});}
+\DoxyCodeLine{1069             \}}
+\DoxyCodeLine{1070             \textcolor{comment}{// Go Right}}
+\DoxyCodeLine{1071             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 1 ; i < root -\/> children\_count ; i++)\{}
+\DoxyCodeLine{1072                 \textcolor{keywordflow}{if}(root-\/>\mbox{\hyperlink{structTreeNode_a7666f0496ba52e5a1ffbcd14e08b88f1}{children}}[i]-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_ae1d5ee5f19bee7c2f3dbd52aae73286f}{type}} != \mbox{\hyperlink{parserDef_8h_a9e6705a3296471be728a3b6570b56231ab0fc15d6e47ba50850eed8dd29c5a99d}{SYM\_EPSILON}}) \mbox{\hyperlink{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5}{print\_parse\_tree\_inorder}}(root -\/> children[i], root, output\_file);}
+\DoxyCodeLine{1073             \}}
+\DoxyCodeLine{1074         \}}
+\DoxyCodeLine{1075         \textcolor{keywordflow}{else} }
+\DoxyCodeLine{1076             fprintf(output\_file, \textcolor{stringliteral}{"{}|            -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/           | EPSILON                  | Not Def.  |          -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/        | Not a number | \%-\/25s  | yes          |                           |\(\backslash\)n"{}},}
+\DoxyCodeLine{1077                 parent-\/>\mbox{\hyperlink{structTreeNode_a8d58c4c77a3bcdf4e8a07334dae49eac}{stack\_symbol}}-\/>\mbox{\hyperlink{structSymbol_a2940cf2d4787c90317221929b2fb94ac}{value}}.\mbox{\hyperlink{unionsymbol__value_a78897f4ee6d7be67e1a4c18476431c07}{nt}}-\/>\mbox{\hyperlink{structNonTerminal_aa80ba564a3ab0c8a1177b40655b35e0a}{name}});   }
+\DoxyCodeLine{1078     \}}
+\DoxyCodeLine{1079     \textcolor{keywordflow}{else} printf(\textcolor{stringliteral}{"{}Errors Present. Empty Parse tree printed\(\backslash\)n"{}});}
+\DoxyCodeLine{1080     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{1081 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{parser_8c_a8c9a76dff4106d2e5eb33c33aa0c85f5_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{parser_8c_a54f5e74b698860cdd1526b218f48d71e}\label{parser_8c_a54f5e74b698860cdd1526b218f48d71e}} 
+\index{parser.c@{parser.c}!error\_present@{error\_present}}
+\index{error\_present@{error\_present}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{error\_present}{error\_present}}
+{\footnotesize\ttfamily bool error\+\_\+present = false\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 6 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}\label{parser_8c_a6f29aa3d7468f636fbb508bc6b364916}} 
+\index{parser.c@{parser.c}!non\_terminal\_count@{non\_terminal\_count}}
+\index{non\_terminal\_count@{non\_terminal\_count}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{non\_terminal\_count}{non\_terminal\_count}}
+{\footnotesize\ttfamily int non\+\_\+terminal\+\_\+count = 0}
+
+
+
+Definition at line 9 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a712dffe7b6cf41ab990d3572df77d658}\label{parser_8c_a712dffe7b6cf41ab990d3572df77d658}} 
+\index{parser.c@{parser.c}!non\_terminals@{non\_terminals}}
+\index{non\_terminals@{non\_terminals}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{non\_terminals}{non\_terminals}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}}$\ast$$\ast$ non\+\_\+terminals = NULL}
+
+
+
+Definition at line 8 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a7f8c302a05dbaa93714fb0483630a112}\label{parser_8c_a7f8c302a05dbaa93714fb0483630a112}} 
+\index{parser.c@{parser.c}!parse\_table@{parse\_table}}
+\index{parse\_table@{parse\_table}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{parse\_table}{parse\_table}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a79fd85d4e6f9914662e00ead13f5c76b}{production}}$\ast$$\ast$ parse\+\_\+table = NULL}
+
+
+
+Definition at line 11 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}\label{parser_8c_aedd218cd9fd170be7f84eccd0a6c47a4}} 
+\index{parser.c@{parser.c}!start\_symbol@{start\_symbol}}
+\index{start\_symbol@{start\_symbol}!parser.c@{parser.c}}
+\doxysubsubsection{\texorpdfstring{start\_symbol}{start\_symbol}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a771c2547ab8996387bcaed7cf4870b31}{non\+\_\+terminal}}$\ast$ start\+\_\+symbol = NULL}
+
+
+
+Definition at line 10 of file parser.\+c.
+

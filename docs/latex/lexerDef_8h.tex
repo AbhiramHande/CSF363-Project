@@ -1,0 +1,530 @@
+\hypertarget{lexerDef_8h}{}\doxysection{include/lexer\+Def.h File Reference}
+\label{lexerDef_8h}\index{include/lexerDef.h@{include/lexerDef.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for lexer\+Def.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{lexerDef_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lexerDef_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structTwinBuffer}{Twin\+Buffer}}
+\item 
+struct \mbox{\hyperlink{structToken}{Token}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}~2048
+\item 
+\#define \mbox{\hyperlink{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}{TERMINAL\+\_\+\+COUNT}}~60
+\item 
+\#define \mbox{\hyperlink{lexerDef_8h_af252298ae95d7fc358b8c73e162baaf1}{KEYWORD\+\_\+\+END}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\+\_\+\+ELSE}}
+\item 
+\#define \mbox{\hyperlink{lexerDef_8h_ac2d4f3dc0b27c4f4ce4399ea4b05dbc0}{KEYWORD\+\_\+\+START}}~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\+\_\+\+WITH}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef enum \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}} \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}
+\item 
+typedef struct \mbox{\hyperlink{structTwinBuffer}{Twin\+Buffer}} \mbox{\hyperlink{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}{twin\+\_\+buffer}}
+\item 
+typedef struct \mbox{\hyperlink{structToken}{Token}} \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}} \{ \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\+\_\+\+ASSIGNOP}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\+\_\+\+COMMENT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\+\_\+\+FIELDID}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\+\_\+\+ID}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\+\_\+\+NUM}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\+\_\+\+RNUM}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\+\_\+\+FUNID}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\+\_\+\+RUID}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\+\_\+\+LT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\+\_\+\+LE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\+\_\+\+GT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\+\_\+\+GE}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\+\_\+\+SQL}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\+\_\+\+SQR}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\+\_\+\+COMMA}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\+\_\+\+SEM}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\+\_\+\+COLON}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\+\_\+\+DOT}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\+\_\+\+OP}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\+\_\+\+CL}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\+\_\+\+PLUS}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\+\_\+\+MINUS}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\+\_\+\+MUL}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\+\_\+\+DIV}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\+\_\+\+AND}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\+\_\+\+OR}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\+\_\+\+NOT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\+\_\+\+NE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\+\_\+\+EQ}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\+\_\+\+WITH}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\+\_\+\+PARAMETERS}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\+\_\+\+END}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\+\_\+\+WHILE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\+\_\+\+UNION}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\+\_\+\+ENDUNION}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\+\_\+\+DEFINETYPE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\+\_\+\+AS}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\+\_\+\+TYPE}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\+\_\+\+MAIN}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\+\_\+\+GLOBAL}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\+\_\+\+PARAMETER}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\+\_\+\+LIST}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\+\_\+\+INPUT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\+\_\+\+OUTPUT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\+\_\+\+INT}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\+\_\+\+REAL}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\+\_\+\+ENDWHILE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\+\_\+\+IF}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\+\_\+\+THEN}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\+\_\+\+ENDIF}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\+\_\+\+READ}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\+\_\+\+WRITE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\+\_\+\+RETURN}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\+\_\+\+CALL}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\+\_\+\+RECORD}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\+\_\+\+ENDRECORD}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\+\_\+\+ELSE}}
+, \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\+\_\+\+ERROR}}
+, \newline
+\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\+\_\+\+EOF}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}\label{lexerDef_8h_a6b20d41d6252e9871430c242cb1a56e7}} 
+\index{lexerDef.h@{lexerDef.h}!BUFFER\_SIZE@{BUFFER\_SIZE}}
+\index{BUFFER\_SIZE@{BUFFER\_SIZE}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{BUFFER\_SIZE}{BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define BUFFER\+\_\+\+SIZE~2048}
+
+
+
+Definition at line 4 of file lexer\+Def.\+h.
+
+\mbox{\Hypertarget{lexerDef_8h_af252298ae95d7fc358b8c73e162baaf1}\label{lexerDef_8h_af252298ae95d7fc358b8c73e162baaf1}} 
+\index{lexerDef.h@{lexerDef.h}!KEYWORD\_END@{KEYWORD\_END}}
+\index{KEYWORD\_END@{KEYWORD\_END}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{KEYWORD\_END}{KEYWORD\_END}}
+{\footnotesize\ttfamily \#define KEYWORD\+\_\+\+END~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\+\_\+\+ELSE}}}
+
+
+
+Definition at line 6 of file lexer\+Def.\+h.
+
+\mbox{\Hypertarget{lexerDef_8h_ac2d4f3dc0b27c4f4ce4399ea4b05dbc0}\label{lexerDef_8h_ac2d4f3dc0b27c4f4ce4399ea4b05dbc0}} 
+\index{lexerDef.h@{lexerDef.h}!KEYWORD\_START@{KEYWORD\_START}}
+\index{KEYWORD\_START@{KEYWORD\_START}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{KEYWORD\_START}{KEYWORD\_START}}
+{\footnotesize\ttfamily \#define KEYWORD\+\_\+\+START~\mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\+\_\+\+WITH}}}
+
+
+
+Definition at line 7 of file lexer\+Def.\+h.
+
+\mbox{\Hypertarget{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}\label{lexerDef_8h_adf1243efdd26c43c1a41d6189e6b4885}} 
+\index{lexerDef.h@{lexerDef.h}!TERMINAL\_COUNT@{TERMINAL\_COUNT}}
+\index{TERMINAL\_COUNT@{TERMINAL\_COUNT}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{TERMINAL\_COUNT}{TERMINAL\_COUNT}}
+{\footnotesize\ttfamily \#define TERMINAL\+\_\+\+COUNT~60}
+
+
+
+Definition at line 5 of file lexer\+Def.\+h.
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}\label{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}} 
+\index{lexerDef.h@{lexerDef.h}!token@{token}}
+\index{token@{token}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{token}{token}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structToken}{Token}} \mbox{\hyperlink{lexerDef_8h_ab35627b3b9268cde65a1d3a5b2ad1734}{token}}}
+
+
+
+Definition at line 1 of file lexer\+Def.\+h.
+
+\mbox{\Hypertarget{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}\label{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}} 
+\index{lexerDef.h@{lexerDef.h}!token\_type@{token\_type}}
+\index{token\_type@{token\_type}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{token\_type}{token\_type}}
+{\footnotesize\ttfamily typedef enum \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}} \mbox{\hyperlink{lexerDef_8h_a34fddc80a0a78cf571fc67215255fd81}{token\+\_\+type}}}
+
+
+
+Definition at line 1 of file lexer\+Def.\+h.
+
+\mbox{\Hypertarget{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}\label{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}} 
+\index{lexerDef.h@{lexerDef.h}!twin\_buffer@{twin\_buffer}}
+\index{twin\_buffer@{twin\_buffer}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{twin\_buffer}{twin\_buffer}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structTwinBuffer}{Twin\+Buffer}} \mbox{\hyperlink{lexerDef_8h_ad52cefc7e52a5d3d19f33a076629d486}{twin\+\_\+buffer}}}
+
+
+
+Definition at line 1 of file lexer\+Def.\+h.
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}} 
+\index{lexerDef.h@{lexerDef.h}!TokenType@{TokenType}}
+\index{TokenType@{TokenType}!lexerDef.h@{lexerDef.h}}
+\doxysubsubsection{\texorpdfstring{TokenType}{TokenType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ASSIGNOP@{TK\_ASSIGNOP}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ASSIGNOP@{TK\_ASSIGNOP}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}} 
+TK\+\_\+\+ASSIGNOP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_COMMENT@{TK\_COMMENT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_COMMENT@{TK\_COMMENT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}} 
+TK\+\_\+\+COMMENT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_FIELDID@{TK\_FIELDID}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_FIELDID@{TK\_FIELDID}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}} 
+TK\+\_\+\+FIELDID&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ID@{TK\_ID}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ID@{TK\_ID}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}} 
+TK\+\_\+\+ID&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_NUM@{TK\_NUM}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_NUM@{TK\_NUM}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}} 
+TK\+\_\+\+NUM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_RNUM@{TK\_RNUM}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_RNUM@{TK\_RNUM}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}} 
+TK\+\_\+\+RNUM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_FUNID@{TK\_FUNID}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_FUNID@{TK\_FUNID}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}} 
+TK\+\_\+\+FUNID&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_RUID@{TK\_RUID}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_RUID@{TK\_RUID}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}} 
+TK\+\_\+\+RUID&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_LT@{TK\_LT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_LT@{TK\_LT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}} 
+TK\+\_\+\+LT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_LE@{TK\_LE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_LE@{TK\_LE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}} 
+TK\+\_\+\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_GT@{TK\_GT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_GT@{TK\_GT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}} 
+TK\+\_\+\+GT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_GE@{TK\_GE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_GE@{TK\_GE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}} 
+TK\+\_\+\+GE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EPSILON@{EPSILON}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!EPSILON@{EPSILON}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}} 
+EPSILON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DOLLAR@{DOLLAR}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!DOLLAR@{DOLLAR}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}} 
+DOLLAR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_SQL@{TK\_SQL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_SQL@{TK\_SQL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}} 
+TK\+\_\+\+SQL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_SQR@{TK\_SQR}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_SQR@{TK\_SQR}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}} 
+TK\+\_\+\+SQR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_COMMA@{TK\_COMMA}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_COMMA@{TK\_COMMA}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}} 
+TK\+\_\+\+COMMA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_SEM@{TK\_SEM}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_SEM@{TK\_SEM}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}} 
+TK\+\_\+\+SEM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_COLON@{TK\_COLON}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_COLON@{TK\_COLON}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}} 
+TK\+\_\+\+COLON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_DOT@{TK\_DOT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_DOT@{TK\_DOT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}} 
+TK\+\_\+\+DOT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_OP@{TK\_OP}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_OP@{TK\_OP}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}} 
+TK\+\_\+\+OP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_CL@{TK\_CL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_CL@{TK\_CL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}} 
+TK\+\_\+\+CL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_PLUS@{TK\_PLUS}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_PLUS@{TK\_PLUS}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}} 
+TK\+\_\+\+PLUS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_MINUS@{TK\_MINUS}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_MINUS@{TK\_MINUS}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}} 
+TK\+\_\+\+MINUS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_MUL@{TK\_MUL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_MUL@{TK\_MUL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}} 
+TK\+\_\+\+MUL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_DIV@{TK\_DIV}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_DIV@{TK\_DIV}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}} 
+TK\+\_\+\+DIV&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_AND@{TK\_AND}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_AND@{TK\_AND}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}} 
+TK\+\_\+\+AND&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_OR@{TK\_OR}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_OR@{TK\_OR}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}} 
+TK\+\_\+\+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_NOT@{TK\_NOT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_NOT@{TK\_NOT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}} 
+TK\+\_\+\+NOT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_NE@{TK\_NE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_NE@{TK\_NE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}} 
+TK\+\_\+\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_EQ@{TK\_EQ}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_EQ@{TK\_EQ}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}} 
+TK\+\_\+\+EQ&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_WITH@{TK\_WITH}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_WITH@{TK\_WITH}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}} 
+TK\+\_\+\+WITH&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_PARAMETERS@{TK\_PARAMETERS}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_PARAMETERS@{TK\_PARAMETERS}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}} 
+TK\+\_\+\+PARAMETERS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_END@{TK\_END}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_END@{TK\_END}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}} 
+TK\+\_\+\+END&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_WHILE@{TK\_WHILE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_WHILE@{TK\_WHILE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}} 
+TK\+\_\+\+WHILE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_UNION@{TK\_UNION}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_UNION@{TK\_UNION}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}} 
+TK\+\_\+\+UNION&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ENDUNION@{TK\_ENDUNION}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ENDUNION@{TK\_ENDUNION}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}} 
+TK\+\_\+\+ENDUNION&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_DEFINETYPE@{TK\_DEFINETYPE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_DEFINETYPE@{TK\_DEFINETYPE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}} 
+TK\+\_\+\+DEFINETYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_AS@{TK\_AS}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_AS@{TK\_AS}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}} 
+TK\+\_\+\+AS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_TYPE@{TK\_TYPE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_TYPE@{TK\_TYPE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}} 
+TK\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_MAIN@{TK\_MAIN}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_MAIN@{TK\_MAIN}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}} 
+TK\+\_\+\+MAIN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_GLOBAL@{TK\_GLOBAL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_GLOBAL@{TK\_GLOBAL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}} 
+TK\+\_\+\+GLOBAL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_PARAMETER@{TK\_PARAMETER}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_PARAMETER@{TK\_PARAMETER}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}} 
+TK\+\_\+\+PARAMETER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_LIST@{TK\_LIST}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_LIST@{TK\_LIST}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}} 
+TK\+\_\+\+LIST&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_INPUT@{TK\_INPUT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_INPUT@{TK\_INPUT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}} 
+TK\+\_\+\+INPUT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_OUTPUT@{TK\_OUTPUT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_OUTPUT@{TK\_OUTPUT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}} 
+TK\+\_\+\+OUTPUT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_INT@{TK\_INT}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_INT@{TK\_INT}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}} 
+TK\+\_\+\+INT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_REAL@{TK\_REAL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_REAL@{TK\_REAL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}} 
+TK\+\_\+\+REAL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ENDWHILE@{TK\_ENDWHILE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ENDWHILE@{TK\_ENDWHILE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}} 
+TK\+\_\+\+ENDWHILE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_IF@{TK\_IF}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_IF@{TK\_IF}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}} 
+TK\+\_\+\+IF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_THEN@{TK\_THEN}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_THEN@{TK\_THEN}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}} 
+TK\+\_\+\+THEN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ENDIF@{TK\_ENDIF}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ENDIF@{TK\_ENDIF}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}} 
+TK\+\_\+\+ENDIF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_READ@{TK\_READ}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_READ@{TK\_READ}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}} 
+TK\+\_\+\+READ&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_WRITE@{TK\_WRITE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_WRITE@{TK\_WRITE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}} 
+TK\+\_\+\+WRITE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_RETURN@{TK\_RETURN}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_RETURN@{TK\_RETURN}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}} 
+TK\+\_\+\+RETURN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_CALL@{TK\_CALL}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_CALL@{TK\_CALL}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}} 
+TK\+\_\+\+CALL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_RECORD@{TK\_RECORD}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_RECORD@{TK\_RECORD}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}} 
+TK\+\_\+\+RECORD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ENDRECORD@{TK\_ENDRECORD}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ENDRECORD@{TK\_ENDRECORD}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}} 
+TK\+\_\+\+ENDRECORD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ELSE@{TK\_ELSE}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ELSE@{TK\_ELSE}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}} 
+TK\+\_\+\+ELSE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_ERROR@{TK\_ERROR}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_ERROR@{TK\_ERROR}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}} 
+TK\+\_\+\+ERROR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TK\_EOF@{TK\_EOF}!lexerDef.h@{lexerDef.h}}\index{lexerDef.h@{lexerDef.h}!TK\_EOF@{TK\_EOF}}}\mbox{\Hypertarget{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}\label{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}} 
+TK\+\_\+\+EOF&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 18 of file lexer\+Def.\+h.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{18               \{}
+\DoxyCodeLine{19     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae1d3f408b8f6f106aa5ed0da88a30972}{TK\_ASSIGNOP}},}
+\DoxyCodeLine{20     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4a18082ee009a0d1130ef2797cf77075}{TK\_COMMENT}},}
+\DoxyCodeLine{21     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af349bd3cecab806f4711b4995e946113}{TK\_FIELDID}},}
+\DoxyCodeLine{22     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7ad0e25023834874ae02ce3f71ab1743}{TK\_ID}},}
+\DoxyCodeLine{23     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3dba604c217839cf0d20a8a7401cc13e}{TK\_NUM}},}
+\DoxyCodeLine{24     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac0ebecb6a14c478b6ec550cb1aa14bab}{TK\_RNUM}},}
+\DoxyCodeLine{25     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921af8844b446b1af07ac3c2b27cda0b6556}{TK\_FUNID}},}
+\DoxyCodeLine{26     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a2e531d470f4797b7601887eb3cae9135}{TK\_RUID}},}
+\DoxyCodeLine{27     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1c3a721b2939d7118621b47c124f60d9}{TK\_LT}},}
+\DoxyCodeLine{28     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ace38c3f7b08d6ffe00acdd0706ba35de}{TK\_LE}},}
+\DoxyCodeLine{29     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4b3bd12952f9d6643b72daf8dd2518f1}{TK\_GT}},}
+\DoxyCodeLine{30     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a39306a802115256cf2099f6c724a95b0}{TK\_GE}},}
+\DoxyCodeLine{31     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a1fa5920d8d419e0b8036e2dbada9a882}{EPSILON}},}
+\DoxyCodeLine{32     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8830788e557e82569f17668cd303436a}{DOLLAR}},}
+\DoxyCodeLine{33     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3ed0e119fc3ea567e663e4c1c27f2dfe}{TK\_SQL}},}
+\DoxyCodeLine{34     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8bd741f3eba8f4f1ac8574e482c3bef5}{TK\_SQR}},}
+\DoxyCodeLine{35     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a73966ea003ddee9709ee975df1c6737b}{TK\_COMMA}},}
+\DoxyCodeLine{36     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a04c037107673f964ac448add16fddf21}{TK\_SEM}},}
+\DoxyCodeLine{37     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a60ec76d4b8c95a2e5948ba84eebf7ce5}{TK\_COLON}},}
+\DoxyCodeLine{38     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a923bec10edd7bcc0687b49d2f2347018}{TK\_DOT}},}
+\DoxyCodeLine{39     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5645485c6608a5ee74557e251242970e}{TK\_OP}},}
+\DoxyCodeLine{40     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921abd8cb96e891a1cd194beebf359fc5ef8}{TK\_CL}},}
+\DoxyCodeLine{41     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a44b7cf86f73a49fce9de7fb4472c18a8}{TK\_PLUS}},}
+\DoxyCodeLine{42     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921afa06b75f7fcc78aad48c1dc6079f4935}{TK\_MINUS}},}
+\DoxyCodeLine{43     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9b8faabd0e90e01c0812a70a9ed96323}{TK\_MUL}},}
+\DoxyCodeLine{44     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a75984eb22416549c139ca9130f0a17c9}{TK\_DIV}},}
+\DoxyCodeLine{45     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adbea546e357b70d29f631824a4f9cfed}{TK\_AND}},}
+\DoxyCodeLine{46     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab4578d7ddbacda8286ad2205d3d917e9}{TK\_OR}},}
+\DoxyCodeLine{47     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a985342409492de2e599c6202e9180ad9}{TK\_NOT}},}
+\DoxyCodeLine{48     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6897243f49a32e90ca094af33c16374b}{TK\_NE}},}
+\DoxyCodeLine{49     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae9b97178246db483138ab3d18039bfb2}{TK\_EQ}},}
+\DoxyCodeLine{50     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ab6fd7d0cea7ed6cbed0ff9d9205654d8}{TK\_WITH}},}
+\DoxyCodeLine{51     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ae74ec6e4ffba9a089d3e5e8d40d93fb0}{TK\_PARAMETERS}},}
+\DoxyCodeLine{52     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a541ef482a7317bd2a54032f165d90db7}{TK\_END}},}
+\DoxyCodeLine{53     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a592e99387742b5748aa5e341c99dffd0}{TK\_WHILE}},}
+\DoxyCodeLine{54     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a6ec0e4c824a9103b5fd8e950504885ba}{TK\_UNION}},}
+\DoxyCodeLine{55     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acdf646a5901c92703c0d2c459f9eea4f}{TK\_ENDUNION}},}
+\DoxyCodeLine{56     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a7feb84911fb9ac62057fbefd9173bd06}{TK\_DEFINETYPE}},}
+\DoxyCodeLine{57     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aa64699fd724a561fb97396901fac65a9}{TK\_AS}},}
+\DoxyCodeLine{58     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921adc94947f3a3447a31179907eaa3957ff}{TK\_TYPE}},}
+\DoxyCodeLine{59     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a78bf913aada33f75ea0a1373f9e83e56}{TK\_MAIN}},}
+\DoxyCodeLine{60     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a029358423b3a98a79a57c761f276f47e}{TK\_GLOBAL}},}
+\DoxyCodeLine{61     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aea2647f1d9a7c96c9fbb6e204e509e84}{TK\_PARAMETER}},}
+\DoxyCodeLine{62     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a969c519d9caf3f56e7f83737f2668176}{TK\_LIST}},}
+\DoxyCodeLine{63     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a540791b4c119d3bba64b1f7e73330945}{TK\_INPUT}},}
+\DoxyCodeLine{64     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9ed3055c192d5bd499c1711b2a6858c6}{TK\_OUTPUT}},}
+\DoxyCodeLine{65     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a9f48ed12541fab691e25e3ca9e38ac9f}{TK\_INT}},}
+\DoxyCodeLine{66     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a5b14f668e75368839e37e30d61909fa7}{TK\_REAL}},}
+\DoxyCodeLine{67     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a469041c409eba25bddc68efca585241c}{TK\_ENDWHILE}},}
+\DoxyCodeLine{68     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a601b374145c8554a0dc2d1663cbdfeb1}{TK\_IF}},}
+\DoxyCodeLine{69     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a757e31c13acf13af22615dca8c1b7c97}{TK\_THEN}},}
+\DoxyCodeLine{70     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a4d3d1e8d9b25261e4e84eb1bec501a36}{TK\_ENDIF}},}
+\DoxyCodeLine{71     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a290e7f005ec56629142047e6b422c4a3}{TK\_READ}},}
+\DoxyCodeLine{72     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921acbcfebda49bfa634c0863a9569af11b0}{TK\_WRITE}},}
+\DoxyCodeLine{73     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921aba4fafc284c6c6aa99340efdba0b76e8}{TK\_RETURN}},}
+\DoxyCodeLine{74     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a8198b2b556338495587a25b47927061a}{TK\_CALL}},}
+\DoxyCodeLine{75     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a99c0a418b73d4698f21fe7845aab3007}{TK\_RECORD}},}
+\DoxyCodeLine{76     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac33ad1b32f7b21d9f4a82a11a4dc383b}{TK\_ENDRECORD}},}
+\DoxyCodeLine{77     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a3f50a3a010dc1ba1401d460900575b47}{TK\_ELSE}},}
+\DoxyCodeLine{78     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921a329b096b89cd2615be065f31039d6b86}{TK\_ERROR}},}
+\DoxyCodeLine{79     \mbox{\hyperlink{lexerDef_8h_aa520fbf142ba1e7e659590c07da31921ac1e4208c0438292c832f0495c9cc8fd0}{TK\_EOF}}}
+\DoxyCodeLine{80 \};}
+
+\end{DoxyCode}

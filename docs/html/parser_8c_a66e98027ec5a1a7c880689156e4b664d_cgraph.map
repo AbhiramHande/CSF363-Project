@@ -1,0 +1,4 @@
+<map id="compute_first_of_sequence" name="compute_first_of_sequence">
+<area shape="rect" id="node1" title="Computes the first set of a sequence of symbols (terminals and non&#45;terminals)." alt="" coords="5,5,205,32"/>
+<area shape="rect" id="node2" href="$parser_8c.html#a2fb545f0baa318bfb9bdbab0e882cd32" title="Adds a given token type to a set if it does not already exist." alt="" coords="253,5,347,32"/>
+</map>

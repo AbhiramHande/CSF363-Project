@@ -1,0 +1,4 @@
+<map id="parse_tree_cleanup" name="parse_tree_cleanup">
+<area shape="rect" id="node1" title="Deallocates all memory associated with the parse tree." alt="" coords="5,29,155,56"/>
+<area shape="rect" id="node2" href="$parser_8c.html#aad20e8a12c7bfb6d97191c3a26363f1a" title="Deallocates all memory associated with the parse tree." alt="" coords="203,29,352,56"/>
+</map>

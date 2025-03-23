@@ -1,0 +1,333 @@
+\hypertarget{stack_8h}{}\doxysection{include/stack.h File Reference}
+\label{stack_8h}\index{include/stack.h@{include/stack.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}parser\+Def.\+h\char`\"{}}\newline
+Include dependency graph for stack.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{stack_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{stack_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structStack}{Stack}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{stack_8h_a6423a880df59733d2d9b509c7718d3a9}{STACK\+\_\+\+SIZE}}~1024
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structStack}{Stack}} \mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$ \mbox{\hyperlink{stack_8h_a12f8e38a7f5d0af1137cc4fff111ef3c}{stack\+\_\+create}} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a stack. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8}{stack\+\_\+push}} (\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$s, \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$nt)
+\begin{DoxyCompactList}\small\item\em Adds a node to the top of the stack. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}{stack\+\_\+pop}} (\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Removes and returns the topmost node from the stack. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$ \mbox{\hyperlink{stack_8h_af0faaa6f406636514cacd26f54be0a19}{stack\+\_\+top}} (\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Returns the topmost node from the stack without removing it. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{stack_8h_a4bf088087d46031158e6bdd2a93695f9}{stack\+\_\+empty}} (\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Determines if the stack is empty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{stack_8h_a0401a54893bb4a3c36be29b4f4d2a673}{stack\+\_\+cleanup}} (\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$$\ast$s)
+\begin{DoxyCompactList}\small\item\em Deallocates all memory associated with the stack. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{stack_8h_a6423a880df59733d2d9b509c7718d3a9}\label{stack_8h_a6423a880df59733d2d9b509c7718d3a9}} 
+\index{stack.h@{stack.h}!STACK\_SIZE@{STACK\_SIZE}}
+\index{STACK\_SIZE@{STACK\_SIZE}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{STACK\_SIZE}{STACK\_SIZE}}
+{\footnotesize\ttfamily \#define STACK\+\_\+\+SIZE~1024}
+
+
+
+Definition at line 10 of file stack.\+h.
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}\label{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}} 
+\index{stack.h@{stack.h}!stack@{stack}}
+\index{stack@{stack}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack}{stack}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structStack}{Stack}} \mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{stack_8h_a0401a54893bb4a3c36be29b4f4d2a673}\label{stack_8h_a0401a54893bb4a3c36be29b4f4d2a673}} 
+\index{stack.h@{stack.h}!stack\_cleanup@{stack\_cleanup}}
+\index{stack\_cleanup@{stack\_cleanup}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_cleanup()}{stack\_cleanup()}}
+{\footnotesize\ttfamily void stack\+\_\+cleanup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$$\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Deallocates all memory associated with the stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A pointer to the pointer of the stack.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+All nodes inserted by the caller must be freed by the caller. The stack itself is freed, and the pointer is set to {\ttfamily NULL} to prevent accidental dereference in the future. 
+\end{DoxyWarning}
+
+
+Definition at line 53 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{53                              \{}
+\DoxyCodeLine{54     free((*s)-\/>data);}
+\DoxyCodeLine{55     free(*s);}
+\DoxyCodeLine{56     *s = NULL;}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{58     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{59 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_a0401a54893bb4a3c36be29b4f4d2a673_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{stack_8h_a12f8e38a7f5d0af1137cc4fff111ef3c}\label{stack_8h_a12f8e38a7f5d0af1137cc4fff111ef3c}} 
+\index{stack.h@{stack.h}!stack\_create@{stack\_create}}
+\index{stack\_create@{stack\_create}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_create()}{stack\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}}$\ast$ stack\+\_\+create (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initializes a stack. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily NULL} if memory allocation fails. A pointer to a newly created stack with a capacity of 1024 otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 9 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{9                          \{}
+\DoxyCodeLine{10     \mbox{\hyperlink{structStack}{stack}}* s = (\mbox{\hyperlink{structStack}{stack}}*)calloc(1, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structStack}{stack}}));}
+\DoxyCodeLine{11     \textcolor{keywordflow}{if}(!s)}
+\DoxyCodeLine{12         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{13     }
+\DoxyCodeLine{14     s-\/>\mbox{\hyperlink{structStack_a9d88966b156fd4547e9b8a2e7fe48427}{capacity}} = \mbox{\hyperlink{stack_8h_a6423a880df59733d2d9b509c7718d3a9}{STACK\_SIZE}};}
+\DoxyCodeLine{15     s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}} = -\/1;}
+\DoxyCodeLine{16     s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}} = (\mbox{\hyperlink{structTreeNode}{node}}**)calloc(s-\/>\mbox{\hyperlink{structStack_a9d88966b156fd4547e9b8a2e7fe48427}{capacity}}, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structTreeNode}{node}}*));}
+\DoxyCodeLine{17     }
+\DoxyCodeLine{18     \textcolor{keywordflow}{if}(!(s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}}))\{}
+\DoxyCodeLine{19         free(s);}
+\DoxyCodeLine{20         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{21     \}}
+\DoxyCodeLine{22     \textcolor{keywordflow}{return} s;}
+\DoxyCodeLine{23 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_a12f8e38a7f5d0af1137cc4fff111ef3c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{stack_8h_a4bf088087d46031158e6bdd2a93695f9}\label{stack_8h_a4bf088087d46031158e6bdd2a93695f9}} 
+\index{stack.h@{stack.h}!stack\_empty@{stack\_empty}}
+\index{stack\_empty@{stack\_empty}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_empty()}{stack\_empty()}}
+{\footnotesize\ttfamily bool stack\+\_\+empty (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Determines if the stack is empty. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A pointer to the stack.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the stack is empty. {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 47 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47                           \{}
+\DoxyCodeLine{48     \textcolor{keywordflow}{if}(s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}} == -\/1)}
+\DoxyCodeLine{49         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{50     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{51 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_a4bf088087d46031158e6bdd2a93695f9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}\label{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8}} 
+\index{stack.h@{stack.h}!stack\_pop@{stack\_pop}}
+\index{stack\_pop@{stack\_pop}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_pop()}{stack\_pop()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}}$\ast$ stack\+\_\+pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Removes and returns the topmost node from the stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A pointer to the stack.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily NULL} if the stack is empty. A pointer to the removed node otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 32 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{32                          \{}
+\DoxyCodeLine{33     \textcolor{keywordflow}{if}(\mbox{\hyperlink{stack_8c_a4bf088087d46031158e6bdd2a93695f9}{stack\_empty}}(s))}
+\DoxyCodeLine{34         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{35     \mbox{\hyperlink{structTreeNode}{node}}* nt = s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}}[s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}}];}
+\DoxyCodeLine{36     s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}}[(s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}})-\/-\/] = NULL;}
+\DoxyCodeLine{37     \textcolor{keywordflow}{return} nt;}
+\DoxyCodeLine{38 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_a6ee1c21725f3cd3803d491e0dcd1ecb8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8}\label{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8}} 
+\index{stack.h@{stack.h}!stack\_push@{stack\_push}}
+\index{stack\_push@{stack\_push}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_push()}{stack\_push()}}
+{\footnotesize\ttfamily bool stack\+\_\+push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$}]{s,  }\item[{\mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}} $\ast$}]{nt }\end{DoxyParamCaption})}
+
+
+
+Adds a node to the top of the stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A pointer to the stack. \\
+\hline
+{\em nt} & The node to be inserted.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if inserted. {\ttfamily false} if the stack is at full capacity. 
+\end{DoxyReturn}
+
+
+Definition at line 25 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{25                                    \{}
+\DoxyCodeLine{26     \textcolor{keywordflow}{if}(s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}} == s-\/>\mbox{\hyperlink{structStack_a9d88966b156fd4547e9b8a2e7fe48427}{capacity}} -\/ 1)}
+\DoxyCodeLine{27         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{28     s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}}[++(s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}})] = nt;}
+\DoxyCodeLine{29     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{30 \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_ac96c2f73b6cf10cdf5189330c7b02be8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{stack_8h_af0faaa6f406636514cacd26f54be0a19}\label{stack_8h_af0faaa6f406636514cacd26f54be0a19}} 
+\index{stack.h@{stack.h}!stack\_top@{stack\_top}}
+\index{stack\_top@{stack\_top}!stack.h@{stack.h}}
+\doxysubsubsection{\texorpdfstring{stack\_top()}{stack\_top()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{parserDef_8h_a27b0c327cedf0721d944a9d8365c3620}{node}}$\ast$ stack\+\_\+top (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stack_8h_a504e59726c5a48f1d3bda9cf9031aa84}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Returns the topmost node from the stack without removing it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A pointer to the stack.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily NULL} if the stack is empty. A pointer to the topmost node otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 40 of file stack.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{40                          \{}
+\DoxyCodeLine{41     \textcolor{keywordflow}{if}(\mbox{\hyperlink{stack_8c_a4bf088087d46031158e6bdd2a93695f9}{stack\_empty}}(s))}
+\DoxyCodeLine{42         \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{43     \mbox{\hyperlink{structTreeNode}{node}}* nt = s-\/>\mbox{\hyperlink{structStack_ab3d4b7fd1f30393a90ca42e9ab89810d}{data}}[s-\/>\mbox{\hyperlink{structStack_ad62fb36816185f3eef3a6f735a61f54a}{top}}];}
+\DoxyCodeLine{44     \textcolor{keywordflow}{return} nt;}
+\DoxyCodeLine{45 \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{stack_8h_af0faaa6f406636514cacd26f54be0a19_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stack_8h_af0faaa6f406636514cacd26f54be0a19_icgraph}
+\end{center}
+\end{figure}

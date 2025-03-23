@@ -1,0 +1,4 @@
+<map id="get_collision_count" name="get_collision_count">
+<area shape="rect" id="node1" title="Returns the total number of hash collisions encountered so far." alt="" coords="184,5,331,32"/>
+<area shape="rect" id="node2" href="$parser_8c.html#a08659a3e07cbbaa0a0b7234f35654876" title="Prints the parsing table." alt="" coords="5,5,136,32"/>
+</map>
