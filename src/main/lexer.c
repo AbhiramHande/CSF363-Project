@@ -76,7 +76,23 @@
 #define STATE_TRAP_PATTERN                  63
 #define STATE_TRAP_SYMBOL_INTR              65
 
+/*****************************************************************************
+ *                                                                           *
+ *                      GLOBAL VARIABLES IN THIS FILE                        *
+ *                                                                           *
+ *****************************************************************************/
+
+/**
+ * @brief A pointer to the twin buffer.
+ * 
+ * @note 
+ * - Defined as a static global variable, making it inaccessible outside this file.
+ * - Ensures a singleton-like behavior, preventing multiple instances.
+ * - Can only be accessed and modified via `buffer_init` and `get_next_token`.
+ * - Effectively enforces encapsulation.
+ */
 static twin_buffer* buffer = NULL;
+
 
 /*****************************************************************************
  *                                                                           *

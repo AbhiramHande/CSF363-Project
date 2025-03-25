@@ -29,8 +29,29 @@ struct HashMap {
  *                                                                           *
  *****************************************************************************/
 
+/**
+ * @brief Tracks the number of collisions encountered in the hash map.
+ * 
+ * @note 
+ * - This value is primarily used for debugging and performance analysis of the hashing mechanism.
+ * - It is automatically reset to zero when `map_create` is called.
+ */
 static int collision_count = 0;
+
+/**
+ * @brief A pointer to the global hash map representing the parse table.
+ * 
+ * @details The parse table is implemented as a hash map to optimize lookup 
+ *          operations during parsing, improving efficiency compared to a 2D array.
+ * 
+ * @note 
+ * - Defined as a static global variable, restricting access to this file.
+ * - Enforces a singleton-like behavior, ensuring only one instance exists.
+ * - Can only be accessed and modified via `map_insert` and `map_fetch`.
+ * - Prevents unintended modifications by enforcing encapsulation.
+ */
 static hash_map* _table = NULL;
+
 
 /*****************************************************************************
  *                                                                           *

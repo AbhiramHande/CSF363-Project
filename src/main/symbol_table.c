@@ -17,8 +17,37 @@ struct SymbolTableNode {
     bool is_occupied;
 };
 
+/*****************************************************************************
+ *                                                                           *
+ *                      GLOBAL VARIABLES IN THIS FILE                        *
+ *                                                                           *
+ *****************************************************************************/
+
+/**
+ * @brief Tracks the number of collisions encountered in the symbol table.
+ * 
+ * @note 
+ * - This value is primarily used for debugging and performance analysis of the hashing mechanism.
+ * - It is automatically reset to zero when `symbol_table_create` is called.
+ */
 static int collision_count = 0;
+
+/**
+ * @brief A pointer to the global symbol table.
+ * 
+ * @details The symbol table is implemented as a HashMap for efficient storage 
+ *          and retrieval of identifiers, keywords, and other symbols used in parsing.
+ * 
+ * @note 
+ * - Defined as a static global variable, making it inaccessible outside this file.
+ * - Ensures a singleton-like behavior, preventing multiple instances.
+ * - Can only be accessed and modified via `symbol_table_insert` and `symbol_table_fetch`.
+ * - Effectively enforces encapsulation.
+ */
 static symbol_table* table = NULL;
+
+
+
 
 /*****************************************************************************
  *                                                                           *
