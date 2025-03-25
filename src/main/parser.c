@@ -1,14 +1,53 @@
 #include "../../include/parser.h"
 
+/**
+ * @brief The assumed maximum length of each line in the grammar file.
+ */
 #define MAX_LINE_LENGTH 256
+
+/**
+ * @brief The size of the "super" synchronizing set.
+ * 
+ * @details Certain low-level constructs, such as `TK_SEM` (semicolon) and `TK_CL` (closing brackets),
+ *          are included in a special set called the "super" synchronizing set, which helps in error recovery.
+ * 
+ * @warning Whenever modifications are made to the "super" synchronizing set, this macro must be updated accordingly.
+ */
 #define SUPER_SYN_SIZE 9
 
+/**
+ * @brief A global flag indicating the presence of errors in the source code.
+ */
 static bool error_present = false;
 
+/**
+ * @brief An array of pointers to the various non-terminals in the grammar.
+ * 
+ * @note This array stores all non-terminals for reference in parsing.
+ */
 non_terminal** non_terminals = NULL;
+
+/**
+ * @brief The number of non-terminals stored in `non_terminals`.
+ */
 int non_terminal_count = 0;
+
+/**
+ * @brief A pointer to the start symbol of the grammar.
+ * 
+ * @note The start symbol is assumed to be the first non-terminal defined in the grammar.
+ */
 non_terminal* start_symbol = NULL;
+
+/**
+ * @brief A 2D parsing table for an LL(1) predictive parser.
+ * 
+ * @note The table is indexed by the top of the parsing stack (a non-terminal) and the current input token (a terminal).
+ * 
+ * @deprecated This 2D array implementation has been replaced with a HashMap for improved memory efficiency.
+ */
 production** parse_table = NULL;
+
 
 /*****************************************************************************
  *                                                                           *
@@ -94,13 +133,13 @@ void generate_parse_map();
  * 3. Use the parsing table `M` to decide parsing actions.
  * 4. While (stack is not empty)
  *      - If top of stack matches current token, pop stack and advance `tp`.
- *      - If top of the stack is a terminal but does not match `a`, **report a syntax error**.
+ *      - If top of the stack is a terminal but does not match current token, pop the stack.
  *      - If `M`'s entry corresponding to the stack top and current token is `NULL`, **handle error recovery** (panic-mode).
  *      - If @f$ M[X, a] = X \to Y_1Y_2 \cdots Y_k @f$:
  *          - Output the production @f$ X \to Y_1Y_2 \cdots Y_k @f$.
  *          - Pop `X` from stack.
  *          - Push @f$ Y_k, Y_{k-1}, \cdots, Y_1 @f$ onto the stack in that order.
- * 4. Repeat until the stack is empty.
+ * 5. Repeat until the stack is empty.
  * 
  * @param src_code A pointer to an opened file containing the source code.
  * 
