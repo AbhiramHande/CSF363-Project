@@ -26,8 +26,8 @@
  * - Lexemes must be **null-terminated strings**.
  * 
  * @attention
- * - **Lookup Complexity:** Average **@f$ \mathcal{O}(1) @f$**, Worst-case **@f$ \mathcal{O}(n) @f$** (if hash function performs poorly).
- * - **Insertion Complexity:** Average **O(1)**, but rehashing and/or resizing can be expensive.
+ * - **Lookup Complexity:** Average @f$ \mathcal{O}(1) @f$, Worst-case @f$ \mathcal{O}(n) @f$ (if hash function performs poorly).
+ * - **Insertion Complexity:** Average @f$ \mathcal{O}(1) @f$, but rehashing and/or resizing can be expensive.
  */
 typedef struct SymbolTable symbol_table;
 
@@ -46,10 +46,6 @@ struct SymbolTable {
     int occupancy; /**< Current number of occupied slots in the symbol table. */
 };
 
-/**
- * @struct SymbolTableNode
- * @brief Structure defining a single node in the symbol table.
- */
 struct SymbolTableNode {
     entry* value; /**< Pointer to an entry in the symbol table. */
     bool is_occupied; /**< Indicates whether the entry is valid or uninitialized. */

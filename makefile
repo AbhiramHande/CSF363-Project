@@ -34,6 +34,8 @@ TARGET = $(EXEC_DIR)/prog.exe
 TEST_TARGET = $(EXEC_DIR)/test_target.exe
 TESTER = $(EXEC_DIR)/tester.exe
 
+.PHONY: docs
+
 # Build main executable
 all: $(TARGET)
 
@@ -78,11 +80,16 @@ clean:
 	rm -f $(EXEC_DIR)/$(TARGET) $(EXEC_DIR)/$(TEST_TARGET)
 	rm -rf $(OBJ_DIR) $(EXEC_DIR)
 
+docs: Doxyfile
+	doxygen Doxyfile
+	xdg-open docs/index.html
+
 help:
 	@echo "\e[1;4;36mAvailable Commands:\e[0m"
-	@echo "    1. \e[1;32mmake\e[0m        - Build the executable (\e[3mprog.exe\e[0m) and store it in \e[3m./bin\e[0m"
+	@echo "    1. \e[1;32mmake\e[0m        - Build the executable (\e[3mprog.exe\e[0m) and store it in \e[3m./bin\e[0m."
 	@echo "    2. \e[1;32mmake test\e[0m   - Build the executable (\e[3mtest_taget.exe\e[0m) and run it with the tester (\e[03mtester.exe\e[0m)."
-	@echo "                     Tester program runs the lexer against the first two provided test cases and ensure the outputs match"
-	@echo "    3. \e[1;32mmake debug\e[0m  - Build the executable (\e[3mprog.exe\e[0m) and run it with the debugger \e[03mgdb\e[0m"
-	@echo "    4. \e[1;32mmake clean\e[0m  - Remove executables, object files, and their associated directories"
-	@echo "    5. \e[1;32mmake help\e[0m   - Display this help message"
+	@echo "                     Tester program runs the lexer against the first two provided test cases and ensure the outputs match."
+	@echo "    3. \e[1;32mmake debug\e[0m  - Build the executable (\e[3mprog.exe\e[0m) and run it with the debugger \e[03mgdb\e[0m."
+	@echo "    4. \e[1;32mmake docs\e[0m   - Rebuilds the Doxygen documentation and launches the website locally."
+	@echo "    5. \e[1;32mmake clean\e[0m  - Remove executables, object files, and their associated directories."
+	@echo "    6. \e[1;32mmake help\e[0m   - Display this help message."
