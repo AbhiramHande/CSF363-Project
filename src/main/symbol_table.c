@@ -1,21 +1,60 @@
 #include "../../include/symbol_table.h"
 
-#define INITIAL_TABLE_SIZE 100
+/**
+ * @brief Defines the initial capacity of the symbol table.
+ * 
+ * @note The symbol table starts with this size and dynamically resizes if needed.
+ */
+#define INITIAL_TABLE_SIZE 1024
 
+
+/**
+ * @brief Data structure representing a symbol table.
+ * 
+ * @details 
+ * - The symbol table is implemented as a **hash map** for efficient storage 
+ *   and retrieval of symbols (identifiers, keywords, etc.).
+ * - Symbols are indexed by their **lexeme** and mapped to their respective **token type**.
+ * - Uses **open addressing with linear probing** for collision resolution.
+ * 
+ * @note
+ * - The symbol table is dynamically allocated and must be initialized using `symbol_table_create`.
+ * - It supports **automatic resizing** when the hash map is full.
+ * - Deallocated using `symbol_table_cleanup` to prevent memory leaks.
+ * 
+ * @warning
+ * - Lexemes must be **null-terminated strings**.
+ * 
+ * @attention
+ * - **Lookup Complexity:** Average **@f$ \mathcal{O}(1) @f$**, Worst-case **@f$ \mathcal{O}(n) @f$** (if hash function performs poorly).
+ * - **Insertion Complexity:** Average **O(1)**, but rehashing and/or resizing can be expensive.
+ */
 typedef struct SymbolTable symbol_table;
+
+/**
+ * @brief Represents a node in the symbol table, storing an individual entry.
+ * 
+ * @details 
+ * - Each node contains an entry (a pair of lexeme and token type) and a flag indicating its validity.
+ * - Used within the symbol table's hash map for storage and retrieval.
+ */
 typedef struct SymbolTableNode symbol_table_node;
-typedef struct SymbolTableEntry entry;
 
 struct SymbolTable {
-    symbol_table_node* entries;
-    int capacity;
-    int occupancy;
+    symbol_table_node* entries; /**< Pointer to an array of symbol table entries. */
+    int capacity; /**< Maximum capacity of the symbol table (resizable). */
+    int occupancy; /**< Current number of occupied slots in the symbol table. */
 };
 
+/**
+ * @struct SymbolTableNode
+ * @brief Structure defining a single node in the symbol table.
+ */
 struct SymbolTableNode {
-    entry* value;
-    bool is_occupied;
+    entry* value; /**< Pointer to an entry in the symbol table. */
+    bool is_occupied; /**< Indicates whether the entry is valid or uninitialized. */
 };
+
 
 /*****************************************************************************
  *                                                                           *
@@ -45,8 +84,6 @@ static int collision_count = 0;
  * - Effectively enforces encapsulation.
  */
 static symbol_table* table = NULL;
-
-
 
 
 /*****************************************************************************
