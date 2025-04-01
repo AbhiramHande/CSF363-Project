@@ -7,13 +7,30 @@
 
 #include "parserDef.h"
 
+/**
+ * @brief Defines the initial capacity of the stack.
+ * 
+ * @warning The stack starts with this size, and if it is full, no further elements can be pushed.
+ */
 #define STACK_SIZE 1024
 
-// Structure for Stack
+/**
+ * @brief Data structure representing a stack.
+ * 
+ * @details 
+ * - A simple stack implementation with a fixed maximum size.
+ * - Used for storing pointers to syntax tree nodes.
+ * - Supports standard push, pop, and top operations.
+ * 
+ * @note
+ * - **Lookup Complexity:** @f$ \mathcal{O}(1) @f$ for accessing the top element.
+ * - **Insertion Complexity:** @f$ \mathcal{O}(1) @f$ for pushing an element.
+ * - **Deletion Complexity:** @f$ \mathcal{O}(1) @f$ for popping an element.
+ */
 typedef struct Stack {
-    node** data;
-    int top;
-    int capacity;
+    node** data; /**< An array of pointers to tree nodes */
+    int top; /**< Index of the top element, -1 if the stack is empty */
+    int capacity; /**< Maximum capacity of the stack (fixed at initialization) */
 } stack;
 
 

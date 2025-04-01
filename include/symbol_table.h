@@ -9,13 +9,20 @@
 
 #include "lexerDef.h"
 
+/**
+ * @brief Represents an entry in the symbol table.
+ * 
+ * @details 
+ * - Each entry consists of a lexeme (`name`) and its associated token type (`type`).
+ * - Used to store identifiers, keywords, and other symbols encountered during parsing.
+ */
 typedef struct SymbolTableEntry entry;
 
-// Structure for an entry of the symbol table
 struct SymbolTableEntry {
-    char* name;
-    token_type type;
+    char* name; /**< Pointer to the lexeme stored as a null-terminated string */
+    token_type type; /**< Token type associated with the lexeme */
 };
+
 
 /*****************************************************************************
  *                                                                           *

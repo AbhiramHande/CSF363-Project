@@ -34,7 +34,7 @@ TARGET = $(EXEC_DIR)/prog.exe
 TEST_TARGET = $(EXEC_DIR)/test_target.exe
 TESTER = $(EXEC_DIR)/tester.exe
 
-.PHONY: docs
+.PHONY: docs clean all debug test help
 
 # Build main executable
 all: $(TARGET)
