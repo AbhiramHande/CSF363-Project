@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['entry_415',['entry',['../symbol__table_8h.html#a12791510c3eaae0d14a83abe2190b34a',1,'entry():&#160;symbol_table.h'],['../symbol__table_8c.html#a12791510c3eaae0d14a83abe2190b34a',1,'entry():&#160;symbol_table.c']]]
+  ['token_5ftype_389',['token_type',['../lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81',1,'lexerDef.h']]]
 ];

@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$lexer_8c.html#a67dd8f227181df843e25a314e262a10c" title="Deallocates the twin buffer (automatically called at program termination)." alt="" coords="167,35,286,61"/>
 <area shape="rect" id="node3" href="$lexer_8c.html#a1ede1e9739c264c7e3af07630e5a68f3" title=" " alt="" coords="141,85,312,112"/>
 <area shape="rect" id="node4" href="$lexer_8c.html#ab8b57ff9976f6622383db94b907a00f3" title=" " alt="" coords="381,9,487,36"/>
-<area shape="rect" id="node5" href="$symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" title="Inserts a lexeme into the internal symbol table." alt="" coords="556,35,711,61"/>
+<area shape="rect" id="node5" href="$symbol__table_8c.html#acadfe9a6832a8597ed3583053966ac3b" title="Inserts a lexeme into the internal symbol table." alt="" coords="556,35,711,61"/>
 <area shape="rect" id="node10" href="$lexer_8c.html#a960f17a4b92e6cce8b8edae91c728ead" title=" " alt="" coords="360,111,508,137"/>
 <area shape="rect" id="node11" href="$lexer_8c.html#a6d0bc199864425dd309933a88f06bb51" title=" " alt="" coords="383,161,485,188"/>
 <area shape="rect" id="node6" href="$symbol__table_8c.html#af00e4a3f1778752600e745a5f825e3ac" title=" " alt="" coords="759,35,915,61"/>

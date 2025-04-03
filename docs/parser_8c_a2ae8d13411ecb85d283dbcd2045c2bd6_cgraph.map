@@ -1,6 +1,6 @@
 <map id="generate_parse_map" name="generate_parse_map">
 <area shape="rect" id="node1" title="Generates the parsing table for the given grammar using a hash map." alt="" coords="5,31,164,57"/>
 <area shape="rect" id="node2" href="$parser_8c.html#a66e98027ec5a1a7c880689156e4b664d" title="Computes the first set of a sequence of symbols (terminals and non&#45;terminals)." alt="" coords="212,5,412,32"/>
-<area shape="rect" id="node4" href="$hash__map_8h.html#a17fd9c089bb62d17bb6266babc287a82" title="Inserts a production rule into the internal hash table for the LL(1) parser." alt="" coords="265,56,359,83"/>
+<area shape="rect" id="node4" href="$hash__map_8c.html#a17fd9c089bb62d17bb6266babc287a82" title="Inserts a production rule into the internal hash table for the LL(1) parser." alt="" coords="265,56,359,83"/>
 <area shape="rect" id="node3" href="$parser_8c.html#a2fb545f0baa318bfb9bdbab0e882cd32" title="Adds a given token type to a set if it does not already exist." alt="" coords="460,5,553,32"/>
 </map>

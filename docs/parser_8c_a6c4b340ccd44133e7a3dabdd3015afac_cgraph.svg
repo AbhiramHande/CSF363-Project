@@ -108,18 +108,18 @@
 <path fill="none" stroke="midnightblue" d="M44.06,-418.32C66,-388.21 133.28,-295.92 162.13,-256.34"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="165.23,-258.03 168.29,-247.89 159.57,-253.91 165.23,-258.03"/>
 </g>
-<!-- Node36 -->
-<g id="node36" class="node">
-<title>Node36</title>
-<g id="a_node36"><a xlink:href="lexer_8h.html#ab45c7162c82bb8baec1ef2a248bcf120" target="_top" xlink:title="Retrieves the token type based on the given string.">
+<!-- Node35 -->
+<g id="node35" class="node">
+<title>Node35</title>
+<g id="a_node35"><a xlink:href="lexer_8c.html#ab45c7162c82bb8baec1ef2a248bcf120" target="_top" xlink:title="Retrieves the token type based on the given string.">
 <polygon fill="white" stroke="black" points="130.5,-190.5 130.5,-209.5 222.5,-209.5 222.5,-190.5 130.5,-190.5"/>
 <text text-anchor="middle" x="176.5" y="-197.5" font-family="Helvetica,sans-Serif" font-size="10.00">string_to_token</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node36 -->
+<!-- Node1&#45;&gt;Node35 -->
 <g id="edge39" class="edge">
-<title>Node1&#45;&gt;Node36</title>
+<title>Node1&#45;&gt;Node35</title>
 <path fill="none" stroke="midnightblue" d="M37.26,-418.46C38.68,-385.59 47.94,-275.96 108,-219 111.77,-215.43 116.15,-212.52 120.85,-210.15"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="122.31,-213.33 130.17,-206.23 119.6,-206.88 122.31,-213.33"/>
 </g>
@@ -192,7 +192,7 @@
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="hash__map_8h.html#a17fd9c089bb62d17bb6266babc287a82" target="_top" xlink:title="Inserts a production rule into the internal hash table for the LL(1) parser.">
+<g id="a_node11"><a xlink:href="hash__map_8c.html#a17fd9c089bb62d17bb6266babc287a82" target="_top" xlink:title="Inserts a production rule into the internal hash table for the LL(1) parser.">
 <polygon fill="white" stroke="black" points="320.5,-418.5 320.5,-437.5 391.5,-437.5 391.5,-418.5 320.5,-418.5"/>
 <text text-anchor="middle" x="356" y="-425.5" font-family="Helvetica,sans-Serif" font-size="10.00">map_insert</text>
 </a>
@@ -237,7 +237,7 @@
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
-<g id="a_node15"><a xlink:href="lexer_8h.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
+<g id="a_node15"><a xlink:href="lexer_8c.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
 <polygon fill="white" stroke="black" points="310,-304.5 310,-323.5 402,-323.5 402,-304.5 310,-304.5"/>
 <text text-anchor="middle" x="356" y="-311.5" font-family="Helvetica,sans-Serif" font-size="10.00">get_next_token</text>
 </a>
@@ -252,7 +252,7 @@
 <!-- Node27 -->
 <g id="node27" class="node">
 <title>Node27</title>
-<g id="a_node27"><a xlink:href="hash__map_8h.html#aa4630dffff2a5ef840da3cfd9572b79f" target="_top" xlink:title="Retrieves the production rule associated with a given key from the internal hash table.">
+<g id="a_node27"><a xlink:href="hash__map_8c.html#aa4630dffff2a5ef840da3cfd9572b79f" target="_top" xlink:title="Retrieves the production rule associated with a given key from the internal hash table.">
 <polygon fill="white" stroke="black" points="322,-266.5 322,-285.5 390,-285.5 390,-266.5 322,-266.5"/>
 <text text-anchor="middle" x="356" y="-273.5" font-family="Helvetica,sans-Serif" font-size="10.00">map_fetch</text>
 </a>
@@ -267,7 +267,7 @@
 <!-- Node28 -->
 <g id="node28" class="node">
 <title>Node28</title>
-<g id="a_node28"><a xlink:href="stack_8h.html#a0401a54893bb4a3c36be29b4f4d2a673" target="_top" xlink:title="Deallocates all memory associated with the stack.">
+<g id="a_node28"><a xlink:href="stack_8c.html#a0401a54893bb4a3c36be29b4f4d2a673" target="_top" xlink:title="Deallocates all memory associated with the stack.">
 <polygon fill="white" stroke="black" points="313,-228.5 313,-247.5 399,-247.5 399,-228.5 313,-228.5"/>
 <text text-anchor="middle" x="356" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_cleanup</text>
 </a>
@@ -282,7 +282,7 @@
 <!-- Node29 -->
 <g id="node29" class="node">
 <title>Node29</title>
-<g id="a_node29"><a xlink:href="stack_8h.html#a12f8e38a7f5d0af1137cc4fff111ef3c" target="_top" xlink:title="Initializes a stack.">
+<g id="a_node29"><a xlink:href="stack_8c.html#a12f8e38a7f5d0af1137cc4fff111ef3c" target="_top" xlink:title="Initializes a stack.">
 <polygon fill="white" stroke="black" points="316.5,-190.5 316.5,-209.5 395.5,-209.5 395.5,-190.5 316.5,-190.5"/>
 <text text-anchor="middle" x="356" y="-197.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_create</text>
 </a>
@@ -297,22 +297,22 @@
 <!-- Node30 -->
 <g id="node30" class="node">
 <title>Node30</title>
-<g id="a_node30"><a xlink:href="stack_8h.html#a4bf088087d46031158e6bdd2a93695f9" target="_top" xlink:title="Determines if the stack is empty.">
-<polygon fill="white" stroke="black" points="316,-152.5 316,-171.5 396,-171.5 396,-152.5 316,-152.5"/>
-<text text-anchor="middle" x="356" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_empty</text>
+<g id="a_node30"><a xlink:href="stack_8c.html#a4bf088087d46031158e6bdd2a93695f9" target="_top" xlink:title="Determines if the stack is empty.">
+<polygon fill="white" stroke="black" points="491,-114.5 491,-133.5 571,-133.5 571,-114.5 491,-114.5"/>
+<text text-anchor="middle" x="531" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_empty</text>
 </a>
 </g>
 </g>
 <!-- Node12&#45;&gt;Node30 -->
 <g id="edge32" class="edge">
 <title>Node12&#45;&gt;Node30</title>
-<path fill="none" stroke="midnightblue" d="M224.26,-228.41C231.48,-225.93 238.64,-222.84 245,-219 264.91,-206.97 260.95,-192.8 281,-181 288.64,-176.5 297.34,-173.06 306.02,-170.43"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="307.02,-173.78 315.75,-167.78 305.18,-167.03 307.02,-173.78"/>
+<path fill="none" stroke="midnightblue" d="M224.26,-228.41C231.48,-225.93 238.64,-222.84 245,-219 264.91,-206.97 260.8,-192.53 281,-181 298.26,-171.14 413.49,-147.13 480.98,-133.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="481.86,-137.03 490.98,-131.64 480.49,-130.16 481.86,-137.03"/>
 </g>
 <!-- Node31 -->
 <g id="node31" class="node">
 <title>Node31</title>
-<g id="a_node31"><a xlink:href="stack_8h.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" target="_top" xlink:title="Removes and returns the topmost node from the stack.">
+<g id="a_node31"><a xlink:href="stack_8c.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" target="_top" xlink:title="Removes and returns the topmost node from the stack.">
 <polygon fill="white" stroke="black" points="323,-114.5 323,-133.5 389,-133.5 389,-114.5 323,-114.5"/>
 <text text-anchor="middle" x="356" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_pop</text>
 </a>
@@ -321,51 +321,51 @@
 <!-- Node12&#45;&gt;Node31 -->
 <g id="edge33" class="edge">
 <title>Node12&#45;&gt;Node31</title>
-<path fill="none" stroke="midnightblue" d="M229.59,-228.37C235.16,-225.92 240.44,-222.85 245,-219 273.55,-194.88 252.17,-166.79 281,-143 290.02,-135.56 301.61,-130.99 312.92,-128.19"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="313.63,-131.62 322.72,-126.17 312.22,-124.76 313.63,-131.62"/>
+<path fill="none" stroke="midnightblue" d="M229.15,-228.4C234.86,-225.95 240.3,-222.87 245,-219 272.33,-196.54 254.11,-171 281,-148 290.05,-140.26 301.64,-135 312.96,-131.44"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="314.05,-134.77 322.75,-128.72 312.18,-128.02 314.05,-134.77"/>
 </g>
-<!-- Node33 -->
-<g id="node33" class="node">
-<title>Node33</title>
-<g id="a_node33"><a xlink:href="stack_8h.html#ac96c2f73b6cf10cdf5189330c7b02be8" target="_top" xlink:title="Adds a node to the top of the stack.">
+<!-- Node32 -->
+<g id="node32" class="node">
+<title>Node32</title>
+<g id="a_node32"><a xlink:href="stack_8c.html#ac96c2f73b6cf10cdf5189330c7b02be8" target="_top" xlink:title="Adds a node to the top of the stack.">
 <polygon fill="white" stroke="black" points="320.5,-76.5 320.5,-95.5 391.5,-95.5 391.5,-76.5 320.5,-76.5"/>
 <text text-anchor="middle" x="356" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_push</text>
 </a>
 </g>
 </g>
-<!-- Node12&#45;&gt;Node33 -->
+<!-- Node12&#45;&gt;Node32 -->
 <g id="edge35" class="edge">
-<title>Node12&#45;&gt;Node33</title>
+<title>Node12&#45;&gt;Node32</title>
 <path fill="none" stroke="midnightblue" d="M231.13,-228.49C236.22,-226.01 240.98,-222.9 245,-219 283.16,-182.03 242.42,-141.53 281,-105 289.04,-97.39 299.7,-92.72 310.42,-89.89"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="311.17,-93.3 320.21,-87.77 309.69,-86.46 311.17,-93.3"/>
 </g>
-<!-- Node34 -->
-<g id="node34" class="node">
-<title>Node34</title>
-<g id="a_node34"><a xlink:href="stack_8h.html#af0faaa6f406636514cacd26f54be0a19" target="_top" xlink:title="Returns the topmost node from the stack without removing it.">
+<!-- Node33 -->
+<g id="node33" class="node">
+<title>Node33</title>
+<g id="a_node33"><a xlink:href="stack_8c.html#af0faaa6f406636514cacd26f54be0a19" target="_top" xlink:title="Returns the topmost node from the stack without removing it.">
 <polygon fill="white" stroke="black" points="324,-38.5 324,-57.5 388,-57.5 388,-38.5 324,-38.5"/>
 <text text-anchor="middle" x="356" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_top</text>
 </a>
 </g>
 </g>
-<!-- Node12&#45;&gt;Node34 -->
+<!-- Node12&#45;&gt;Node33 -->
 <g id="edge36" class="edge">
-<title>Node12&#45;&gt;Node34</title>
+<title>Node12&#45;&gt;Node33</title>
 <path fill="none" stroke="midnightblue" d="M232.08,-228.44C236.87,-225.96 241.29,-222.87 245,-219 293.05,-168.89 232.37,-116.55 281,-67 289.71,-58.13 301.96,-53.2 314,-50.53"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="314.73,-53.95 323.98,-48.77 313.52,-47.06 314.73,-53.95"/>
 </g>
-<!-- Node35 -->
-<g id="node35" class="node">
-<title>Node35</title>
-<g id="a_node35"><a xlink:href="lexer_8h.html#aee1807f4e95bea666b6c994915907414" target="_top" xlink:title="Retrieves a string representation of a token type (for printing purposes).">
+<!-- Node34 -->
+<g id="node34" class="node">
+<title>Node34</title>
+<g id="a_node34"><a xlink:href="lexer_8c.html#aee1807f4e95bea666b6c994915907414" target="_top" xlink:title="Retrieves a string representation of a token type (for printing purposes).">
 <polygon fill="white" stroke="black" points="310,-0.5 310,-19.5 402,-19.5 402,-0.5 310,-0.5"/>
 <text text-anchor="middle" x="356" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">token_to_string</text>
 </a>
 </g>
 </g>
-<!-- Node12&#45;&gt;Node35 -->
+<!-- Node12&#45;&gt;Node34 -->
 <g id="edge38" class="edge">
-<title>Node12&#45;&gt;Node35</title>
+<title>Node12&#45;&gt;Node34</title>
 <path fill="none" stroke="midnightblue" d="M232.58,-228.44C237.21,-225.96 241.46,-222.86 245,-219 303.07,-155.64 222.2,-91.69 281,-29 286.24,-23.41 292.88,-19.38 300.03,-16.48"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="301.59,-19.65 310,-13.2 299.4,-13 301.59,-19.65"/>
 </g>
@@ -417,7 +417,7 @@
 <!-- Node20 -->
 <g id="node20" class="node">
 <title>Node20</title>
-<g id="a_node20"><a xlink:href="symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
+<g id="a_node20"><a xlink:href="symbol__table_8c.html#acadfe9a6832a8597ed3583053966ac3b" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
 <polygon fill="white" stroke="black" points="778,-304.5 778,-323.5 894,-323.5 894,-304.5 778,-304.5"/>
 <text text-anchor="middle" x="836" y="-311.5" font-family="Helvetica,sans-Serif" font-size="10.00">symbol_table_insert</text>
 </a>
@@ -547,26 +547,17 @@
 <path fill="none" stroke="midnightblue" d="M1177.14,-336C1192.06,-336 1209.5,-336 1224.79,-336"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1224.97,-339.5 1234.97,-336 1224.97,-332.5 1224.97,-339.5"/>
 </g>
-<!-- Node32 -->
-<g id="node32" class="node">
-<title>Node32</title>
-<g id="a_node32"><a xlink:href="stack_8c.html#a4bf088087d46031158e6bdd2a93695f9" target="_top" xlink:title="Determines if the stack is empty.">
-<polygon fill="white" stroke="black" points="491,-76.5 491,-95.5 571,-95.5 571,-76.5 491,-76.5"/>
-<text text-anchor="middle" x="531" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_empty</text>
-</a>
-</g>
-</g>
-<!-- Node31&#45;&gt;Node32 -->
+<!-- Node31&#45;&gt;Node30 -->
 <g id="edge34" class="edge">
-<title>Node31&#45;&gt;Node32</title>
-<path fill="none" stroke="midnightblue" d="M389.13,-116.94C414.83,-111.3 451.3,-103.29 480.69,-96.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="481.74,-100.18 490.76,-94.62 480.24,-93.35 481.74,-100.18"/>
+<title>Node31&#45;&gt;Node30</title>
+<path fill="none" stroke="midnightblue" d="M389.13,-124C414.83,-124 451.3,-124 480.69,-124"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="480.76,-127.5 490.76,-124 480.76,-120.5 480.76,-127.5"/>
 </g>
-<!-- Node34&#45;&gt;Node32 -->
+<!-- Node33&#45;&gt;Node30 -->
 <g id="edge37" class="edge">
-<title>Node34&#45;&gt;Node32</title>
-<path fill="none" stroke="midnightblue" d="M388.33,-54.88C414.14,-60.55 451.19,-68.69 480.93,-75.22"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="480.19,-78.64 490.71,-77.37 481.69,-71.8 480.19,-78.64"/>
+<title>Node33&#45;&gt;Node30</title>
+<path fill="none" stroke="midnightblue" d="M388.2,-54.04C401.64,-57.14 417.37,-61.45 431,-67 458.75,-78.3 488.22,-96.12 507.72,-108.82"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="505.92,-111.82 516.19,-114.42 509.78,-105.99 505.92,-111.82"/>
 </g>
 </g>
 </svg>

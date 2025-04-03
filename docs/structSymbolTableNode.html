@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): SymbolTableNode Struct Reference</title>
+<title>Compiler Project (Group 14): symbol_table_node Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,56 +72,60 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">SymbolTableNode Struct Reference</div>  </div>
+<div class="title">symbol_table_node Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for SymbolTableNode:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structSymbolTableNode__coll__graph.svg" width="150" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Represents a node in the symbol table, storing an individual entry.  
+ <a href="structSymbolTableNode.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:af88c19bcc4ab831ec2ee143d99f3d95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="symbol__table_8h.html#a12791510c3eaae0d14a83abe2190b34a">entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableNode.html#af88c19bcc4ab831ec2ee143d99f3d95b">value</a></td></tr>
-<tr class="separator:af88c19bcc4ab831ec2ee143d99f3d95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cb72cd2b86c01e5c7448994b11692bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableNode.html#a5cb72cd2b86c01e5c7448994b11692bd">is_occupied</a></td></tr>
-<tr class="separator:a5cb72cd2b86c01e5c7448994b11692bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a496194074cf0e1a47e6e18ed68959057"><td class="memItemLeft" align="right" valign="top">entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableNode.html#a496194074cf0e1a47e6e18ed68959057">value</a></td></tr>
+<tr class="separator:a496194074cf0e1a47e6e18ed68959057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f85dcc4202085572f38849081065d0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableNode.html#a0f85dcc4202085572f38849081065d0c">is_occupied</a></td></tr>
+<tr class="separator:a0f85dcc4202085572f38849081065d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00015">15</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<div class="textblock"><p>Represents a node in the symbol table, storing an individual entry. </p>
+<ul>
+<li>Each node contains an entry (a pair of lexeme and token type) and a flag indicating its validity.</li>
+<li>Used within the symbol table's hash map for storage and retrieval. </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00049">49</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a5cb72cd2b86c01e5c7448994b11692bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cb72cd2b86c01e5c7448994b11692bd">&#9670;&nbsp;</a></span>is_occupied</h2>
+<a id="a0f85dcc4202085572f38849081065d0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f85dcc4202085572f38849081065d0c">&#9670;&nbsp;</a></span>is_occupied</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool SymbolTableNode::is_occupied</td>
+          <td class="memname">bool symbol_table_node::is_occupied</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Indicates whether the entry is valid or uninitialized. </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00017">17</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00051">51</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 
 </div>
 </div>
-<a id="af88c19bcc4ab831ec2ee143d99f3d95b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af88c19bcc4ab831ec2ee143d99f3d95b">&#9670;&nbsp;</a></span>value</h2>
+<a id="a496194074cf0e1a47e6e18ed68959057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a496194074cf0e1a47e6e18ed68959057">&#9670;&nbsp;</a></span>value</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="symbol__table_8h.html#a12791510c3eaae0d14a83abe2190b34a">entry</a>* SymbolTableNode::value</td>
+          <td class="memname">entry* symbol_table_node::value</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to an entry in the symbol table. </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00016">16</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00050">50</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 
 </div>
 </div>

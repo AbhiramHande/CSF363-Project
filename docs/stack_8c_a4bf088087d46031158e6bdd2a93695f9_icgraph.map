@@ -1,8 +1,8 @@
 <map id="stack_empty" name="stack_empty">
 <area shape="rect" id="node1" title="Determines if the stack is empty." alt="" coords="592,21,699,47"/>
 <area shape="rect" id="node2" href="$parser_8c.html#a385276c7e31aeff5ad9c22370300ced6" title="Generates a parse tree for the given source code." alt="" coords="252,21,408,47"/>
-<area shape="rect" id="node5" href="$stack_8h.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" title="Removes and returns the topmost node from the stack." alt="" coords="456,21,544,47"/>
-<area shape="rect" id="node6" href="$stack_8h.html#af0faaa6f406636514cacd26f54be0a19" title="Returns the topmost node from the stack without removing it." alt="" coords="457,71,543,98"/>
-<area shape="rect" id="node3" href="$parser_8h.html#af8e858bd867bc61808a62e29963b3497" title="Parses the given code based on the specified grammar." alt="" coords="108,21,204,47"/>
+<area shape="rect" id="node5" href="$stack_8c.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" title="Removes and returns the topmost node from the stack." alt="" coords="456,21,544,47"/>
+<area shape="rect" id="node6" href="$stack_8c.html#af0faaa6f406636514cacd26f54be0a19" title="Returns the topmost node from the stack without removing it." alt="" coords="457,71,543,98"/>
+<area shape="rect" id="node3" href="$parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" title="Parses the given code based on the specified grammar." alt="" coords="108,21,204,47"/>
 <area shape="rect" id="node4" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,21,60,47"/>
 </map>

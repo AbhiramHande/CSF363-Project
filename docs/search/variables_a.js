@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['lexeme_393',['lexeme',['../structToken.html#a5359a15731f99e3edd4ed3f005919f56',1,'Token']]],
-  ['line_5fnum_394',['line_num',['../structToken.html#a448126a329a5b7e3ac490ead4f6e5a02',1,'Token']]],
-  ['load_5fbuffer_395',['load_buffer',['../structTwinBuffer.html#ae64c8566663c3c3423bae7248b21a814',1,'TwinBuffer']]]
+  ['lexeme_367',['lexeme',['../structToken.html#a287e420fbfe3b2380907741f1a535f3c',1,'Token']]],
+  ['line_5fnum_368',['line_num',['../structToken.html#a0f887b2494a14cd288a1b5dd27722307',1,'Token']]],
+  ['load_5fbuffer_369',['load_buffer',['../structTwinBuffer.html#a252b6e80562e50b2616d51f19332acd4',1,'TwinBuffer']]]
 ];

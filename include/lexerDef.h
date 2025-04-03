@@ -3,8 +3,8 @@
 
 #define BUFFER_SIZE     2048        /**< Defines the capacity of each buffer in the twin buffer.*/
 #define TERMINAL_COUNT  60          /**< Defines the number of tokens.*/
-#define KEYWORD_END     TK_ELSE     /**< @depracated Defines the start of keyword.*/
-#define KEYWORD_START   TK_WITH     /**< @depracated Defines the end of keyword.*/
+#define KEYWORD_END     TK_ELSE     /**< @deprecated Defines the start of keyword.*/
+#define KEYWORD_START   TK_WITH     /**< @deprecated Defines the end of keyword.*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,15 +47,15 @@ enum TokenType {
     TK_FIELDID,     /**< Represents field identifiers, matching the pattern `[a-z]+`. */
     TK_ID,          /**< Represents identifiers, which match the regular expression `[b-d][2-7][b-d]*[2-7]*` */
     TK_NUM,         /**< Represents numeric tokens that match the regex pattern `[0-9]+` for integers.*/
-    TK_RNUM,        /**< Represents numeric tokens that match the regex pattern `[0-9]+\.[0-9][0-9]E[+|-|eps][0-9][0-9]` for real numbers.*/
-    TK_FUNID,       /**< Represents function identifiers, matching the regex `_[a-zA-Z][a-zA-Z0-9]*`.*/
+    TK_RNUM,        /**< Represents numeric tokens that match the regex pattern `[0-9]+.[0-9][0-9][eps|E[+|-|eps][0-9][0-9]]` for real numbers.*/
+    TK_FUNID,       /**< Represents function identifiers, matching the regex `_[a-z|A-Z][a-z|A-Z|0-9]*`.*/
     TK_RUID,        /**< Represents record or union type identifiers, matching the regex `#[a-z]+`.*/
     TK_LT,          /**< Represents the less-than operator (`<`) */
     TK_LE,          /**< Represents the less-than or equal-to operator (`<=`) */
     TK_GT,          /**< Represents the greater-than operator (`>`) */
     TK_GE,          /**< Represents the greater-than or equal-to operator (`>=`) */
-    EPSILON,        /**< Represents an epsilon (@f$ \epsilon @f$) in grammar rules -- **NOT A TOKEN** */
-    DOLLAR,         /**< @deprecated Represents the stack bottom marker (`$`) -- **NOT A TOKEN* **/
+    EPSILON,        /**< Represents an epsilon @f$(\varepsilon)@f$ in grammar rules -- **NOT A TOKEN** */
+    DOLLAR,         /**< @deprecated Represents the stack bottom marker (`$`) -- **NOT A TOKEN** */
     TK_SQL,         /**< Represents an opening square bracket (`[`) */
     TK_SQR,         /**< Represents a closing square bracket (`]`) */
     TK_COMMA,       /**< Represents a comma (`,`) */
@@ -102,7 +102,7 @@ enum TokenType {
     TK_ENDRECORD,   /**< Represents the keyword `endrecord`, marking the termination of a record definition. */
     TK_ELSE,        /**< Represents the keyword `else`, used in conditional statements to specify alternative execution paths. */
     TK_ERROR,       /**< Represents an unrecognized token, indicating a lexical error. */
-    TK_EOF          /**< Represents the end-of-file (EOF) marker, signaling the end of the source code. */
+    TK_EOF          /**< Represents the end-of-file marker, signaling the end of the source code. */
 };
 
 struct TwinBuffer {

@@ -72,7 +72,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
+<g id="a_node5"><a xlink:href="symbol__table_8c.html#acadfe9a6832a8597ed3583053966ac3b" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
 <polygon fill="white" stroke="black" points="413,-95.5 413,-114.5 529,-114.5 529,-95.5 413,-95.5"/>
 <text text-anchor="middle" x="471" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">symbol_table_insert</text>
 </a>

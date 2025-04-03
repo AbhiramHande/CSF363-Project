@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): SymbolTable Struct Reference</title>
+<title>Compiler Project (Group 14): symbol_table Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,74 +72,95 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">SymbolTable Struct Reference</div>  </div>
+<div class="title">symbol_table Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for SymbolTable:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structSymbolTable__coll__graph.svg" width="150" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Data structure representing a symbol table.  
+ <a href="structSymbolTable.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a9de38829bf678e4a27d965fa62a9fd0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="symbol__table_8c.html#a460da40f9821c07d1f72cb8d6987a65e">symbol_table_node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#a9de38829bf678e4a27d965fa62a9fd0c">entries</a></td></tr>
-<tr class="separator:a9de38829bf678e4a27d965fa62a9fd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f6f1596e111198efc1434eeab31f171"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#a6f6f1596e111198efc1434eeab31f171">capacity</a></td></tr>
-<tr class="separator:a6f6f1596e111198efc1434eeab31f171"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c9d17bc1498f254541d3a78e804701e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#a9c9d17bc1498f254541d3a78e804701e">occupancy</a></td></tr>
-<tr class="separator:a9c9d17bc1498f254541d3a78e804701e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad116098bb76d9f6a65310375a1fbff79"><td class="memItemLeft" align="right" valign="top">symbol_table_node *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#ad116098bb76d9f6a65310375a1fbff79">entries</a></td></tr>
+<tr class="separator:ad116098bb76d9f6a65310375a1fbff79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff62d5bac6b2f4e47357bcae5b909e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#a9ff62d5bac6b2f4e47357bcae5b909e4">capacity</a></td></tr>
+<tr class="separator:a9ff62d5bac6b2f4e47357bcae5b909e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a648db083723b62d6c4921c10ee1f3096"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTable.html#a648db083723b62d6c4921c10ee1f3096">occupancy</a></td></tr>
+<tr class="separator:a648db083723b62d6c4921c10ee1f3096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00009">9</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<div class="textblock"><p>Data structure representing a symbol table. </p>
+<ul>
+<li>The symbol table is implemented as a <b>hash map</b> for efficient storage and retrieval of symbols (identifiers, keywords, etc.).</li>
+<li>Symbols are indexed by their <b>lexeme</b> and mapped to their respective <b>token type</b>.</li>
+<li>Uses <b>open addressing with linear probing</b> for collision resolution.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>The symbol table is dynamically allocated and must be initialized using <code>symbol_table_create</code>.</li>
+<li>It supports <b>automatic resizing</b> when the hash map is full.</li>
+<li>Deallocated using <code>symbol_table_cleanup</code> to prevent memory leaks.</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd><ul>
+<li>Lexemes must be <b>null-terminated strings</b>.</li>
+</ul>
+</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd><ul>
+<li><b>Lookup Complexity:</b> Average \( \mathcal{O}(1) \), Worst-case \( \mathcal{O}(n) \) (if hash function performs poorly).</li>
+<li><b>Insertion Complexity:</b> Average \( \mathcal{O}(1) \), but rehashing and/or resizing can be expensive. </li>
+</ul>
+</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00043">43</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a6f6f1596e111198efc1434eeab31f171"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f6f1596e111198efc1434eeab31f171">&#9670;&nbsp;</a></span>capacity</h2>
+<a id="a9ff62d5bac6b2f4e47357bcae5b909e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff62d5bac6b2f4e47357bcae5b909e4">&#9670;&nbsp;</a></span>capacity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int SymbolTable::capacity</td>
+          <td class="memname">int symbol_table::capacity</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Maximum capacity of the symbol table (resizable). </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00011">11</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00045">45</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 
 </div>
 </div>
-<a id="a9de38829bf678e4a27d965fa62a9fd0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9de38829bf678e4a27d965fa62a9fd0c">&#9670;&nbsp;</a></span>entries</h2>
+<a id="ad116098bb76d9f6a65310375a1fbff79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad116098bb76d9f6a65310375a1fbff79">&#9670;&nbsp;</a></span>entries</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="symbol__table_8c.html#a460da40f9821c07d1f72cb8d6987a65e">symbol_table_node</a>* SymbolTable::entries</td>
+          <td class="memname">symbol_table_node* symbol_table::entries</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to an array of symbol table entries. </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00010">10</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00044">44</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 
 </div>
 </div>
-<a id="a9c9d17bc1498f254541d3a78e804701e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c9d17bc1498f254541d3a78e804701e">&#9670;&nbsp;</a></span>occupancy</h2>
+<a id="a648db083723b62d6c4921c10ee1f3096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a648db083723b62d6c4921c10ee1f3096">&#9670;&nbsp;</a></span>occupancy</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int SymbolTable::occupancy</td>
+          <td class="memname">int symbol_table::occupancy</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Current number of occupied slots in the symbol table. </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00012">12</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8c_source.html#l00046">46</a> of file <a class="el" href="symbol__table_8c_source.html">symbol_table.c</a>.</p>
 
 </div>
 </div>

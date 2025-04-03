@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="parser_8h.html#af8e858bd867bc61808a62e29963b3497" target="_top" xlink:title="Parses the given code based on the specified grammar.">
+<g id="a_node2"><a xlink:href="parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" target="_top" xlink:title="Parses the given code based on the specified grammar.">
 <polygon fill="white" stroke="black" points="77,-0.5 77,-19.5 149,-19.5 149,-0.5 77,-0.5"/>
 <text text-anchor="middle" x="113" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">parse_code</text>
 </a>

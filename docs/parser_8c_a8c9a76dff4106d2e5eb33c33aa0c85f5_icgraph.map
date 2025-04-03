@@ -1,5 +1,4 @@
 <map id="print_parse_tree_inorder" name="print_parse_tree_inorder">
-<area shape="rect" id="node1" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="337,8,519,34"/>
-<area shape="rect" id="node2" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,8,60,34"/>
-<area shape="rect" id="node3" href="$parser_8h.html#a8c9a76dff4106d2e5eb33c33aa0c85f5" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="108,45,289,72"/>
+<area shape="rect" id="node1" title="Prints the parse tree using in&#45;order traversal in the specified file." alt="" coords="108,5,289,32"/>
+<area shape="rect" id="node2" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,60,32"/>
 </map>

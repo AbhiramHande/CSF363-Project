@@ -36,7 +36,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="stack_8h.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" target="_top" xlink:title="Removes and returns the topmost node from the stack.">
+<g id="a_node5"><a xlink:href="stack_8c.html#a6ee1c21725f3cd3803d491e0dcd1ecb8" target="_top" xlink:title="Removes and returns the topmost node from the stack.">
 <polygon fill="white" stroke="black" points="338,-38.5 338,-57.5 404,-57.5 404,-38.5 338,-38.5"/>
 <text text-anchor="middle" x="371" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_pop</text>
 </a>
@@ -51,7 +51,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="stack_8h.html#af0faaa6f406636514cacd26f54be0a19" target="_top" xlink:title="Returns the topmost node from the stack without removing it.">
+<g id="a_node6"><a xlink:href="stack_8c.html#af0faaa6f406636514cacd26f54be0a19" target="_top" xlink:title="Returns the topmost node from the stack without removing it.">
 <polygon fill="white" stroke="black" points="339,-0.5 339,-19.5 403,-19.5 403,-0.5 339,-0.5"/>
 <text text-anchor="middle" x="371" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">stack_top</text>
 </a>
@@ -66,7 +66,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="parser_8h.html#af8e858bd867bc61808a62e29963b3497" target="_top" xlink:title="Parses the given code based on the specified grammar.">
+<g id="a_node3"><a xlink:href="parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" target="_top" xlink:title="Parses the given code based on the specified grammar.">
 <polygon fill="white" stroke="black" points="77,-38.5 77,-57.5 149,-57.5 149,-38.5 77,-38.5"/>
 <text text-anchor="middle" x="113" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">parse_code</text>
 </a>

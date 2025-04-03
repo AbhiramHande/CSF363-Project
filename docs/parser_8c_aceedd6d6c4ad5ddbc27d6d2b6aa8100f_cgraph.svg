@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="lexer_8h.html#aee1807f4e95bea666b6c994915907414" target="_top" xlink:title="Retrieves a string representation of a token type (for printing purposes).">
+<g id="a_node2"><a xlink:href="lexer_8c.html#aee1807f4e95bea666b6c994915907414" target="_top" xlink:title="Retrieves a string representation of a token type (for printing purposes).">
 <polygon fill="white" stroke="black" points="132,-0.5 132,-19.5 224,-19.5 224,-0.5 132,-0.5"/>
 <text text-anchor="middle" x="178" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">token_to_string</text>
 </a>

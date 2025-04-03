@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): Entry Struct Reference</title>
+<title>Compiler Project (Group 14): map_entry Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,74 +72,80 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">Entry Struct Reference</div>  </div>
+<div class="title">map_entry Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for Entry:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structEntry__coll__graph.svg" width="308" height="306"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Represents an entry in the hash map.  
+ <a href="structEntry.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a01194932477913318431445664674443"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#a01194932477913318431445664674443">key</a></td></tr>
-<tr class="separator:a01194932477913318431445664674443"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a808d398c26182b0abe51370c73276fab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="parserDef_8h.html#a79fd85d4e6f9914662e00ead13f5c76b">production</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#a808d398c26182b0abe51370c73276fab">value</a></td></tr>
-<tr class="separator:a808d398c26182b0abe51370c73276fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a37386f8ccf76f019bdedd394ec452f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#a0a37386f8ccf76f019bdedd394ec452f">is_occupied</a></td></tr>
-<tr class="separator:a0a37386f8ccf76f019bdedd394ec452f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b364f308043a6dcc6801c132da13d04"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#a0b364f308043a6dcc6801c132da13d04">key</a></td></tr>
+<tr class="separator:a0b364f308043a6dcc6801c132da13d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6e1168de627070dbd77caeb5a665d1"><td class="memItemLeft" align="right" valign="top">production *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#a3a6e1168de627070dbd77caeb5a665d1">value</a></td></tr>
+<tr class="separator:a3a6e1168de627070dbd77caeb5a665d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e209bf13f7832022fd06fb392238d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEntry.html#ae5e209bf13f7832022fd06fb392238d6">is_occupied</a></td></tr>
+<tr class="separator:ae5e209bf13f7832022fd06fb392238d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00014">14</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<div class="textblock"><p>Represents an entry in the hash map. </p>
+<ul>
+<li>Each entry contains a unique key (an unsigned integer) and a value (a pointer to a production rule).</li>
+<li>Also includes an <code>is_occupied</code> flag to indicate whether the entry is in use.</li>
+<li>These entries are used for storage and retrieval within the hash map. </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00043">43</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a0a37386f8ccf76f019bdedd394ec452f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a37386f8ccf76f019bdedd394ec452f">&#9670;&nbsp;</a></span>is_occupied</h2>
+<a id="ae5e209bf13f7832022fd06fb392238d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5e209bf13f7832022fd06fb392238d6">&#9670;&nbsp;</a></span>is_occupied</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Entry::is_occupied</td>
+          <td class="memname">bool map_entry::is_occupied</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Indicates if the entry is currently occupied by a valid key-value pair </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00017">17</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00046">46</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>
-<a id="a01194932477913318431445664674443"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01194932477913318431445664674443">&#9670;&nbsp;</a></span>key</h2>
+<a id="a0b364f308043a6dcc6801c132da13d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b364f308043a6dcc6801c132da13d04">&#9670;&nbsp;</a></span>key</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int Entry::key</td>
+          <td class="memname">unsigned int map_entry::key</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>The unique key for this entry </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00015">15</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00044">44</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>
-<a id="a808d398c26182b0abe51370c73276fab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a808d398c26182b0abe51370c73276fab">&#9670;&nbsp;</a></span>value</h2>
+<a id="a3a6e1168de627070dbd77caeb5a665d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a6e1168de627070dbd77caeb5a665d1">&#9670;&nbsp;</a></span>value</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="parserDef_8h.html#a79fd85d4e6f9914662e00ead13f5c76b">production</a>* Entry::value</td>
+          <td class="memname">production* map_entry::value</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to the value associated with the key (here, a production rule) </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00016">16</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00045">45</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>

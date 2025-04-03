@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['active_5fbuffer_372',['active_buffer',['../structTwinBuffer.html#ad8d09de5d9b804d611c245980bdfefc0',1,'TwinBuffer']]]
+  ['active_5fbuffer_346',['active_buffer',['../structTwinBuffer.html#aef205eb8fa00989a5aa5d387986996c1',1,'TwinBuffer']]]
 ];

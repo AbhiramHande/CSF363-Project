@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['buffer_5fsize_495',['BUFFER_SIZE',['../lexerDef_8h.html#a6b20d41d6252e9871430c242cb1a56e7',1,'BUFFER_SIZE():&#160;lexerDef.h'],['../tester_8c.html#a6b20d41d6252e9871430c242cb1a56e7',1,'BUFFER_SIZE():&#160;tester.c']]]
+  ['final_5fstates_457',['FINAL_STATES',['../lexer_8c.html#aeea179a11cef57d9e6c799268635c41c',1,'lexer.c']]]
 ];

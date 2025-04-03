@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="symbol__table_8h.html#a838379e0d91707a08998e494fb420bf5" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
+<g id="a_node2"><a xlink:href="symbol__table_8c.html#acadfe9a6832a8597ed3583053966ac3b" target="_top" xlink:title="Inserts a lexeme into the internal symbol table.">
 <polygon fill="white" stroke="black" points="746,-76.5 746,-95.5 862,-95.5 862,-76.5 746,-76.5"/>
 <text text-anchor="middle" x="804" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">symbol_table_insert</text>
 </a>
@@ -72,7 +72,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="lexer_8h.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" target="_top" xlink:title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file.">
+<g id="a_node5"><a xlink:href="lexer_8c.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" target="_top" xlink:title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file.">
 <polygon fill="white" stroke="black" points="351,-76.5 351,-95.5 417,-95.5 417,-76.5 351,-76.5"/>
 <text text-anchor="middle" x="384" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">buffer_init</text>
 </a>
@@ -87,7 +87,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="lexer_8h.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
+<g id="a_node7"><a xlink:href="lexer_8c.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
 <polygon fill="white" stroke="black" points="338,-38.5 338,-57.5 430,-57.5 430,-38.5 338,-38.5"/>
 <text text-anchor="middle" x="384" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">get_next_token</text>
 </a>
@@ -144,7 +144,7 @@
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="parser_8h.html#af8e858bd867bc61808a62e29963b3497" target="_top" xlink:title="Parses the given code based on the specified grammar.">
+<g id="a_node9"><a xlink:href="parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" target="_top" xlink:title="Parses the given code based on the specified grammar.">
 <polygon fill="white" stroke="black" points="77,-0.5 77,-19.5 149,-19.5 149,-0.5 77,-0.5"/>
 <text text-anchor="middle" x="113" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">parse_code</text>
 </a>

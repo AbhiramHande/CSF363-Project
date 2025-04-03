@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): TwinBuffer Struct Reference</title>
+<title>Compiler Project (Group 14): twin_buffer Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,106 +72,124 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">TwinBuffer Struct Reference</div>  </div>
+<div class="title">twin_buffer Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A structure representing a twin buffer for lexical analysis.  
+ <a href="structTwinBuffer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ad8d09de5d9b804d611c245980bdfefc0"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#ad8d09de5d9b804d611c245980bdfefc0">active_buffer</a></td></tr>
-<tr class="separator:ad8d09de5d9b804d611c245980bdfefc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae64c8566663c3c3423bae7248b21a814"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#ae64c8566663c3c3423bae7248b21a814">load_buffer</a></td></tr>
-<tr class="separator:ae64c8566663c3c3423bae7248b21a814"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca89a7bb22449628213422cd92e81fb3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#aca89a7bb22449628213422cd92e81fb3">forward_ptr</a></td></tr>
-<tr class="separator:aca89a7bb22449628213422cd92e81fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a30ade1519d16acce5853bcf4bf7628"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a0a30ade1519d16acce5853bcf4bf7628">begin_ptr</a></td></tr>
-<tr class="separator:a0a30ade1519d16acce5853bcf4bf7628"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f031b9a96764fe6fe3c0638ca9193bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a7f031b9a96764fe6fe3c0638ca9193bd">buffer_loaded</a></td></tr>
-<tr class="separator:a7f031b9a96764fe6fe3c0638ca9193bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef205eb8fa00989a5aa5d387986996c1"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#aef205eb8fa00989a5aa5d387986996c1">active_buffer</a></td></tr>
+<tr class="separator:aef205eb8fa00989a5aa5d387986996c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a252b6e80562e50b2616d51f19332acd4"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a252b6e80562e50b2616d51f19332acd4">load_buffer</a></td></tr>
+<tr class="separator:a252b6e80562e50b2616d51f19332acd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5683ce0189192f0f0a2424f2e8e4400e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a5683ce0189192f0f0a2424f2e8e4400e">forward_ptr</a></td></tr>
+<tr class="separator:a5683ce0189192f0f0a2424f2e8e4400e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dca1fc47b21c0146c22df52c4afad20"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a6dca1fc47b21c0146c22df52c4afad20">begin_ptr</a></td></tr>
+<tr class="separator:a6dca1fc47b21c0146c22df52c4afad20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a748124c81393453b0ca50284fe71f39b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTwinBuffer.html#a748124c81393453b0ca50284fe71f39b">buffer_loaded</a></td></tr>
+<tr class="separator:a748124c81393453b0ca50284fe71f39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00083">83</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<div class="textblock"><p>A structure representing a twin buffer for lexical analysis. </p>
+<ul>
+<li>The twin buffer is used to efficiently handle input buffering for the lexer.</li>
+<li>It consists of two alternating buffers, allowing seamless processing of lexemes.</li>
+<li>Helps in implementing lookahead and efficient file reading. </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00108">108</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ad8d09de5d9b804d611c245980bdfefc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8d09de5d9b804d611c245980bdfefc0">&#9670;&nbsp;</a></span>active_buffer</h2>
+<a id="aef205eb8fa00989a5aa5d387986996c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef205eb8fa00989a5aa5d387986996c1">&#9670;&nbsp;</a></span>active_buffer</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* TwinBuffer::active_buffer</td>
+          <td class="memname">char* twin_buffer::active_buffer</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to the chunk of code currently being lexed. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00084">84</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00109">109</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a0a30ade1519d16acce5853bcf4bf7628"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a30ade1519d16acce5853bcf4bf7628">&#9670;&nbsp;</a></span>begin_ptr</h2>
+<a id="a6dca1fc47b21c0146c22df52c4afad20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dca1fc47b21c0146c22df52c4afad20">&#9670;&nbsp;</a></span>begin_ptr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int TwinBuffer::begin_ptr</td>
+          <td class="memname">int twin_buffer::begin_ptr</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Index of the start of the lexeme. </p><dl class="section note"><dt>Note</dt><dd><ul>
+<li>If negative, the lexeme begins in the <code>load_buffer</code> (from the end).</li>
+<li>If positive, the lexeme begins in the <code>active_buffer</code>. </li>
+</ul>
+</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00087">87</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00112">112</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a7f031b9a96764fe6fe3c0638ca9193bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f031b9a96764fe6fe3c0638ca9193bd">&#9670;&nbsp;</a></span>buffer_loaded</h2>
+<a id="a748124c81393453b0ca50284fe71f39b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a748124c81393453b0ca50284fe71f39b">&#9670;&nbsp;</a></span>buffer_loaded</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool TwinBuffer::buffer_loaded</td>
+          <td class="memname">bool twin_buffer::buffer_loaded</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Indicates whether the <code>load_buffer</code> should be lexed or discarded. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00088">88</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00116">116</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="aca89a7bb22449628213422cd92e81fb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca89a7bb22449628213422cd92e81fb3">&#9670;&nbsp;</a></span>forward_ptr</h2>
+<a id="a5683ce0189192f0f0a2424f2e8e4400e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5683ce0189192f0f0a2424f2e8e4400e">&#9670;&nbsp;</a></span>forward_ptr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int TwinBuffer::forward_ptr</td>
+          <td class="memname">int twin_buffer::forward_ptr</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Index of the current character in the <code>active_buffer</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00086">86</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00111">111</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="ae64c8566663c3c3423bae7248b21a814"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae64c8566663c3c3423bae7248b21a814">&#9670;&nbsp;</a></span>load_buffer</h2>
+<a id="a252b6e80562e50b2616d51f19332acd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252b6e80562e50b2616d51f19332acd4">&#9670;&nbsp;</a></span>load_buffer</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* TwinBuffer::load_buffer</td>
+          <td class="memname">char* twin_buffer::load_buffer</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to the chunk of code that is either about to be lexed or has already been lexed. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00085">85</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00110">110</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>

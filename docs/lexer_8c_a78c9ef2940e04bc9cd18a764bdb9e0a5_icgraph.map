@@ -1,9 +1,8 @@
 <map id="buffer_init" name="buffer_init">
-<area shape="rect" id="node1" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="845,93,933,120"/>
-<area shape="rect" id="node2" href="$lexer_8c.html#a1ede1e9739c264c7e3af07630e5a68f3" title=" " alt="" coords="627,43,797,69"/>
-<area shape="rect" id="node4" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,43,60,69"/>
-<area shape="rect" id="node3" href="$lexer_8h.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="473,5,561,32"/>
-<area shape="rect" id="node5" href="$lexer_8h.html#a68b169dd0377b22e0729c7e7a9988262" title="A wrapper function that fetches the next token from the file." alt="" coords="456,56,579,83"/>
-<area shape="rect" id="node6" href="$parser_8c.html#a385276c7e31aeff5ad9c22370300ced6" title="Generates a parse tree for the given source code." alt="" coords="252,68,408,95"/>
-<area shape="rect" id="node7" href="$parser_8h.html#af8e858bd867bc61808a62e29963b3497" title="Parses the given code based on the specified grammar." alt="" coords="108,68,204,95"/>
+<area shape="rect" id="node1" title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file." alt="" coords="845,56,933,83"/>
+<area shape="rect" id="node2" href="$lexer_8c.html#a1ede1e9739c264c7e3af07630e5a68f3" title=" " alt="" coords="627,56,797,83"/>
+<area shape="rect" id="node6" href="$driver_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,56,60,83"/>
+<area shape="rect" id="node3" href="$lexer_8c.html#a68b169dd0377b22e0729c7e7a9988262" title="A wrapper function that fetches the next token from the file." alt="" coords="456,56,579,83"/>
+<area shape="rect" id="node4" href="$parser_8c.html#a385276c7e31aeff5ad9c22370300ced6" title="Generates a parse tree for the given source code." alt="" coords="252,5,408,32"/>
+<area shape="rect" id="node5" href="$parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" title="Parses the given code based on the specified grammar." alt="" coords="108,5,204,32"/>
 </map>

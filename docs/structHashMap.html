@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): HashMap Struct Reference</title>
+<title>Compiler Project (Group 14): hash_map Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,74 +72,89 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">HashMap Struct Reference</div>  </div>
+<div class="title">hash_map Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for HashMap:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structHashMap__coll__graph.svg" width="340" height="306"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Data structure representing a hash map.  
+ <a href="structHashMap.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:aaaa6acc029a8805f43c2194673cb37b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="hash__map_8c.html#a2b1887b5760cfeb541e93bf4783204f0">map_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#aaaa6acc029a8805f43c2194673cb37b6">entries</a></td></tr>
-<tr class="separator:aaaa6acc029a8805f43c2194673cb37b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1930a904840423160885eb978d2a8f7b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#a1930a904840423160885eb978d2a8f7b">capacity</a></td></tr>
-<tr class="separator:a1930a904840423160885eb978d2a8f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e6ba458daac21868488406199921031"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#a4e6ba458daac21868488406199921031">size</a></td></tr>
-<tr class="separator:a4e6ba458daac21868488406199921031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35b31848ecc6d0ee66ca1c37b926609c"><td class="memItemLeft" align="right" valign="top">map_entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#a35b31848ecc6d0ee66ca1c37b926609c">entries</a></td></tr>
+<tr class="separator:a35b31848ecc6d0ee66ca1c37b926609c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af556b14a57835d171446d980660b290d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#af556b14a57835d171446d980660b290d">capacity</a></td></tr>
+<tr class="separator:af556b14a57835d171446d980660b290d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07100ecb9da119ebd920bf601357f574"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHashMap.html#a07100ecb9da119ebd920bf601357f574">size</a></td></tr>
+<tr class="separator:a07100ecb9da119ebd920bf601357f574"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00020">20</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<div class="textblock"><p>Data structure representing a hash map. </p>
+<ul>
+<li>The hash map is indexed by a unique <b>key</b> and each key maps to a respective <b>value</b>.</li>
+<li>Collision resolution is handled using <b>open addressing with linear probing</b>.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>The symbol table is dynamically allocated and must be initialized using <code>map_create</code>.</li>
+<li>The hash map is deallocated using <code>map_cleanup</code> to prevent memory leaks.</li>
+</ul>
+</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd><ul>
+<li><b>Lookup Complexity:</b> Average \( \mathcal{O}(1) \), Worst-case \( \mathcal{O}(n) \) (in the case of high collision rates).</li>
+<li><b>Insertion Complexity:</b> Average \( \mathcal{O}(1) \), but rehashing can incur additional overhead. </li>
+</ul>
+</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00049">49</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a1930a904840423160885eb978d2a8f7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1930a904840423160885eb978d2a8f7b">&#9670;&nbsp;</a></span>capacity</h2>
+<a id="af556b14a57835d171446d980660b290d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af556b14a57835d171446d980660b290d">&#9670;&nbsp;</a></span>capacity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int HashMap::capacity</td>
+          <td class="memname">int hash_map::capacity</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Total number of slots available in the hash map </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00022">22</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00051">51</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>
-<a id="aaaa6acc029a8805f43c2194673cb37b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaa6acc029a8805f43c2194673cb37b6">&#9670;&nbsp;</a></span>entries</h2>
+<a id="a35b31848ecc6d0ee66ca1c37b926609c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35b31848ecc6d0ee66ca1c37b926609c">&#9670;&nbsp;</a></span>entries</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="hash__map_8c.html#a2b1887b5760cfeb541e93bf4783204f0">map_entry</a>* HashMap::entries</td>
+          <td class="memname">map_entry* hash_map::entries</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Array of entries in the hash map </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00021">21</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00050">50</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>
-<a id="a4e6ba458daac21868488406199921031"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e6ba458daac21868488406199921031">&#9670;&nbsp;</a></span>size</h2>
+<a id="a07100ecb9da119ebd920bf601357f574"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07100ecb9da119ebd920bf601357f574">&#9670;&nbsp;</a></span>size</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int HashMap::size</td>
+          <td class="memname">int hash_map::size</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Number of currently occupied slots in the hash map </p>
 
-<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00023">23</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash__map_8c_source.html#l00052">52</a> of file <a class="el" href="hash__map_8c_source.html">hash_map.c</a>.</p>
 
 </div>
 </div>

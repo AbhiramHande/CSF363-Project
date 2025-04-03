@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): SymbolTableEntry Struct Reference</title>
+<title>Compiler Project (Group 14): entry Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,52 +72,62 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">SymbolTableEntry Struct Reference</div>  </div>
+<div class="title">entry Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents an entry in the symbol table.  
+ <a href="structSymbolTableEntry.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a40c725688b0c89e4bbbefaf3818ceb99"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableEntry.html#a40c725688b0c89e4bbbefaf3818ceb99">name</a></td></tr>
-<tr class="separator:a40c725688b0c89e4bbbefaf3818ceb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a333fe16173d1fa75f84427cab61be74b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableEntry.html#a333fe16173d1fa75f84427cab61be74b">type</a></td></tr>
-<tr class="separator:a333fe16173d1fa75f84427cab61be74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef8962564a1a313a7ddc320bb4ed739c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableEntry.html#aef8962564a1a313a7ddc320bb4ed739c">name</a></td></tr>
+<tr class="separator:aef8962564a1a313a7ddc320bb4ed739c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea57459909a1171c286a56316b98d500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSymbolTableEntry.html#aea57459909a1171c286a56316b98d500">type</a></td></tr>
+<tr class="separator:aea57459909a1171c286a56316b98d500"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00015">15</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
+<div class="textblock"><p>Represents an entry in the symbol table. </p>
+<ul>
+<li>Each entry consists of a lexeme (<code>name</code>) and its associated token type (<code>type</code>).</li>
+<li>Used to store identifiers, keywords, and other symbols encountered during parsing. </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00021">21</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a40c725688b0c89e4bbbefaf3818ceb99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40c725688b0c89e4bbbefaf3818ceb99">&#9670;&nbsp;</a></span>name</h2>
+<a id="aef8962564a1a313a7ddc320bb4ed739c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef8962564a1a313a7ddc320bb4ed739c">&#9670;&nbsp;</a></span>name</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* SymbolTableEntry::name</td>
+          <td class="memname">char* entry::name</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to the lexeme stored as a null-terminated string </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00016">16</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00022">22</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
 
 </div>
 </div>
-<a id="a333fe16173d1fa75f84427cab61be74b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a333fe16173d1fa75f84427cab61be74b">&#9670;&nbsp;</a></span>type</h2>
+<a id="aea57459909a1171c286a56316b98d500"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea57459909a1171c286a56316b98d500">&#9670;&nbsp;</a></span>type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a> SymbolTableEntry::type</td>
+          <td class="memname"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a> entry::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><a class="el" href="structToken.html" title="A structure representing metadata associated with a token.">Token</a> type associated with the lexeme </p>
 
-<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00017">17</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="symbol__table_8h_source.html#l00023">23</a> of file <a class="el" href="symbol__table_8h_source.html">symbol_table.h</a>.</p>
 
 </div>
 </div>

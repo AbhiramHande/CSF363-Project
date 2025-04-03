@@ -36,7 +36,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="hash__map_8h.html#a17fd9c089bb62d17bb6266babc287a82" target="_top" xlink:title="Inserts a production rule into the internal hash table for the LL(1) parser.">
+<g id="a_node4"><a xlink:href="hash__map_8c.html#a17fd9c089bb62d17bb6266babc287a82" target="_top" xlink:title="Inserts a production rule into the internal hash table for the LL(1) parser.">
 <polygon fill="white" stroke="black" points="194.5,-0.5 194.5,-19.5 265.5,-19.5 265.5,-0.5 194.5,-0.5"/>
 <text text-anchor="middle" x="230" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">map_insert</text>
 </a>

@@ -1,6 +1,4 @@
-<map id="Symbol" name="Symbol">
-<area shape="rect" id="node1" title=" " alt="" coords="67,5,138,32"/>
-<area shape="rect" id="node4" href="$structProduction.html" title=" " alt="" coords="15,95,105,121"/>
-<area shape="rect" id="node2" href="$unionsymbol__value.html" title=" " alt="" coords="57,273,170,300"/>
-<area shape="rect" id="node3" href="$structNonTerminal.html" title=" " alt="" coords="5,184,109,211"/>
+<map id="symbol" name="symbol">
+<area shape="rect" id="node1" title=" " alt="" coords="27,95,97,121"/>
+<area shape="rect" id="node2" href="$unionsymbol__value.html" title=" " alt="" coords="5,5,119,32"/>
 </map>

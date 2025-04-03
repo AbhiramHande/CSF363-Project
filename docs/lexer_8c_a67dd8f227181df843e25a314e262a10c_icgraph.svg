@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="lexer_8h.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" target="_top" xlink:title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file.">
+<g id="a_node2"><a xlink:href="lexer_8c.html#a78c9ef2940e04bc9cd18a764bdb9e0a5" target="_top" xlink:title="Initializes an internal twin buffer and loads the active buffer with the first chunk of the file.">
 <polygon fill="white" stroke="black" points="630,-28.5 630,-47.5 696,-47.5 696,-28.5 630,-28.5"/>
 <text text-anchor="middle" x="663" y="-35.5" font-family="Helvetica,sans-Serif" font-size="10.00">buffer_init</text>
 </a>
@@ -72,7 +72,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="lexer_8h.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
+<g id="a_node4"><a xlink:href="lexer_8c.html#a68b169dd0377b22e0729c7e7a9988262" target="_top" xlink:title="A wrapper function that fetches the next token from the file.">
 <polygon fill="white" stroke="black" points="338,-28.5 338,-47.5 430,-47.5 430,-28.5 338,-28.5"/>
 <text text-anchor="middle" x="384" y="-35.5" font-family="Helvetica,sans-Serif" font-size="10.00">get_next_token</text>
 </a>
@@ -108,7 +108,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="parser_8h.html#af8e858bd867bc61808a62e29963b3497" target="_top" xlink:title="Parses the given code based on the specified grammar.">
+<g id="a_node6"><a xlink:href="parser_8c.html#a6c4b340ccd44133e7a3dabdd3015afac" target="_top" xlink:title="Parses the given code based on the specified grammar.">
 <polygon fill="white" stroke="black" points="77,-66.5 77,-85.5 149,-85.5 149,-66.5 77,-66.5"/>
 <text text-anchor="middle" x="113" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">parse_code</text>
 </a>

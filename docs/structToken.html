@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Compiler Project (Group 14): Token Struct Reference</title>
+<title>Compiler Project (Group 14): token Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,141 +72,156 @@ $(function() {
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">Token Struct Reference</div>  </div>
+<div class="title">token Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A structure representing metadata associated with a token.  
+ <a href="structToken.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a5a92d775c2159bd2d2ddc7647ebe2046"><td class="memItemLeft" align="right" valign="top"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a5a92d775c2159bd2d2ddc7647ebe2046">name</a></td></tr>
-<tr class="separator:a5a92d775c2159bd2d2ddc7647ebe2046"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5359a15731f99e3edd4ed3f005919f56"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a5359a15731f99e3edd4ed3f005919f56">lexeme</a></td></tr>
-<tr class="separator:a5359a15731f99e3edd4ed3f005919f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a448126a329a5b7e3ac490ead4f6e5a02"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a448126a329a5b7e3ac490ead4f6e5a02">line_num</a></td></tr>
-<tr class="separator:a448126a329a5b7e3ac490ead4f6e5a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98b36b091b10f080b678d92162721341"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a98b36b091b10f080b678d92162721341">is_value_int</a></td></tr>
-<tr class="separator:a98b36b091b10f080b678d92162721341"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8cbd23eb93e4c0f3f2627c3e5b5591d"><td class="memItemLeft" >union {</td></tr>
-<tr class="memitem:ac54609e6ab1384c9deca8f881bf96f3e"><td class="memItemLeft" >&#160;&#160;&#160;long long&#160;&#160;&#160;<a class="el" href="structToken.html#ab5929a80441be18a1821dd3b972761a8">num</a></td></tr>
-<tr class="separator:ac54609e6ab1384c9deca8f881bf96f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2624a427620bcdbdb4dfb6c88a905cd"><td class="memItemLeft" >&#160;&#160;&#160;long double&#160;&#160;&#160;<a class="el" href="structToken.html#a5e13d7b3d50e4d2fc73293babef51d79">r_num</a></td></tr>
-<tr class="separator:ac2624a427620bcdbdb4dfb6c88a905cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8cbd23eb93e4c0f3f2627c3e5b5591d"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#aa8cbd23eb93e4c0f3f2627c3e5b5591d">value</a></td></tr>
-<tr class="separator:aa8cbd23eb93e4c0f3f2627c3e5b5591d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16636a13f2fbfa072d848432db028950"><td class="memItemLeft" align="right" valign="top"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a16636a13f2fbfa072d848432db028950">name</a></td></tr>
+<tr class="separator:a16636a13f2fbfa072d848432db028950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a287e420fbfe3b2380907741f1a535f3c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a287e420fbfe3b2380907741f1a535f3c">lexeme</a></td></tr>
+<tr class="separator:a287e420fbfe3b2380907741f1a535f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f887b2494a14cd288a1b5dd27722307"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#a0f887b2494a14cd288a1b5dd27722307">line_num</a></td></tr>
+<tr class="separator:a0f887b2494a14cd288a1b5dd27722307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada24c48bd04d6802046477784a398200"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#ada24c48bd04d6802046477784a398200">is_value_int</a></td></tr>
+<tr class="separator:ada24c48bd04d6802046477784a398200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9db5dca953323ade815bffe7c0eb22a"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:a5778378f052a9ee606b1ae7e8f38a6b0"><td class="memItemLeft" >&#160;&#160;&#160;long long&#160;&#160;&#160;<a class="el" href="structToken.html#ae6152d0475a4b8e68397fe60d0594de5">num</a></td></tr>
+<tr class="separator:a5778378f052a9ee606b1ae7e8f38a6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc407849474b473e471fd6e50b440d25"><td class="memItemLeft" >&#160;&#160;&#160;long double&#160;&#160;&#160;<a class="el" href="structToken.html#a9872d949d52a6e56c5e6f619ba85530b">r_num</a></td></tr>
+<tr class="separator:acc407849474b473e471fd6e50b440d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9db5dca953323ade815bffe7c0eb22a"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structToken.html#ad9db5dca953323ade815bffe7c0eb22a">value</a></td></tr>
+<tr class="separator:ad9db5dca953323ade815bffe7c0eb22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00092">92</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<div class="textblock"><p>A structure representing metadata associated with a token. </p>
+<ul>
+<li>Stores information about a token, including its type, lexeme, and position in the source code.</li>
+<li>Includes additional fields to store integer or floating-point values when applicable. </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00119">119</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a98b36b091b10f080b678d92162721341"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98b36b091b10f080b678d92162721341">&#9670;&nbsp;</a></span>is_value_int</h2>
+<a id="ada24c48bd04d6802046477784a398200"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada24c48bd04d6802046477784a398200">&#9670;&nbsp;</a></span>is_value_int</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Token::is_value_int</td>
+          <td class="memname">bool token::is_value_int</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Indicates whether the token represents an integer (<code>true</code>) or a floating-point number (<code>false</code>). </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00096">96</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00123">123</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a5359a15731f99e3edd4ed3f005919f56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5359a15731f99e3edd4ed3f005919f56">&#9670;&nbsp;</a></span>lexeme</h2>
+<a id="a287e420fbfe3b2380907741f1a535f3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a287e420fbfe3b2380907741f1a535f3c">&#9670;&nbsp;</a></span>lexeme</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* Token::lexeme</td>
+          <td class="memname">char* token::lexeme</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pointer to the lexeme (string representation of the token). </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00094">94</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00121">121</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a448126a329a5b7e3ac490ead4f6e5a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a448126a329a5b7e3ac490ead4f6e5a02">&#9670;&nbsp;</a></span>line_num</h2>
+<a id="a0f887b2494a14cd288a1b5dd27722307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f887b2494a14cd288a1b5dd27722307">&#9670;&nbsp;</a></span>line_num</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Token::line_num</td>
+          <td class="memname">int token::line_num</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Line number where the lexeme was encountered. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00095">95</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00122">122</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a5a92d775c2159bd2d2ddc7647ebe2046"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a92d775c2159bd2d2ddc7647ebe2046">&#9670;&nbsp;</a></span>name</h2>
+<a id="a16636a13f2fbfa072d848432db028950"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16636a13f2fbfa072d848432db028950">&#9670;&nbsp;</a></span>name</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a> Token::name</td>
+          <td class="memname"><a class="el" href="lexerDef_8h.html#a34fddc80a0a78cf571fc67215255fd81">token_type</a> token::name</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Represents the type of token. </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00093">93</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00120">120</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="ab5929a80441be18a1821dd3b972761a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5929a80441be18a1821dd3b972761a8">&#9670;&nbsp;</a></span>num</h2>
+<a id="ae6152d0475a4b8e68397fe60d0594de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6152d0475a4b8e68397fe60d0594de5">&#9670;&nbsp;</a></span>num</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long long Token::num</td>
+          <td class="memname">long long token::num</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Stores the integer value (if applicable). </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00099">99</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00126">126</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="a5e13d7b3d50e4d2fc73293babef51d79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e13d7b3d50e4d2fc73293babef51d79">&#9670;&nbsp;</a></span>r_num</h2>
+<a id="a9872d949d52a6e56c5e6f619ba85530b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9872d949d52a6e56c5e6f619ba85530b">&#9670;&nbsp;</a></span>r_num</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long double Token::r_num</td>
+          <td class="memname">long double token::r_num</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Stores the floating-point value (if applicable). </p>
 
-<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00100">100</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexerDef_8h_source.html#l00127">127</a> of file <a class="el" href="lexerDef_8h_source.html">lexerDef.h</a>.</p>
 
 </div>
 </div>
-<a id="aa8cbd23eb93e4c0f3f2627c3e5b5591d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8cbd23eb93e4c0f3f2627c3e5b5591d">&#9670;&nbsp;</a></span></h2>
+<a id="ad9db5dca953323ade815bffe7c0eb22a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9db5dca953323ade815bffe7c0eb22a">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union { ... }  Token::value</td>
+          <td class="memname">union { ... }  token::value</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Union for storing the token’s numeric value (if any). </p>
 
 </div>
 </div>

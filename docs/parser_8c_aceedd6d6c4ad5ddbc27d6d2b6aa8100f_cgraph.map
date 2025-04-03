@@ -1,4 +1,4 @@
 <map id="print_parse_tree" name="print_parse_tree">
 <area shape="rect" id="node1" title="Prints the parse tree using pre&#45;order traversal." alt="" coords="5,5,133,32"/>
-<area shape="rect" id="node2" href="$lexer_8h.html#aee1807f4e95bea666b6c994915907414" title="Retrieves a string representation of a token type (for printing purposes)." alt="" coords="181,5,304,32"/>
+<area shape="rect" id="node2" href="$lexer_8c.html#aee1807f4e95bea666b6c994915907414" title="Retrieves a string representation of a token type (for printing purposes)." alt="" coords="181,5,304,32"/>
 </map>
