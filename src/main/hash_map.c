@@ -1,5 +1,10 @@
 #include "../../include/hash_map.h"
 
+/**
+ * @brief Defines the initial capacity of the hash map.
+ * 
+ * @warning The hash map starts with this size, and if it is full, no further elements can be added.
+ */
 #define INITIAL_TABLE_SIZE 400
 
 /*****************************************************************************
@@ -8,20 +13,45 @@
  *                                                                           *
  *****************************************************************************/
 
-typedef struct Entry map_entry;
+/**
+ * @brief Data structure representing a hash map.
+ * 
+ * @details 
+ * - The hash map is indexed by a unique **key** and each key maps to a respective **value**.
+ * - Collision resolution is handled using **open addressing with linear probing**.
+ * 
+ * @note
+ * - The symbol table is dynamically allocated and must be initialized using `map_create`.
+ * - The hash map is deallocated using `map_cleanup` to prevent memory leaks.
+ * 
+ * @attention
+ * - **Lookup Complexity:** Average @f$ \mathcal{O}(1) @f$, Worst-case @f$ \mathcal{O}(n) @f$ (in the case of high collision rates).
+ * - **Insertion Complexity:** Average @f$ \mathcal{O}(1) @f$, but rehashing can incur additional overhead.
+ */
 typedef struct HashMap hash_map;
 
+/**
+ * @brief Represents an entry in the hash map.
+ * 
+ * @details 
+ * - Each entry contains a unique key (an unsigned integer) and a value (a pointer to a production rule).
+ * - Also includes an `is_occupied` flag to indicate whether the entry is in use.
+ * - These entries are used for storage and retrieval within the hash map.
+ */
+typedef struct Entry map_entry;
+
 struct Entry {
-    unsigned int key;
-    production* value;
-    bool is_occupied;
+    unsigned int key; /**< The unique key for this entry */
+    production* value; /**< Pointer to the value associated with the key (here, a production rule) */
+    bool is_occupied; /**< Indicates if the entry is currently occupied by a valid key-value pair */
 };
 
 struct HashMap {
-    map_entry* entries;
-    int capacity;
-    int size;
+    map_entry* entries; /**< Array of entries in the hash map */
+    int capacity; /**< Total number of slots available in the hash map */
+    int size; /**< Number of currently occupied slots in the hash map */
 };
+
 
 /*****************************************************************************
  *                                                                           *

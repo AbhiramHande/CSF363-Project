@@ -81,7 +81,7 @@ clean:
 	rm -rf $(OBJ_DIR) $(EXEC_DIR)
 
 docs: Doxyfile
-	doxygen Doxyfile
+	doxygen Doxyfile 1> /dev/null
 	xdg-open docs/index.html
 
 help:
